@@ -1,12 +1,12 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { MotionValue, useTransform } from 'framer-motion';
+import { MotionValue } from 'framer-motion';
 
 interface ScrollTypingTextProps {
 	text: string;
 	progress: MotionValue<number>;
-	scrollRange?: [number, number]; // Range of scroll progress to animate over (default [0, 1])
+	scrollRange?: [number, number];
 	showCursor?: boolean;
 	className?: string;
 }
@@ -16,7 +16,7 @@ export default function ScrollTypingText({
 	progress,
 	scrollRange = [0, 1],
 	showCursor = false,
-	className = ''
+	className = '',
 }: ScrollTypingTextProps) {
 	const [displayedText, setDisplayedText] = useState('');
 	const lengthRef = useRef(0);
@@ -25,7 +25,12 @@ export default function ScrollTypingText({
 		const unsubscribe = progress.on('change', (value) => {
 			const start = scrollRange[0];
 			const end = scrollRange[1];
-			const normalizedProgress = Math.max(0, Math.min(1, (value - start) / (end - start)));
+
+			const normalizedProgress = Math.max(
+				0,
+				Math.min(1, (value - start) / (end - start))
+			);
+
 			const charsToShow = Math.floor(normalizedProgress * text.length);
 
 			if (charsToShow !== lengthRef.current) {
@@ -44,7 +49,7 @@ export default function ScrollTypingText({
 		<span className={className}>
 			{displayedText}
 			{showCursor && !done && (
-				<span className="animate-pulse">|</span>
+				<span aria-hidden="true">|</span>
 			)}
 		</span>
 	);

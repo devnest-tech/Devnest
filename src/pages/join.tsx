@@ -15,10 +15,13 @@ export default function JoinPage() {
     linkedin: "",
     experience: "",
   });
+
   const [submitted, setSubmitted] = useState(false);
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>,
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >,
   ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -27,6 +30,7 @@ export default function JoinPage() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitted(true);
+
     setTimeout(() => {
       setSubmitted(false);
       setFormData({
@@ -61,7 +65,8 @@ export default function JoinPage() {
     {
       icon: Lightbulb,
       title: "Learn & Build",
-      description: "Work on real-world projects and gain practical experience.",
+      description:
+        "Work on real-world projects and gain practical experience.",
     },
   ];
 
@@ -84,13 +89,17 @@ export default function JoinPage() {
     {
       number: "04",
       title: "Start Building",
-      description: "Attend events, participate in projects, and innovate!",
+      description:
+        "Attend events, participate in projects, and innovate!",
     },
   ];
 
   return (
     <Layout>
-      <Head><title>DevNest | Join Us</title></Head>
+      <Head>
+        <title>DevNest | Join Us</title>
+      </Head>
+
       <div className="min-h-screen py-20 bg-gradient-to-b from-background to-muted/30">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {!submitted ? (
@@ -99,14 +108,19 @@ export default function JoinPage() {
               <div className="text-center mb-16">
                 <div className="mb-6 inline-block">
                   <span className="inline-block px-4 py-2 rounded-full bg-primary/10 border border-primary/30 text-primary text-sm font-medium">
-                    <span className="emoji-white">🎯</span> Join the Innovation Nest
+                    <span className="emoji-white">🎯</span> Join the Innovation
+                    Nest
                   </span>
                 </div>
+
                 <h1 className="text-5xl sm:text-6xl font-poppins font-bold mb-4 glow-text">
                   Join DevNest
                 </h1>
+
                 <p className="text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto">
-                  Become part of a community where passion meets purpose. Whether you're a coder, designer, or curious learner — DevNest is your launchpad to innovation.
+                  Become part of a community where passion meets purpose.
+                  Whether you&apos;re a coder, designer, or curious learner —
+                  DevNest is your launchpad to innovation.
                 </p>
               </div>
 
@@ -115,18 +129,22 @@ export default function JoinPage() {
                 <h2 className="text-3xl font-poppins font-bold text-center mb-12">
                   Why Join <span className="glow-text">DevNest?</span>
                 </h2>
+
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                   {joinBenefits.map((benefit, index) => {
                     const Icon = benefit.icon;
+
                     return (
                       <div
                         key={index}
                         className="glass-effect rounded-lg p-6 hover-lift"
                       >
                         <Icon className="w-8 h-8 text-primary mb-4" />
+
                         <h3 className="font-poppins font-bold mb-2">
                           {benefit.title}
                         </h3>
+
                         <p className="text-sm text-muted-foreground">
                           {benefit.description}
                         </p>
@@ -141,6 +159,7 @@ export default function JoinPage() {
                 <h2 className="text-3xl font-poppins font-bold text-center mb-12">
                   How to <span className="glow-text">Join</span>
                 </h2>
+
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
                   {joinSteps.map((step, index) => (
                     <div key={index} className="relative">
@@ -148,13 +167,16 @@ export default function JoinPage() {
                         <div className="text-4xl font-poppins font-bold text-primary mb-4">
                           {step.number}
                         </div>
+
                         <h3 className="font-poppins font-bold mb-2">
                           {step.title}
                         </h3>
+
                         <p className="text-sm text-muted-foreground">
                           {step.description}
                         </p>
                       </div>
+
                       {index < joinSteps.length - 1 && (
                         <div className="hidden md:block absolute top-1/2 -right-3 text-2xl text-primary transform -translate-y-1/2">
                           →
@@ -181,6 +203,7 @@ export default function JoinPage() {
                       <label className="block text-sm font-semibold mb-2">
                         Full Name *
                       </label>
+
                       <input
                         type="text"
                         name="name"
@@ -188,7 +211,7 @@ export default function JoinPage() {
                         onChange={handleChange}
                         required
                         placeholder="Your full name"
-                        className="w-full px-4 py-3 rounded-lg bg-input border border-border text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary transition-all"
+                        className="w-full px-4 py-3 rounded-lg bg-input border border-border text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary transition-[border-color,box-shadow] duration-150"
                       />
                     </div>
 
@@ -196,6 +219,7 @@ export default function JoinPage() {
                       <label className="block text-sm font-semibold mb-2">
                         Email Address *
                       </label>
+
                       <input
                         type="email"
                         name="email"
@@ -203,7 +227,7 @@ export default function JoinPage() {
                         onChange={handleChange}
                         required
                         placeholder="your.email@example.com"
-                        className="w-full px-4 py-3 rounded-lg bg-input border border-border text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary transition-all"
+                        className="w-full px-4 py-3 rounded-lg bg-input border border-border text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary transition-[border-color,box-shadow] duration-150"
                       />
                     </div>
                   </div>
@@ -214,6 +238,7 @@ export default function JoinPage() {
                       <label className="block text-sm font-semibold mb-2">
                         College/University *
                       </label>
+
                       <input
                         type="text"
                         name="college"
@@ -221,7 +246,7 @@ export default function JoinPage() {
                         onChange={handleChange}
                         required
                         placeholder="Your college name"
-                        className="w-full px-4 py-3 rounded-lg bg-input border border-border text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary transition-all"
+                        className="w-full px-4 py-3 rounded-lg bg-input border border-border text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary transition-[border-color,box-shadow] duration-150"
                       />
                     </div>
 
@@ -229,12 +254,13 @@ export default function JoinPage() {
                       <label className="block text-sm font-semibold mb-2">
                         Year of Study *
                       </label>
+
                       <select
                         name="year"
                         value={formData.year}
                         onChange={handleChange}
                         required
-                        className="w-full px-4 py-3 rounded-lg bg-input border border-border text-foreground focus:outline-none focus:ring-2 focus:ring-primary transition-all"
+                        className="w-full px-4 py-3 rounded-lg bg-input border border-border text-foreground focus:outline-none focus:ring-2 focus:ring-primary transition-[border-color,box-shadow] duration-150"
                       >
                         <option value="">Select year</option>
                         <option value="1st">1st Year</option>
@@ -249,15 +275,18 @@ export default function JoinPage() {
                       <label className="block text-sm font-semibold mb-2">
                         Domain Interest *
                       </label>
+
                       <select
                         name="domain"
                         value={formData.domain}
                         onChange={handleChange}
                         required
-                        className="w-full px-4 py-3 rounded-lg bg-input border border-border text-foreground focus:outline-none focus:ring-2 focus:ring-primary transition-all"
+                        className="w-full px-4 py-3 rounded-lg bg-input border border-border text-foreground focus:outline-none focus:ring-2 focus:ring-primary transition-[border-color,box-shadow] duration-150"
                       >
                         <option value="">Select domain</option>
-                        <option value="ai-ml">Artificial Intelligence & ML</option>
+                        <option value="ai-ml">
+                          Artificial Intelligence & ML
+                        </option>
                         <option value="web">Web Development</option>
                         <option value="cyber">Cybersecurity</option>
                         <option value="cloud">Cloud Computing</option>
@@ -273,13 +302,14 @@ export default function JoinPage() {
                       <label className="block text-sm font-semibold mb-2">
                         GitHub Profile (Optional)
                       </label>
+
                       <input
                         type="text"
                         name="github"
                         value={formData.github}
                         onChange={handleChange}
                         placeholder="github.com/username"
-                        className="w-full px-4 py-3 rounded-lg bg-input border border-border text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary transition-all"
+                        className="w-full px-4 py-3 rounded-lg bg-input border border-border text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary transition-[border-color,box-shadow] duration-150"
                       />
                     </div>
 
@@ -287,13 +317,14 @@ export default function JoinPage() {
                       <label className="block text-sm font-semibold mb-2">
                         LinkedIn Profile (Optional)
                       </label>
+
                       <input
                         type="text"
                         name="linkedin"
                         value={formData.linkedin}
                         onChange={handleChange}
                         placeholder="linkedin.com/in/username"
-                        className="w-full px-4 py-3 rounded-lg bg-input border border-border text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary transition-all"
+                        className="w-full px-4 py-3 rounded-lg bg-input border border-border text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary transition-[border-color,box-shadow] duration-150"
                       />
                     </div>
                   </div>
@@ -301,27 +332,33 @@ export default function JoinPage() {
                   {/* Row 4 */}
                   <div>
                     <label className="block text-sm font-semibold mb-2">
-                      What's your tech experience? (Optional)
+                      What&apos;s your tech experience? (Optional)
                     </label>
+
                     <textarea
                       name="experience"
                       value={formData.experience}
                       onChange={handleChange}
                       placeholder="Tell us about your tech background and what you'd like to learn..."
                       rows={4}
-                      className="w-full px-4 py-3 rounded-lg bg-input border border-border text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary transition-all resize-none"
+                      className="w-full px-4 py-3 rounded-lg bg-input border border-border text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary transition-[border-color,box-shadow] duration-150 resize-none"
                     />
                   </div>
 
                   <div className="bg-primary/10 border border-primary/20 rounded-lg p-4">
                     <div className="flex gap-3">
                       <Zap className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
+
                       <div className="text-sm">
                         <p className="font-semibold text-foreground mb-1">
                           What happens next?
                         </p>
+
                         <p className="text-muted-foreground">
-                          After submission, you'll receive a confirmation email with Discord community link and orientation details. Join our orientation session and start your DevNest journey!
+                          After submission, you&apos;ll receive a confirmation
+                          email with Discord community link and orientation
+                          details. Join our orientation session and start your
+                          DevNest journey!
                         </p>
                       </div>
                     </div>
@@ -341,7 +378,8 @@ export default function JoinPage() {
               {/* Bottom CTA */}
               <div className="text-center">
                 <p className="text-muted-foreground mb-4">
-                  Together, we build. Together, we innovate. Together, we are DevNest.
+                  Together, we build. Together, we innovate. Together, we are
+                  DevNest.
                 </p>
               </div>
             </>
@@ -350,15 +388,22 @@ export default function JoinPage() {
               <div className="mb-6 flex justify-center">
                 <CheckCircle className="w-20 h-20 text-primary" />
               </div>
+
               <h2 className="text-4xl font-poppins font-bold mb-3">
-                Welcome to DevNest! <span className="emoji-white">🎉</span>
+                Welcome to DevNest!{" "}
+                <span className="emoji-white">🎉</span>
               </h2>
+
               <p className="text-lg text-muted-foreground mb-2">
                 Your registration has been submitted successfully!
               </p>
+
               <p className="text-muted-foreground mb-8">
-                Check your email for a confirmation link, Discord community invitation, and upcoming orientation details. Get ready to innovate!
+                Check your email for a confirmation link, Discord community
+                invitation, and upcoming orientation details. Get ready to
+                innovate!
               </p>
+
               <Button
                 onClick={() => (window.location.href = "/")}
                 className="bg-primary hover:bg-primary/90 text-primary-foreground gap-2"

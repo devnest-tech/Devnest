@@ -273,7 +273,12 @@ export default function MembersDashboard() {
               </div>
             </div>
 
-            <Select value={filterType} onValueChange={(value: any) => setFilterType(value)}>
+            <Select
+              value={filterType}
+              onValueChange={(value: "all" | "regular" | "core" | "alumni") =>
+                setFilterType(value)
+              }
+            >
               <SelectTrigger className="w-[150px]">
                 <SelectValue placeholder="Type" />
               </SelectTrigger>
@@ -285,7 +290,12 @@ export default function MembersDashboard() {
               </SelectContent>
             </Select>
 
-            <Select value={filterStatus} onValueChange={(value: any) => setFilterStatus(value)}>
+            <Select
+              value={filterStatus}
+              onValueChange={(value: "all" | "active" | "inactive") =>
+                setFilterStatus(value)
+              }
+            >
               <SelectTrigger className="w-[150px]">
                 <SelectValue placeholder="Status" />
               </SelectTrigger>

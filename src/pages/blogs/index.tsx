@@ -15,21 +15,29 @@ interface BlogsPageProps {
 
 export default function BlogsPage({ blogs }: BlogsPageProps) {
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(
+    null,
+  );
 
-  const categories = Array.from(new Set(blogs.map((b) => b.category)));
+  const categories = Array.from(new Set(blogs.map((blog) => blog.category)));
 
   const filteredBlogs = blogs.filter((blog) => {
     const matchesSearch =
       blog.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
       blog.excerpt.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesCategory = !selectedCategory || blog.category === selectedCategory;
+
+    const matchesCategory =
+      !selectedCategory || blog.category === selectedCategory;
+
     return matchesSearch && matchesCategory;
   });
 
   return (
     <Layout>
-      <Head><title>DevNest | Blog</title></Head>
+      <Head>
+        <title>DevNest | Blog</title>
+      </Head>
+
       <div className="min-h-screen py-20 bg-gradient-to-b from-background to-muted/30">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Header */}
@@ -42,11 +50,16 @@ export default function BlogsPage({ blogs }: BlogsPageProps) {
                 height={20}
                 className="w-5 h-5 object-contain"
               />
-              <span className="text-primary text-sm font-medium">Knowledge Hub</span>
+
+              <span className="text-primary text-sm font-medium">
+                Knowledge Hub
+              </span>
             </div>
+
             <h1 className="text-5xl sm:text-6xl font-poppins font-bold mb-4 glow-text">
               DevNest Blogs
             </h1>
+
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
               Insights, tutorials, and stories from our tech community leaders
             </p>
@@ -56,13 +69,14 @@ export default function BlogsPage({ blogs }: BlogsPageProps) {
           <div className="mb-12">
             {/* Search Bar */}
             <div className="mb-6 relative max-w-2xl mx-auto">
-              <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+
               <Input
                 type="text"
                 placeholder="Search blogs..."
                 value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-12 h-12 rounded-lg border border-primary/20 bg-background/50 backdrop-blur-sm focus:border-primary"
+                onChange={(event) => setSearchTerm(event.target.value)}
+                className="pl-12 h-12 rounded-lg border border-primary/20 bg-background/50 focus:border-primary transition-colors duration-150"
               />
             </div>
 
@@ -71,16 +85,19 @@ export default function BlogsPage({ blogs }: BlogsPageProps) {
               <Button
                 onClick={() => setSelectedCategory(null)}
                 variant={selectedCategory === null ? "default" : "outline"}
-                className="rounded-full"
+                className="rounded-full transition-colors duration-150"
               >
                 All Categories
               </Button>
+
               {categories.map((category) => (
                 <Button
                   key={category}
                   onClick={() => setSelectedCategory(category)}
-                  variant={selectedCategory === category ? "default" : "outline"}
-                  className="rounded-full"
+                  variant={
+                    selectedCategory === category ? "default" : "outline"
+                  }
+                  className="rounded-full transition-colors duration-150"
                 >
                   {category}
                 </Button>
@@ -91,20 +108,18 @@ export default function BlogsPage({ blogs }: BlogsPageProps) {
           {/* Blogs Grid */}
           {filteredBlogs.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
-              {filteredBlogs.map((blog, index) => (
+              {filteredBlogs.map((blog) => (
                 <div
                   key={blog.slug}
-                  className="glass-effect rounded-xl overflow-hidden hover-lift transition-all group"
-                  style={{
-                    animation: `fadeInUp 0.6s ease-out ${index * 0.1}s both`,
-                  }}
+                  className="glass-effect rounded-xl overflow-hidden hover-lift group"
                 >
                   {/* Thumbnail */}
                   <div className="relative h-40 bg-gradient-to-br from-primary/20 to-secondary/20 overflow-hidden flex items-center justify-center">
-                    <div className="text-6xl group-hover:scale-110 transition-transform duration-300">
+                    <div className="text-6xl group-hover:scale-105 transition-transform duration-150">
                       {blog.thumbnail}
                     </div>
-                    <div className="absolute inset-0 bg-gradient-to-t from-background to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+
+                    <div className="absolute inset-0 bg-gradient-to-t from-background to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-150" />
                   </div>
 
                   {/* Content */}
@@ -117,7 +132,7 @@ export default function BlogsPage({ blogs }: BlogsPageProps) {
                     </div>
 
                     {/* Title */}
-                    <h3 className="text-xl font-poppins font-bold mb-2 line-clamp-2 group-hover:text-primary transition-colors">
+                    <h3 className="text-xl font-poppins font-bold mb-2 line-clamp-2 group-hover:text-primary transition-colors duration-150">
                       {blog.title}
                     </h3>
 
@@ -132,6 +147,7 @@ export default function BlogsPage({ blogs }: BlogsPageProps) {
                         <User className="w-4 h-4" />
                         {blog.author}
                       </div>
+
                       <div className="flex items-center gap-1">
                         <Clock className="w-4 h-4" />
                         {blog.readTime}
@@ -143,11 +159,12 @@ export default function BlogsPage({ blogs }: BlogsPageProps) {
                       asChild
                       variant="outline"
                       size="sm"
-                      className="w-full gap-2 group/btn"
+                      className="w-full gap-2 group/btn transition-colors duration-150"
                     >
                       <Link href={`/blog/${blog.slug}`}>
                         Read More
-                        <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
+
+                        <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform duration-150" />
                       </Link>
                     </Button>
                   </div>
@@ -168,11 +185,14 @@ export default function BlogsPage({ blogs }: BlogsPageProps) {
               <h3 className="text-2xl font-poppins font-bold mb-4">
                 Want to contribute?
               </h3>
+
               <p className="text-muted-foreground mb-6">
-                Share your knowledge and insights with the DevNest community. Interested in writing a blog post?
+                Share your knowledge and insights with the DevNest community.
+                Interested in writing a blog post?
               </p>
+
               <a href="mailto:devnest.techclub@gmail.com">
-                <Button className="bg-primary hover:bg-primary/90 gap-2">
+                <Button className="bg-primary hover:bg-primary/90 gap-2 transition-colors duration-150">
                   Get in Touch
                 </Button>
               </a>
@@ -180,19 +200,6 @@ export default function BlogsPage({ blogs }: BlogsPageProps) {
           </div>
         </div>
       </div>
-
-      <style>{`
-        @keyframes fadeInUp {
-          from {
-            opacity: 0;
-            transform: translateY(30px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-      `}</style>
     </Layout>
   );
 }

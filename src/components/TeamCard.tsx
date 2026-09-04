@@ -1,7 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
 import { Github, Linkedin, Instagram } from "lucide-react";
-import StarBorder from "@/components/StarBorder";
 
 interface TeamMember {
 	id: number;
@@ -20,7 +19,6 @@ interface TeamMember {
 
 interface TeamCardProps {
 	member: TeamMember;
-	index: number;
 }
 
 const isValidLink = (link: string | undefined): boolean => {
@@ -47,15 +45,13 @@ const renderMemberImage = (image: string, name: string, position?: string) => {
 	return <div className="text-3xl mb-1.5 sm:mb-2 text-center">{image}</div>;
 };
 
-export function TeamCard({ member, index }: TeamCardProps) {
+export function TeamCard({ member }: TeamCardProps) {
 
 	const cardContent = (
-		<div className="relative rounded-2xl p-4 sm:p-5 hover-lift transition-all duration-300 backdrop-blur-[18px] bg-white/15 dark:bg-white/15 min-h-[230px] sm:min-h-[250px] flex flex-col">
-			{/* Glassmorphic border */}
-			<div className="absolute inset-0 rounded-2xl border border-white/18 pointer-events-none" />
+		<div className="relative rounded-2xl p-4 sm:p-5 hover-lift min-h-[230px] sm:min-h-[250px] flex flex-col">
 
 			{/* Profile Info - Always visible on mobile, hover effect on desktop */}
-			<div className="relative z-10 lg:group-hover:translate-y-full transition-transform duration-300 flex-1 flex flex-col">
+			<div className="relative z-10 lg:group-hover:translate-y-full transition-transform duration-150 flex-1 flex flex-col">
 				{renderMemberImage(member.image, member.name, member.imagePosition)}
 				<h3 className="text-base sm:text-lg font-poppins font-bold mb-1 text-center text-gray-900 dark:text-white">
 					{member.name}
@@ -86,7 +82,7 @@ export function TeamCard({ member, index }: TeamCardProps) {
 							href={member.socials.github}
 							target="_blank"
 							rel="noopener noreferrer"
-							className="group/social p-2.5 rounded-xl backdrop-blur-[18px] bg-white/15 hover:bg-white/25 active:scale-95 transition-all duration-300 border border-white/18"
+							className="group/social p-2.5 rounded-xl bg-gray-100 dark:bg-gray-900 hover:bg-gray-200 dark:hover:bg-gray-800 active:scale-95 transition-colors duration-150 border border-gray-200 dark:border-gray-800"
 							title="GitHub"
 						>
 							<Github className="w-4 h-4 sm:w-5 sm:h-5 text-[#00B871] transition-transform group-hover/social:scale-110" />
@@ -97,7 +93,7 @@ export function TeamCard({ member, index }: TeamCardProps) {
 							href={member.socials.linkedin}
 							target="_blank"
 							rel="noopener noreferrer"
-							className="group/social p-2.5 rounded-xl backdrop-blur-[18px] bg-white/15 hover:bg-white/25 active:scale-95 transition-all duration-300 border border-white/18"
+							className="group/social p-2.5 rounded-xl bg-gray-100 dark:bg-gray-900 hover:bg-gray-200 dark:hover:bg-gray-800 active:scale-95 transition-colors duration-150 border border-gray-200 dark:border-gray-800"
 							title="LinkedIn"
 						>
 							<Linkedin className="w-4 h-4 sm:w-5 sm:h-5 text-[#00B871] transition-transform group-hover/social:scale-110" />
@@ -108,7 +104,7 @@ export function TeamCard({ member, index }: TeamCardProps) {
 							href={member.socials.instagram}
 							target="_blank"
 							rel="noopener noreferrer"
-							className="group/social p-2.5 rounded-xl backdrop-blur-[18px] bg-white/15 hover:bg-white/25 active:scale-95 transition-all duration-300 border border-white/18"
+							className="group/social p-2.5 rounded-xl bg-gray-100 dark:bg-gray-900 hover:bg-gray-200 dark:hover:bg-gray-800 active:scale-95 transition-colors duration-150 border border-gray-200 dark:border-gray-800"
 							title="Instagram"
 						>
 							<Instagram className="w-4 h-4 sm:w-5 sm:h-5 text-[#00B871] transition-transform group-hover/social:scale-110" />
@@ -118,9 +114,7 @@ export function TeamCard({ member, index }: TeamCardProps) {
 			</div>
 
 			{/* Hover State Content - Desktop only */}
-			<div className="hidden lg:flex absolute inset-0 p-4 sm:p-5 flex-col rounded-2xl -translate-y-full group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-300 backdrop-blur-[18px] bg-white/15 z-20">
-				{/* Glassmorphic border for hover state */}
-				<div className="absolute inset-0 rounded-2xl border border-white/18 pointer-events-none" />
+			<div className="hidden lg:flex absolute inset-0 p-4 sm:p-5 flex-col rounded-2xl -translate-y-full group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-opacity duration-150 bg-white dark:bg-gray-950 z-20">
 
 				<div className="relative z-10 flex flex-col flex-1">
 					{renderMemberImage(member.image, member.name, member.imagePosition)}
@@ -144,7 +138,7 @@ export function TeamCard({ member, index }: TeamCardProps) {
 								href={member.socials.github}
 								target="_blank"
 								rel="noopener noreferrer"
-								className="group/social p-2.5 rounded-xl backdrop-blur-[18px] bg-white/15 hover:bg-white/25 active:scale-95 transition-all duration-300 border border-white/18"
+								className="group/social p-2.5 rounded-xl bg-gray-100 dark:bg-gray-900 hover:bg-gray-200 dark:hover:bg-gray-800 active:scale-95 transition-colors duration-150 border border-gray-200 dark:border-gray-800"
 								title="GitHub"
 							>
 								<Github className="w-4 h-4 sm:w-5 sm:h-5 text-[#00B871] transition-transform group-hover/social:scale-110" />
@@ -155,7 +149,7 @@ export function TeamCard({ member, index }: TeamCardProps) {
 								href={member.socials.linkedin}
 								target="_blank"
 								rel="noopener noreferrer"
-								className="group/social p-2.5 rounded-xl backdrop-blur-[18px] bg-white/15 hover:bg-white/25 active:scale-95 transition-all duration-300 border border-white/18"
+								className="group/social p-2.5 rounded-xl bg-gray-100 dark:bg-gray-900 hover:bg-gray-200 dark:hover:bg-gray-800 active:scale-95 transition-colors duration-150 border border-gray-200 dark:border-gray-800"
 								title="LinkedIn"
 							>
 								<Linkedin className="w-4 h-4 sm:w-5 sm:h-5 text-[#00B871] transition-transform group-hover/social:scale-110" />
@@ -166,7 +160,7 @@ export function TeamCard({ member, index }: TeamCardProps) {
 								href={member.socials.instagram}
 								target="_blank"
 								rel="noopener noreferrer"
-								className="group/social p-2.5 rounded-xl backdrop-blur-[18px] bg-white/15 hover:bg-white/25 active:scale-95 transition-all duration-300 border border-white/18"
+								className="group/social p-2.5 rounded-xl bg-gray-100 dark:bg-gray-900 hover:bg-gray-200 dark:hover:bg-gray-800 active:scale-95 transition-colors duration-150 border border-gray-200 dark:border-gray-800"
 								title="Instagram"
 							>
 								<Instagram className="w-4 h-4 sm:w-5 sm:h-5 text-[#00B871] transition-transform group-hover/social:scale-110" />
@@ -179,31 +173,14 @@ export function TeamCard({ member, index }: TeamCardProps) {
 	);
 
 	return (
-		<div
-			className="group relative overflow-hidden rounded-2xl"
-			style={{
-				animation: `fadeInUp 0.6s ease-out ${index * 0.1}s both`,
-			}}
-		>
-			{/* Card Background Gradient - GPU Accelerated */}
-			<div className="absolute inset-0 bg-gradient-to-br from-[#00B871]/20 via-[#00B871]/10 to-[#FFD700]/20 dark:from-[#00B871]/15 dark:to-[#FFD700]/15 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" style={{ filter: 'blur(24px)', transform: 'translateZ(0)', willChange: 'opacity, filter' }} />
-
-			<StarBorder
-				as="div"
-				color="#00B871"
-				speed="8s"
-				thickness={2}
-				className="w-full overflow-hidden rounded-2xl"
-			>
-				<div
-					className="relative rounded-2xl transition-shadow duration-300 overflow-hidden"
-					style={{
-						boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.37)'
-					}}
-				>
-					{cardContent}
-				</div>
-			</StarBorder>
-		</div>
-	);
+        <div
+            className="group relative overflow-hidden rounded-2xl"
+       >
+            <div
+                className="relative rounded-2xl overflow-hidden border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-950 shadow-sm transition-shadow duration-150 hover:shadow-md"
+    		>
+                {cardContent}
+            </div>
+        </div>
+    );
 }

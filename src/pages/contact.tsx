@@ -1,7 +1,15 @@
 import Head from "next/head";
 import { Layout } from "@/components/Layout";
 import { Button } from "@/components/ui/button";
-import { Mail, MapPin, Phone, MessageCircle, Instagram, Linkedin, Github } from "lucide-react";
+import {
+  Mail,
+  MapPin,
+  Phone,
+  MessageCircle,
+  Instagram,
+  Linkedin,
+  Github,
+} from "lucide-react";
 import { useState } from "react";
 
 export default function ContactPage() {
@@ -11,6 +19,7 @@ export default function ContactPage() {
     subject: "",
     message: "",
   });
+
   const [submitted, setSubmitted] = useState(false);
 
   const handleChange = (
@@ -23,6 +32,7 @@ export default function ContactPage() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitted(true);
+
     setTimeout(() => {
       setSubmitted(false);
       setFormData({
@@ -66,15 +76,34 @@ export default function ContactPage() {
   ];
 
   const socialLinks = [
-    { icon: Instagram, url: "https://www.instagram.com/devnest_tech_club/", label: "Instagram" },
-    { icon: Linkedin, url: "https://www.linkedin.com/company/devnestclub", label: "LinkedIn" },
-    { icon: Github, url: "https://github.com", label: "GitHub" },
-    { icon: MessageCircle, url: "mailto:devnest.techclub@gmail.com", label: "Email" },
+    {
+      icon: Instagram,
+      url: "https://www.instagram.com/devnest_tech_club/",
+      label: "Instagram",
+    },
+    {
+      icon: Linkedin,
+      url: "https://www.linkedin.com/company/devnestclub",
+      label: "LinkedIn",
+    },
+    {
+      icon: Github,
+      url: "https://github.com",
+      label: "GitHub",
+    },
+    {
+      icon: MessageCircle,
+      url: "mailto:devnest.techclub@gmail.com",
+      label: "Email",
+    },
   ];
 
   return (
     <Layout>
-      <Head><title>DevNest | Contact</title></Head>
+      <Head>
+        <title>DevNest | Contact</title>
+      </Head>
+
       <div className="min-h-screen py-20 bg-gradient-to-b from-background to-muted/30">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Header */}
@@ -84,11 +113,14 @@ export default function ContactPage() {
                 <span className="emoji-white">📞</span> Get In Touch
               </span>
             </div>
+
             <h1 className="text-5xl sm:text-6xl font-poppins font-bold mb-4 glow-text">
               Connect With Us
             </h1>
+
             <p className="text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto">
-              Have questions? Want to collaborate? Or just curious about DevNest? Reach out to us anytime. We'd love to hear from you!
+              Have questions? Want to collaborate? Or just curious about
+              DevNest? Reach out to us anytime. We&apos;d love to hear from you!
             </p>
           </div>
 
@@ -96,19 +128,25 @@ export default function ContactPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-20">
             {contactMethods.map((method, index) => {
               const Icon = method.icon;
+
               return (
                 <a
                   key={index}
                   href={method.link}
                   target={method.link.startsWith("http") ? "_blank" : "_self"}
                   rel="noopener noreferrer"
-                  className="glass-effect rounded-lg p-6 hover-lift transition-all hover:bg-primary/5 group"
+                  className="glass-effect rounded-lg p-6 hover-lift hover:bg-primary/5 group"
                 >
-                  <Icon className="w-10 h-10 text-primary mb-4 group-hover:scale-110 transition-transform" />
-                  <h3 className="font-poppins font-bold mb-2">{method.title}</h3>
+                  <Icon className="w-10 h-10 text-primary mb-4 group-hover:scale-110 transition-transform duration-150" />
+
+                  <h3 className="font-poppins font-bold mb-2">
+                    {method.title}
+                  </h3>
+
                   <p className="text-sm text-primary font-semibold mb-2">
                     {method.content}
                   </p>
+
                   <p className="text-xs text-muted-foreground">
                     {method.description}
                   </p>
@@ -122,7 +160,7 @@ export default function ContactPage() {
             {/* Contact Form */}
             <div className="lg:col-span-2">
               <h2 className="text-3xl font-poppins font-bold mb-8">
-                Send us a <span className="glow-text">Message</span>
+                Send us <span className="glow-text">a Message</span>
               </h2>
 
               {!submitted ? (
@@ -134,6 +172,7 @@ export default function ContactPage() {
                     <label className="block text-sm font-semibold mb-2">
                       Name
                     </label>
+
                     <input
                       type="text"
                       name="name"
@@ -141,7 +180,7 @@ export default function ContactPage() {
                       onChange={handleChange}
                       required
                       placeholder="Your name"
-                      className="w-full px-4 py-3 rounded-lg bg-input border border-border text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary transition-all"
+                      className="w-full px-4 py-3 rounded-lg bg-input border border-border text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary transition-colors duration-150"
                     />
                   </div>
 
@@ -149,6 +188,7 @@ export default function ContactPage() {
                     <label className="block text-sm font-semibold mb-2">
                       Email Address
                     </label>
+
                     <input
                       type="email"
                       name="email"
@@ -156,7 +196,7 @@ export default function ContactPage() {
                       onChange={handleChange}
                       required
                       placeholder="your@email.com"
-                      className="w-full px-4 py-3 rounded-lg bg-input border border-border text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary transition-all"
+                      className="w-full px-4 py-3 rounded-lg bg-input border border-border text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary transition-colors duration-150"
                     />
                   </div>
 
@@ -164,6 +204,7 @@ export default function ContactPage() {
                     <label className="block text-sm font-semibold mb-2">
                       Subject
                     </label>
+
                     <input
                       type="text"
                       name="subject"
@@ -171,7 +212,7 @@ export default function ContactPage() {
                       onChange={handleChange}
                       required
                       placeholder="What is this about?"
-                      className="w-full px-4 py-3 rounded-lg bg-input border border-border text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary transition-all"
+                      className="w-full px-4 py-3 rounded-lg bg-input border border-border text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary transition-colors duration-150"
                     />
                   </div>
 
@@ -179,6 +220,7 @@ export default function ContactPage() {
                     <label className="block text-sm font-semibold mb-2">
                       Message
                     </label>
+
                     <textarea
                       name="message"
                       value={formData.message}
@@ -186,7 +228,7 @@ export default function ContactPage() {
                       required
                       placeholder="Tell us what's on your mind..."
                       rows={6}
-                      className="w-full px-4 py-3 rounded-lg bg-input border border-border text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary transition-all resize-none"
+                      className="w-full px-4 py-3 rounded-lg bg-input border border-border text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary transition-colors duration-150 resize-none"
                     />
                   </div>
 
@@ -202,12 +244,16 @@ export default function ContactPage() {
               ) : (
                 <div className="glass-effect rounded-xl p-8 text-center">
                   <div className="text-4xl mb-4">✨</div>
+
                   <h3 className="text-2xl font-poppins font-bold mb-2">
                     Message Sent!
                   </h3>
+
                   <p className="text-muted-foreground mb-6">
-                    Thank you for reaching out! We'll get back to you as soon as possible.
+                    Thank you for reaching out! We&apos;ll get back to you as soon
+                    as possible.
                   </p>
+
                   <Button
                     onClick={() => setSubmitted(false)}
                     className="bg-primary hover:bg-primary/90"
@@ -225,8 +271,10 @@ export default function ContactPage() {
                   <h3 className="font-poppins font-bold mb-4">
                     <span className="emoji-white">📍</span> Location
                   </h3>
+
                   <p className="text-sm text-muted-foreground leading-relaxed">
-                    Lamrin Tech Skills University<br />
+                    Lamrin Tech Skills University
+                    <br />
                     Punjab, India
                   </p>
                 </div>
@@ -235,8 +283,12 @@ export default function ContactPage() {
                   <h3 className="font-poppins font-bold mb-4">
                     <span className="emoji-white">📧</span> Email
                   </h3>
+
                   <p className="text-sm text-muted-foreground">
-                    <a href="mailto:devnest.techclub@gmail.com" className="text-primary hover:underline">
+                    <a
+                      href="mailto:devnest.techclub@gmail.com"
+                      className="text-primary hover:underline"
+                    >
                       devnest.techclub@gmail.com
                     </a>
                   </p>
@@ -246,8 +298,10 @@ export default function ContactPage() {
                   <h3 className="font-poppins font-bold mb-4">
                     ⏰ Response Time
                   </h3>
+
                   <p className="text-sm text-muted-foreground">
-                    We typically respond within 24-48 hours during business days.
+                    We typically respond within 24-48 hours during business
+                    days.
                   </p>
                 </div>
 
@@ -255,16 +309,18 @@ export default function ContactPage() {
                   <h3 className="font-poppins font-bold mb-4">
                     🤝 Follow Us
                   </h3>
+
                   <div className="flex gap-3 flex-wrap">
                     {socialLinks.map((social, index) => {
                       const Icon = social.icon;
+
                       return (
                         <a
                           key={index}
                           href={social.url}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="p-2 rounded-lg bg-primary/10 hover:bg-primary/20 transition-colors"
+                          className="p-2 rounded-lg bg-primary/10 hover:bg-primary/20 transition-colors duration-150"
                           title={social.label}
                         >
                           <Icon className="w-5 h-5 text-primary" />
@@ -278,8 +334,10 @@ export default function ContactPage() {
                   <p className="text-sm font-semibold text-foreground mb-2">
                     <span className="emoji-white">💡</span> Pro Tip
                   </p>
+
                   <p className="text-xs text-muted-foreground">
-                    For quick questions, join our Discord community and connect with the team directly!
+                    For quick questions, join our Discord community and connect
+                    with the team directly!
                   </p>
                 </div>
               </div>
@@ -291,29 +349,48 @@ export default function ContactPage() {
             <h2 className="text-3xl font-poppins font-bold text-center mb-8">
               Quick <span className="glow-text">Answers</span>
             </h2>
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="glass-effect rounded-lg p-6">
-                <h4 className="font-poppins font-bold mb-2"><span className="emoji-white">🎯</span> Event Registration</h4>
+                <h4 className="font-poppins font-bold mb-2">
+                  <span className="emoji-white">🎯</span> Event Registration
+                </h4>
+
                 <p className="text-sm text-muted-foreground">
                   Head to our Events page to see upcoming events and register.
                 </p>
               </div>
+
               <div className="glass-effect rounded-lg p-6">
-                <h4 className="font-poppins font-bold mb-2"><span className="emoji-white">👥</span> Join the Community</h4>
+                <h4 className="font-poppins font-bold mb-2">
+                  <span className="emoji-white">👥</span> Join the Community
+                </h4>
+
                 <p className="text-sm text-muted-foreground">
-                  Fill out the membership form on the Join page to become a member.
+                  Fill out the membership form on the Join page to become a
+                  member.
                 </p>
               </div>
+
               <div className="glass-effect rounded-lg p-6">
-                <h4 className="font-poppins font-bold mb-2"><span className="emoji-white">💼</span> Collaboration</h4>
+                <h4 className="font-poppins font-bold mb-2">
+                  <span className="emoji-white">💼</span> Collaboration
+                </h4>
+
                 <p className="text-sm text-muted-foreground">
-                  Interested in partnering? Email us your proposal at devnest.techclub@gmail.com
+                  Interested in partnering? Email us your proposal at
+                  devnest.techclub@gmail.com
                 </p>
               </div>
+
               <div className="glass-effect rounded-lg p-6">
-                <h4 className="font-poppins font-bold mb-2"><span className="emoji-white">💬</span> Discord Server</h4>
+                <h4 className="font-poppins font-bold mb-2">
+                  <span className="emoji-white">💬</span> Discord Server
+                </h4>
+
                 <p className="text-sm text-muted-foreground">
-                  Join our Discord to connect with 500+ members and stay updated.
+                  Join our Discord to connect with 500+ members and stay
+                  updated.
                 </p>
               </div>
             </div>

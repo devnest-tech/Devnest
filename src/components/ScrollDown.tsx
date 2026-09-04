@@ -1,10 +1,9 @@
-import { motion, useMotionValue, useTransform } from "framer-motion";
-import { useEffect } from "react";
+import { motion, useTransform, type MotionValue } from "framer-motion";
 
 interface ScrollDownProps {
-	scrollProgress: any; // MotionValue from framer-motion
-	fadeOutStart?: number; // At what scroll progress to start fading (0-1)
-	fadeOutEnd?: number; // At what scroll progress to fully fade (0-1)
+	scrollProgress: MotionValue<number>;
+	fadeOutStart?: number;
+	fadeOutEnd?: number;
 }
 
 export default function ScrollDown({
@@ -13,7 +12,11 @@ export default function ScrollDown({
 	fadeOutEnd = 0.05
 }: ScrollDownProps) {
 	// Fade out the component as user scrolls
-	const opacity = useTransform(scrollProgress, [fadeOutStart, fadeOutEnd], [1, 0]);
+	const opacity = useTransform(
+		scrollProgress,
+		[fadeOutStart, fadeOutEnd],
+		[1, 0]
+	);
 
 	return (
 		<motion.div
@@ -24,14 +27,23 @@ export default function ScrollDown({
 				<motion.p
 					className="text-xs sm:text-sm md:text-base font-bold tracking-widest text-blue-300/90 uppercase"
 					animate={{ opacity: [0.5, 1, 0.5] }}
-					transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+					transition={{
+						duration: 2,
+						repeat: Infinity,
+						ease: "easeInOut"
+					}}
 				>
 					Scroll Down
 				</motion.p>
+
 				<motion.div
 					className="flex flex-col items-center"
 					animate={{ y: [0, 8, 0] }}
-					transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+					transition={{
+						duration: 1.5,
+						repeat: Infinity,
+						ease: "easeInOut"
+					}}
 				>
 					<svg
 						width="24"
@@ -50,16 +62,25 @@ export default function ScrollDown({
 						/>
 					</svg>
 				</motion.div>
+
 				{/* Optional: Mouse scroll indicator */}
 				<motion.div
 					className="w-6 h-10 border-2 border-blue-400/60 rounded-full mt-2 relative"
 					animate={{ opacity: [0.4, 0.8, 0.4] }}
-					transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+					transition={{
+						duration: 2,
+						repeat: Infinity,
+						ease: "easeInOut"
+					}}
 				>
 					<motion.div
 						className="absolute top-2 left-1/2 -translate-x-1/2 w-1 h-2 bg-blue-400 rounded-full"
 						animate={{ y: [0, 12, 0] }}
-						transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+						transition={{
+							duration: 1.5,
+							repeat: Infinity,
+							ease: "easeInOut"
+						}}
 					/>
 				</motion.div>
 			</div>

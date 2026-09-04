@@ -23,7 +23,7 @@ export const GameCard: React.FC<GameCardProps> = ({
 }) => {
   return (
     <Link href={`/arcade/game/${id}`}>
-      <div className="glass-card p-6 cursor-pointer group relative hover:border-primary transition-all">
+      <div className="glass-card p-6 cursor-pointer group relative hover:border-primary transition-colors duration-150">
         {featured && (
           <div className="absolute top-4 right-4">
             <span className="glass-pill text-xs text-primary border border-primary">
@@ -34,8 +34,10 @@ export const GameCard: React.FC<GameCardProps> = ({
 
         <div className="flex items-start gap-4 mb-4">
           <div className="text-4xl">{icon}</div>
+
           <div className="flex-1">
             <h3 className="text-xl font-semibold mb-1">{name}</h3>
+
             <p className="text-sm text-muted-foreground">
               {description}
             </p>
@@ -47,15 +49,21 @@ export const GameCard: React.FC<GameCardProps> = ({
             {[...Array(3)].map((_, i) => (
               <Star
                 key={i}
-                className={`w-4 h-4 ${i < difficulty ? "fill-primary text-primary" : "text-muted-foreground"}`}
+                className={`w-4 h-4 ${
+                  i < difficulty
+                    ? "fill-primary text-primary"
+                    : "text-muted-foreground"
+                }`}
               />
             ))}
           </div>
 
-          <span className="glass-pill text-xs">{estimatedTime}</span>
+          <span className="glass-pill text-xs">
+            {estimatedTime}
+          </span>
         </div>
 
-        <button className="w-full px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors">
+        <button className="w-full px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors duration-150">
           Play Now
         </button>
       </div>

@@ -81,20 +81,6 @@
       }
     },
     {
-      "id": 7,
-      "name": "Sheikh Masood Ahmad",
-      "role": "Ideation and Outreach Coordinator",
-      "designation": "DevNest Ideation and Outreach Coordinator",
-      "bio": "Connecting ideas with opportunities. Building partnerships and expanding DevNest's reach in the tech community.",
-      "image": "/team/masood.jpeg",
-      "imagePosition": "center 10%",
-      "socials": {
-        "github": "#",
-        "linkedin": "#",
-        "instagram": "#"
-      }
-    },
-    {
       "id": 8,
       "name": "Shivam",
       "role": "Developer",
@@ -109,39 +95,25 @@
       }
     },
     {
-      "id": 9,
-      "name": "Vipul",
-      "role": "Technical Coordinator",
-      "designation": "DevNest Technical Coordinator",
-      "bio": "Coordinating technical activities and helping teams deliver high-quality outcomes.",
-      "image": "/team/vipul.jpeg",
-      "socials": {
-        "github": "#",
-        "linkedin": "#",
-        "instagram": "#"
-      }
-    },
-    {
-      "id": 10,
-      "name": "Bhupesh",
-      "role": "Event Coordinator",
-      "designation": "DevNest Event Coordinator",
-      "bio": "Managing event logistics and ensuring smooth execution of DevNest activities.",
-      "image": "/team/bhupesh.jpeg.png",
-      "imagePosition": "center 20%",
-      "socials": {
-        "github": "#",
-        "linkedin": "#",
-        "instagram": "#"
-      }
-    },
-    {
       "id": 11,
       "name": "Anshuman",
       "role": "Developer",
       "designation": "DevNest Developer",
       "bio": "Building and improving DevNest projects with a focus on practical impact.",
       "image": "/team/anshuman.jpeg",
+      "socials": {
+        "github": "https://github.com/cyber-anshuman",
+        "linkedin": "https://www.linkedin.com/in/anshumanofficial-li/",
+        "instagram": "#"
+      }
+    },
+    {
+      "id": 9,
+      "name": "Vipul",
+      "role": "Technical Coordinator",
+      "designation": "DevNest Technical Coordinator",
+      "bio": "Coordinating technical activities and helping teams deliver high-quality outcomes.",
+      "image": "/team/vipul.jpeg",
       "socials": {
         "github": "#",
         "linkedin": "#",
@@ -161,6 +133,20 @@
       "socials": {
         "github": "#",
         "linkedin": "https://www.linkedin.com/in/hemanth-chakka/",
+        "instagram": "#"
+      }
+    },
+    {
+      "id": 7,
+      "name": "Sheikh Masood Ahmad",
+      "role": "Former Ideation and Outreach Coordinator",
+      "designation": "DevNest Ideation and Outreach Coordinator",
+      "bio": "Connecting ideas with opportunities. Building partnerships and expanding DevNest's reach in the tech community.",
+      "image": "/team/masood.jpeg",
+      "imagePosition": "center 10%",
+      "socials": {
+        "github": "#",
+        "linkedin": "#",
         "instagram": "#"
       }
     }

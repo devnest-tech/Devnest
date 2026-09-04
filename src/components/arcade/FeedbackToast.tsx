@@ -19,8 +19,10 @@ export const FeedbackToast: React.FC<FeedbackToastProps> = ({
   useEffect(() => {
     if (type) {
       setVisible(true);
+
       const timer = setTimeout(() => {
         setVisible(false);
+
         setTimeout(() => onClose?.(), 300);
       }, duration);
 
@@ -34,13 +36,15 @@ export const FeedbackToast: React.FC<FeedbackToastProps> = ({
 
   return (
     <div
-      className={`fixed bottom-8 left-1/2 transform -translate-x-1/2 z-50 transition-all duration-300 ${
+      className={`fixed bottom-8 left-1/2 transform -translate-x-1/2 z-50 transition-[opacity,transform] duration-200 ${
         visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
       }`}
       style={{ maxWidth: "90%", width: "400px" }}
     >
       <div
-        className={`glass-card p-4 ${isCorrect ? "feedback-correct" : "feedback-wrong"}`}
+        className={`glass-card p-4 ${
+          isCorrect ? "feedback-correct" : "feedback-wrong"
+        }`}
       >
         <div className="flex items-start gap-3">
           <div
@@ -57,6 +61,7 @@ export const FeedbackToast: React.FC<FeedbackToastProps> = ({
               <X className="w-5 h-5" style={{ color: "#FF6B81" }} />
             )}
           </div>
+
           <div className="flex-1">
             <div
               className="font-semibold mb-1"
@@ -64,6 +69,7 @@ export const FeedbackToast: React.FC<FeedbackToastProps> = ({
             >
               {isCorrect ? "Correct!" : "Not quite"}
             </div>
+
             <div className="text-sm" style={{ color: "#F5F7FA" }}>
               {message}
             </div>

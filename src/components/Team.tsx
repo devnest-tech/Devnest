@@ -1,8 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { useState, useEffect, useRef } from "react";
 import { TeamCard } from "@/components/TeamCard";
-import ShinyText from "@/components/ShinyText";
 import teamData from "@/data/team.json";
 
 interface TeamMember {
@@ -27,38 +25,14 @@ interface TeamData {
 
 export function Team() {
   const team: TeamMember[] = teamData.coreTeam;
-  const alumni: TeamMember[] = (teamData as any).alumni || [];
-  const [isVisible, setIsVisible] = useState(false);
-  const sectionRef = useRef<HTMLElement>(null);
-
-  // Use Intersection Observer to only animate when section is visible
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setIsVisible(true);
-            // Once visible, stop observing to prevent re-triggers
-            observer.disconnect();
-          }
-        });
-      },
-      {
-        threshold: 0.1, // Trigger when 10% of component is visible
-        rootMargin: '50px', // Start loading slightly before it enters viewport
-      }
-    );
-
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current);
-    }
-
-    return () => observer.disconnect();
-  }, []);
+  const alumni: TeamMember[] = (teamData as TeamData).alumni || [];
 
   return (
-    <section id="team" ref={sectionRef} className="relative py-16 sm:py-20 overflow-hidden">
-      {/* Removed animated background - using global background from Layout */}
+    <section
+      id="team"
+      className="relative py-16 sm:py-20 overflow-hidden"
+    >
+      {/* Global background is provided by Layout */}
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Section Header */}
@@ -71,29 +45,30 @@ export function Team() {
               height={24}
               className="w-5 h-5 sm:w-6 sm:h-6 object-contain"
             />
-            <span className="text-primary text-xs sm:text-sm font-medium">Meet the Team</span>
+
+            <span className="text-primary text-xs sm:text-sm font-medium">
+              Meet the Team
+            </span>
           </div>
+
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-poppins font-bold mb-3 sm:mb-4">
-            Our <ShinyText text="Core Team" className="glow-text" speed={2} />
+            Our <span className="text-primary">Core Team</span>
           </h2>
+
           <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto px-4">
-            Passionate leaders and mentors driving innovation across multiple tech domains
+            Passionate leaders and mentors driving innovation across multiple
+            tech domains
           </p>
         </div>
 
         {/* Team Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-          {isVisible && team.map((member, index) => (
-            <TeamCard key={member.id} member={member} index={index} />
+          {team.map((member) => (
+            <TeamCard
+              key={member.id}
+              member={member}
+            />
           ))}
-          {!isVisible && (
-            // Placeholder to maintain layout during lazy load
-            <>
-              {Array.from({ length: 12 }).map((_, i) => (
-                <div key={i} className="h-[400px] rounded-2xl bg-muted/10 animate-pulse" />
-              ))}
-            </>
-          )}
         </div>
 
         {/* Bottom CTA */}
@@ -101,33 +76,15 @@ export function Team() {
           <p className="text-base sm:text-lg text-muted-foreground mb-2 px-4">
             Interested in joining the core team?
           </p>
-          <Link href="/join" className="text-primary hover:underline font-semibold text-base sm:text-lg">
+
+          <Link
+            href="/join"
+            className="text-primary hover:underline font-semibold text-base sm:text-lg transition-colors duration-150"
+          >
             Apply Now →
           </Link>
         </div>
       </div>
-
-      <style>{`
-        @keyframes fadeInUp {
-          from {
-            opacity: 0;
-            transform: translateY(30px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-
-        @keyframes shimmer {
-          0% { background-position: -200% -200%; }
-          100% { background-position: 200% 200%; }
-        }
-
-        .animation-delay-2000 {
-          animation-delay: 2s;
-        }
-      `}</style>
     </section>
   );
 }

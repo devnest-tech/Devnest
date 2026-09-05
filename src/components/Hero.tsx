@@ -2,10 +2,8 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Zap, Users, Trophy, Building2 } from "lucide-react";
-import ShinyText from "@/components/ShinyText";
+import { Zap, Users } from "lucide-react";
 import TextType from "@/components/TextType";
-import StarBorder from "@/components/StarBorder";
 
 const HERO_QUOTES = [
   '"Build something that makes a difference."',
@@ -76,19 +74,7 @@ export function Hero() {
 
   return (
     <div className="relative min-h-screen flex items-center justify-center overflow-hidden">
-
-      {/* Animated Dot Matrix Background */}
-      <div className="absolute inset-0 opacity-[0.15] z-[1]" style={{ transform: 'translateZ(0)' }}>
-        <div className="absolute inset-0" style={{
-          backgroundImage: 'radial-gradient(circle, rgba(0, 184, 113, 0.4) 1px, transparent 1px)',
-          backgroundSize: '30px 30px',
-          animation: 'float 20s ease-in-out infinite',
-          transform: 'translateZ(0)'
-        }} />
-      </div>
-
-      {/* Animated Background Grid */}
-      <div className="absolute inset-0 opacity-[0.08] z-[1]" style={{ transform: 'translateZ(0)' }}>
+      <div className="absolute inset-0 opacity-[0.04] z-[1]">
         <div
           className="absolute inset-0"
           style={{
@@ -120,15 +106,10 @@ export function Hero() {
             width={80}
             height={80}
             priority
-            className="w-16 h-16 sm:w-20 sm:h-20 object-contain drop-shadow-lg shadow-primary/30"
+            className="w-16 h-16 sm:w-20 sm:h-20 object-contain"
           />
-          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-poppins font-bold">
-            <ShinyText
-              text="DevNest"
-              className="glow-text"
-              speed={3}
-              shineColor="#00B871"
-            />
+          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-poppins font-bold text-primary">
+             DevNest
           </h1>
         </div>
 
@@ -167,7 +148,7 @@ export function Hero() {
           <Button
             asChild
             size="lg"
-            className="w-full sm:w-auto bg-primary hover:bg-primary/90 text-primary-foreground gap-2 neon-border shadow-lg shadow-primary/50 hover:shadow-primary/70 transition-all"
+            className="w-full sm:w-auto bg-primary hover:bg-primary/90 text-primary-foreground gap-2 transition-colors duration-150"
           >
             <Link href="/join">
               <Zap className="w-4 h-4 sm:w-5 sm:h-5" />
@@ -178,7 +159,7 @@ export function Hero() {
             asChild
             size="lg"
             variant="outline"
-            className="w-full sm:w-auto border-primary/50 text-foreground hover:bg-primary/10 hover:border-primary gap-2 shadow-md hover:shadow-lg hover:shadow-primary/30 transition-all"
+            className="w-full sm:w-auto border-primary/50 text-foreground hover:bg-primary/10 hover:border-primary gap-2 transition-colors duration-150"
           >
             <Link href="/events"><span className="emoji-white">📅</span> Explore Events</Link>
           </Button>
@@ -195,29 +176,30 @@ export function Hero() {
 
         {/* Stats Grid */}
         <div className="grid grid-cols-2 gap-4 md:gap-8 mt-12 sm:mt-16 px-2 max-w-2xl mx-auto">
-          <StarBorder as="div" color="#00B871" speed="10s" thickness={2}>
-            <div className="glass-effect rounded-2xl p-4 sm:p-6 hover-lift group border-0 transition-all">
-              <Users className="w-6 h-6 sm:w-8 sm:h-8 text-primary mx-auto mb-2 group-hover:scale-110 transition-transform" />
-              <div className="text-2xl sm:text-3xl md:text-4xl font-poppins font-bold text-primary mb-1">
-                {counters.members}+
-              </div>
-              <p className="text-xs sm:text-sm text-muted-foreground">Community Members</p>
+          <div className="rounded-2xl p-4 sm:p-6 border border-border bg-card shadow-sm hover:shadow-md transition-shadow duration-150">
+            <Users className="w-6 h-6 sm:w-8 sm:h-8 text-primary mx-auto mb-2" />
+            <div className="text-2xl sm:text-3xl md:text-4xl font-poppins font-bold text-primary mb-1">
+              {counters.members}+
             </div>
-          </StarBorder>
+            <p className="text-xs sm:text-sm text-muted-foreground">
+              Community Members
+            </p>
+          </div>
+          
 
-          <StarBorder as="div" color="#00B871" speed="10s" thickness={2}>
-            <div className="glass-effect rounded-2xl p-4 sm:p-6 hover-lift group border-0 transition-all">
-              <Zap className="w-6 h-6 sm:w-8 sm:h-8 text-primary mx-auto mb-2 group-hover:scale-110 transition-transform" />
-              <div className="text-2xl sm:text-3xl md:text-4xl font-poppins font-bold text-primary mb-1">
-                {counters.events}+
-              </div>
-              <p className="text-xs sm:text-sm text-muted-foreground">Tech Events</p>
+          <div className="rounded-2xl p-4 sm:p-6 border border-border bg-card shadow-sm hover:shadow-md transition-shadow duration-150">
+            <Zap className="w-6 h-6 sm:w-8 sm:h-8 text-primary mx-auto mb-2" />
+            <div className="text-2xl sm:text-3xl md:text-4xl font-poppins font-bold text-primary mb-1">
+              {counters.events}+
             </div>
-          </StarBorder>
+            <p className="text-xs sm:text-sm text-muted-foreground">
+              Tech Events
+            </p>
+          </div>
         </div>
 
         {/* Scroll Indicator */}
-        <div className="mt-12 sm:mt-16 animate-bounce">
+        <div className="mt-12 sm:mt-16">
           <div className="text-sm sm:text-base text-muted-foreground mb-2">Scroll to explore</div>
           <div className="flex justify-center">
             <svg

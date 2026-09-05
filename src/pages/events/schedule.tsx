@@ -113,12 +113,15 @@ export default function SchedulePage() {
 								<span className="emoji-white">📅</span> February - June 2026
 							</span>
 						</div>
+
 						<h1 className="text-4xl sm:text-5xl md:text-6xl font-poppins font-bold mb-4 glow-text">
 							Event Schedule
 						</h1>
+
 						<p className="mx-auto mt-4 sm:mt-6 max-w-2xl text-base sm:text-lg text-muted-foreground px-2">
 							Technical, Innovation & Industry Connect Events - 2026
 						</p>
+
 						<p className="mx-auto mt-2 max-w-3xl text-xs sm:text-sm text-muted-foreground">
 							Lamrin Tech Skills University Punjab | University School of Engineering & Technology (USET)
 						</p>
@@ -136,23 +139,30 @@ export default function SchedulePage() {
 									<div className="flex flex-col sm:flex-row items-start justify-between gap-4 w-full">
 										<div className="flex items-start gap-3 sm:gap-4 flex-1">
 											<span className="text-3xl sm:text-4xl">{event.icon}</span>
+
 											<div className="flex-1 text-left">
 												<h2 className="text-lg sm:text-xl md:text-2xl font-poppins font-bold mb-1">
 													Event {idx + 1}: {event.title}
 												</h2>
-												<p className="text-xs sm:text-sm text-muted-foreground">{event.subtitle}</p>
+
+												<p className="text-xs sm:text-sm text-muted-foreground">
+													{event.subtitle}
+												</p>
 											</div>
 										</div>
+
 										<div className="flex items-center gap-3 flex-wrap">
 											{event.status === "completed" && (
 												<div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-green-500/20 text-green-600 dark:text-green-400 text-xs sm:text-sm font-semibold border border-green-500/30 shadow-sm">
 													✓ Completed
 												</div>
 											)}
+
 											<div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/25 text-primary text-xs sm:text-sm font-semibold border border-primary/20 shadow-sm">
 												<Calendar className="h-3 w-3 sm:h-4 sm:w-4" />
 												{event.month}
 											</div>
+
 											<ChevronDown className="h-5 w-5 text-primary shrink-0 transition-transform duration-200" />
 										</div>
 									</div>
@@ -165,8 +175,11 @@ export default function SchedulePage() {
 											<div className="mb-6 rounded-lg bg-green-500/10 border border-green-500/30 p-4 sm:p-6">
 												<div className="flex items-center gap-2 mb-2">
 													<span className="text-2xl">✓</span>
-													<p className="font-semibold text-base sm:text-lg text-green-600 dark:text-green-400">Event Successfully Completed!</p>
+													<p className="font-semibold text-base sm:text-lg text-green-600 dark:text-green-400">
+														Event Successfully Completed!
+													</p>
 												</div>
+
 												{event.attendees && (
 													<p className="text-xs sm:text-sm text-muted-foreground">
 														<strong>{event.attendees}</strong> participants attended this event
@@ -178,9 +191,15 @@ export default function SchedulePage() {
 										{/* Event Details */}
 										{event.speaker && (
 											<div className="mb-6 rounded-lg bg-background/50 border border-border/40 p-4 sm:p-6">
-												<p className="font-semibold text-sm sm:text-base mb-1">Guest Speaker: {event.speaker}</p>
-												<p className="text-xs sm:text-sm text-muted-foreground mb-2">{event.speakerRole}</p>
-												<p className="text-xs sm:text-sm text-muted-foreground">{event.speakerDetails}</p>
+												<p className="font-semibold text-sm sm:text-base mb-1">
+													Guest Speaker: {event.speaker}
+												</p>
+												<p className="text-xs sm:text-sm text-muted-foreground mb-2">
+													{event.speakerRole}
+												</p>
+												<p className="text-xs sm:text-sm text-muted-foreground">
+													{event.speakerDetails}
+												</p>
 											</div>
 										)}
 
@@ -190,6 +209,7 @@ export default function SchedulePage() {
 													<Clock className="h-4 w-4 text-primary" />
 													Duration: {event.duration}
 												</span>
+
 												{event.teamSize && (
 													<span className="flex items-center gap-2">
 														<Users className="h-4 w-4 text-primary" />
@@ -205,20 +225,26 @@ export default function SchedulePage() {
 												<Clock className="h-5 w-5 text-primary" />
 												Schedule
 											</h3>
+
 											<div className="space-y-3">
 												{event.schedule.map((item, schedIdx) => (
 													<div
 														key={schedIdx}
-														className="flex flex-col sm:flex-row gap-3 sm:gap-4 rounded-lg bg-muted/30 border border-border/40 p-3 sm:p-4 transition-all hover:bg-muted/50 hover:border-primary/30"
+														className="flex flex-col sm:flex-row gap-3 sm:gap-4 rounded-lg bg-muted/30 border border-border/40 p-3 sm:p-4 transition-[background-color,border-color] duration-150 hover:bg-muted/50 hover:border-primary/30"
 													>
 														<div className="flex-shrink-0">
 															<span className="inline-block px-3 py-1 rounded-md bg-primary/15 text-primary font-mono text-xs sm:text-sm font-semibold border border-primary/30 shadow-sm">
 																{item.time}
 															</span>
 														</div>
+
 														<div className="flex-1">
-															<p className="font-semibold text-xs sm:text-sm mb-1">{item.activity}</p>
-															<p className="text-xs text-muted-foreground">{item.description}</p>
+															<p className="font-semibold text-xs sm:text-sm mb-1">
+																{item.activity}
+															</p>
+															<p className="text-xs text-muted-foreground">
+																{item.description}
+															</p>
 														</div>
 													</div>
 												))}
@@ -236,15 +262,23 @@ export default function SchedulePage() {
 							<h2 className="text-2xl sm:text-3xl md:text-4xl font-poppins font-bold mb-4">
 								Ready to Participate?
 							</h2>
+
 							<p className="text-base sm:text-lg text-muted-foreground mb-6 sm:mb-8 max-w-2xl mx-auto px-2">
 								Join us in this exciting series of events designed to enhance your skills and connect with industry experts.
 							</p>
+
 							<div className="flex gap-4 justify-center flex-wrap px-2">
 								<Button size="lg" className="bg-primary hover:bg-primary/90 gap-2 neon-border">
 									<Zap className="w-4 h-4 sm:w-5 sm:h-5" />
 									Register Now
 								</Button>
-								<Button size="lg" variant="outline" asChild className="border-primary/30 text-primary hover:bg-primary/10">
+
+								<Button
+									size="lg"
+									variant="outline"
+									asChild
+									className="border-primary/30 text-primary hover:bg-primary/10"
+								>
 									<Link href="/events">View All Events</Link>
 								</Button>
 							</div>

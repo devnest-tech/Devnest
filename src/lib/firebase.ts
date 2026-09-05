@@ -19,14 +19,14 @@ const firebaseConfig: FirebaseConfig = {
   authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN || "",
   projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID || "",
   storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET || "",
-  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID || "",
+  messagingSenderId:
+    process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID || "",
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID || "",
   measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID || "",
 };
 
 // Initialize Firebase (works on both client and server)
 let app: FirebaseApp;
-let db: Firestore;
 let auth: Auth;
 
 // Initialize on both client and server
@@ -36,7 +36,7 @@ if (!getApps().length) {
   app = getApps()[0];
 }
 
-db = getFirestore(app);
+const db: Firestore = getFirestore(app);
 
 // Auth only on client
 if (typeof window !== "undefined") {
@@ -44,4 +44,5 @@ if (typeof window !== "undefined") {
 }
 
 export { app, db, auth };
+
 export default firebaseConfig;

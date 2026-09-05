@@ -16,7 +16,10 @@ interface BlogDetailProps {
   relatedBlogs: BlogMeta[];
 }
 
-export default function BlogDetailPage({ blog, relatedBlogs }: BlogDetailProps) {
+export default function BlogDetailPage({
+  blog,
+  relatedBlogs,
+}: BlogDetailProps) {
   return (
     <Layout>
       <div className="min-h-screen py-12">
@@ -51,6 +54,7 @@ export default function BlogDetailPage({ blog, relatedBlogs }: BlogDetailProps) 
                   <User className="w-4 h-4" />
                   {blog.author}
                 </div>
+
                 <div className="flex items-center gap-2">
                   <Clock className="w-4 h-4" />
                   {new Date(blog.date).toLocaleDateString("en-US", {
@@ -59,13 +63,16 @@ export default function BlogDetailPage({ blog, relatedBlogs }: BlogDetailProps) 
                     day: "numeric",
                   })}
                 </div>
+
                 <div className="flex items-center gap-2">
                   <Clock className="w-4 h-4" />
                   {blog.readTime}
                 </div>
               </div>
 
-              <p className="text-lg text-muted-foreground my-6 italic">{blog.excerpt}</p>
+              <p className="text-lg text-muted-foreground my-6 italic">
+                {blog.excerpt}
+              </p>
 
               <div className="prose prose-invert max-w-none mb-12">
                 <div
@@ -77,9 +84,14 @@ export default function BlogDetailPage({ blog, relatedBlogs }: BlogDetailProps) 
               <div className="bg-primary/15 rounded-lg p-6 mb-12 border border-primary/40 shadow-sm">
                 <div className="flex flex-wrap items-center justify-between gap-4">
                   <div>
-                    <h3 className="font-poppins font-bold mb-1">Share this article</h3>
-                    <p className="text-sm text-muted-foreground">Help others discover this content</p>
+                    <h3 className="font-poppins font-bold mb-1">
+                      Share this article
+                    </h3>
+                    <p className="text-sm text-muted-foreground">
+                      Help others discover this content
+                    </p>
                   </div>
+
                   <div className="flex gap-2">
                     <Button size="sm" variant="outline" className="gap-2">
                       <Share2 className="w-4 h-4" />
@@ -90,14 +102,20 @@ export default function BlogDetailPage({ blog, relatedBlogs }: BlogDetailProps) 
               </div>
 
               <div className="border-t border-border pt-8">
-                <h3 className="font-poppins font-bold mb-3">About the Author</h3>
+                <h3 className="font-poppins font-bold mb-3">
+                  About the Author
+                </h3>
+
                 <div className="flex gap-4">
                   <div className="text-4xl">{blog.thumbnail}</div>
+
                   <div>
                     <h4 className="font-semibold mb-1">{blog.author}</h4>
+
                     <p className="text-sm text-muted-foreground">
-                      Passionate tech enthusiast and core team member at DevNest. Loves sharing
-                      knowledge and mentoring aspiring developers.
+                      Passionate tech enthusiast and core team member at
+                      DevNest. Loves sharing knowledge and mentoring aspiring
+                      developers.
                     </p>
                   </div>
                 </div>
@@ -107,23 +125,28 @@ export default function BlogDetailPage({ blog, relatedBlogs }: BlogDetailProps) 
 
           {relatedBlogs.length > 0 && (
             <div className="mt-16">
-              <h2 className="text-3xl font-poppins font-bold mb-8">Related Articles</h2>
+              <h2 className="text-3xl font-poppins font-bold mb-8">
+                Related Articles
+              </h2>
+
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 {relatedBlogs.map((relatedBlog) => (
                   <Link
                     key={relatedBlog.slug}
                     href={`/blog/${relatedBlog.slug}`}
-                    className="glass-effect rounded-lg overflow-hidden hover-lift transition-all group cursor-pointer h-full"
+                    className="glass-effect rounded-lg overflow-hidden hover-lift group cursor-pointer h-full"
                   >
                     <div className="h-40 bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center">
-                      <div className="text-5xl group-hover:scale-110 transition-transform">
+                      <div className="text-5xl group-hover:scale-105 transition-transform duration-150">
                         {relatedBlog.thumbnail}
                       </div>
                     </div>
+
                     <div className="p-6">
-                      <h3 className="font-poppins font-bold mb-2 line-clamp-2 group-hover:text-primary transition-colors">
+                      <h3 className="font-poppins font-bold mb-2 line-clamp-2 group-hover:text-primary transition-colors duration-150">
                         {relatedBlog.title}
                       </h3>
+
                       <p className="text-sm text-muted-foreground line-clamp-2">
                         {relatedBlog.excerpt}
                       </p>
@@ -146,7 +169,9 @@ export const getStaticPaths: GetStaticPaths = async () => {
   };
 };
 
-export const getStaticProps: GetStaticProps<BlogDetailProps> = async ({ params }) => {
+export const getStaticProps: GetStaticProps<BlogDetailProps> = async ({
+  params,
+}) => {
   const slug = params?.slug as string;
   const blog = await getBlogBySlug(slug);
 

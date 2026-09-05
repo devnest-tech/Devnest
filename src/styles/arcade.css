@@ -8,6 +8,7 @@
 }
 
 /* Soft gradient blobs background */
+
 .arcade-container::before {
   content: '';
   position: absolute;
@@ -15,7 +16,11 @@
   left: -10%;
   width: 60%;
   height: 60%;
-  background: radial-gradient(circle, rgba(74, 255, 176, 0.15) 0%, transparent 70%);
+  background: radial-gradient(
+    circle,
+    rgba(74, 255, 176, 0.15) 0%,
+    transparent 70%
+  );
   filter: blur(80px);
   pointer-events: none;
 }
@@ -27,12 +32,17 @@
   right: -10%;
   width: 50%;
   height: 50%;
-  background: radial-gradient(circle, rgba(94, 212, 255, 0.12) 0%, transparent 70%);
+  background: radial-gradient(
+    circle,
+    rgba(94, 212, 255, 0.12) 0%,
+    transparent 70%
+  );
   filter: blur(80px);
   pointer-events: none;
 }
 
 /* Glass card base */
+
 .glass-card {
   background: rgba(255, 255, 255, 0.06);
   backdrop-filter: blur(20px);
@@ -40,15 +50,18 @@
   border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: 24px;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: transform 180ms ease, box-shadow 180ms ease;
 }
 
 .glass-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(74, 255, 176, 0.3);
+  box-shadow:
+    0 12px 40px rgba(0, 0, 0, 0.4),
+    0 0 0 1px rgba(74, 255, 176, 0.3);
 }
 
 /* Glass button */
+
 .glass-button {
   background: rgba(74, 255, 176, 0.1);
   backdrop-filter: blur(20px);
@@ -58,7 +71,7 @@
   font-weight: 600;
   padding: 12px 28px;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: background-color 180ms ease, box-shadow 180ms ease, transform 180ms ease;
   box-shadow: 0 4px 16px rgba(74, 255, 176, 0.1);
 }
 
@@ -73,6 +86,7 @@
 }
 
 /* Accent glow text */
+
 .glow-text {
   color: #F5F7FA;
   text-shadow: 0 0 20px rgba(74, 255, 176, 0.3);
@@ -84,6 +98,7 @@
 }
 
 /* Progress bar */
+
 .glass-progress-track {
   background: rgba(255, 255, 255, 0.05);
   backdrop-filter: blur(10px);
@@ -97,11 +112,12 @@
   background: linear-gradient(90deg, #4AFFB0 0%, #5ED4FF 100%);
   height: 100%;
   border-radius: 12px;
-  transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: width 300ms ease;
   box-shadow: 0 0 12px rgba(74, 255, 176, 0.4);
 }
 
 /* Badge/pill */
+
 .glass-pill {
   display: inline-flex;
   align-items: center;
@@ -117,6 +133,7 @@
 }
 
 /* Feedback states */
+
 .feedback-correct {
   border-color: rgba(74, 255, 176, 0.5);
   background: rgba(74, 255, 176, 0.1);
@@ -130,13 +147,14 @@
 }
 
 /* Leaderboard row */
+
 .leaderboard-row {
   background: rgba(255, 255, 255, 0.04);
   backdrop-filter: blur(12px);
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 16px;
   padding: 16px 20px;
-  transition: all 0.2s ease;
+  transition: background-color 150ms ease, border-color 150ms ease;
 }
 
 .leaderboard-row:hover {
@@ -151,6 +169,7 @@
 }
 
 /* Medal icons */
+
 .medal-gold {
   color: #FFD700;
   filter: drop-shadow(0 0 8px rgba(255, 215, 0, 0.5));
@@ -167,6 +186,7 @@
 }
 
 /* Difficulty stars */
+
 .difficulty-star {
   color: #4AFFB0;
   filter: drop-shadow(0 0 4px rgba(74, 255, 176, 0.4));
@@ -177,6 +197,7 @@
 }
 
 /* Game icon container */
+
 .game-icon {
   display: inline-flex;
   align-items: center;
@@ -188,15 +209,16 @@
   border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 16px;
   font-size: 28px;
-  transition: all 0.3s ease;
+  transition: transform 150ms ease, box-shadow 150ms ease;
 }
 
 .glass-card:hover .game-icon {
-  transform: scale(1.1);
+  transform: scale(1.05);
   box-shadow: 0 0 16px rgba(74, 255, 176, 0.2);
 }
 
 /* Typography */
+
 .arcade-title {
   font-family: 'Space Grotesk', 'Inter', sans-serif;
   font-weight: 600;
@@ -208,42 +230,30 @@
   font-family: 'JetBrains Mono', 'IBM Plex Mono', 'Courier New', monospace;
 }
 
-/* Animations */
-@keyframes pulse-glow {
-  0%, 100% {
-    box-shadow: 0 0 16px rgba(74, 255, 176, 0.3);
-  }
-  50% {
-    box-shadow: 0 0 24px rgba(74, 255, 176, 0.5);
-  }
-}
+/*
+ * Animation utilities
+ *
+ * These classes are intentionally kept as static compatibility classes.
+ * Continuous animations were removed to reduce unnecessary rendering.
+ */
 
 .animate-pulse-glow {
-  animation: pulse-glow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-}
-
-@keyframes count-up {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  box-shadow: 0 0 16px rgba(74, 255, 176, 0.3);
 }
 
 .animate-count-up {
-  animation: count-up 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  opacity: 1;
+  transform: translateY(0);
 }
 
 /* Responsive touch targets */
+
 @media (max-width: 768px) {
   .glass-button {
     min-height: 44px;
     min-width: 44px;
   }
-  
+
   .arcade-container::before,
   .arcade-container::after {
     width: 80%;

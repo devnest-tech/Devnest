@@ -7,6 +7,7 @@ const withBundleAnalyzer = bundleAnalyzer({
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  devIndicators: false,
   experimental: {
     optimizePackageImports: [
       "lucide-react",
@@ -41,8 +42,6 @@ const nextConfig = {
       "@radix-ui/react-tooltip",
     ],
   },
-  // Improve build performance
-  swcMinify: true,
   // Enable compiler optimizations
   compiler: {
     removeConsole: process.env.NODE_ENV === "production" ? {

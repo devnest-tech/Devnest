@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Zap, CheckCircle, Instagram } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import ShinyText from "@/components/ShinyText";
+import { openJoinCommunityModal } from "@/components/JoinCommunityDialog";
 
 export function InterviewsOpen() {
   const isOpen = true; // Toggle this to change status
@@ -99,13 +100,12 @@ export function InterviewsOpen() {
         {/* CTA Buttons */}
         <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
           <Button
-            asChild
-            className="w-full sm:w-auto bg-primary hover:bg-primary/90 gap-2 text-base sm:text-lg px-6 sm:px-8 py-6 sm:py-auto active:scale-95 transition-transform duration-150"
+            type="button"
+            onClick={() => openJoinCommunityModal()}
+            className="w-full sm:w-auto bg-primary hover:bg-primary/90 gap-2 text-base sm:text-lg px-6 sm:px-8 py-6 sm:py-auto active:scale-95 transition-transform duration-150 cursor-pointer"
           >
-            <Link href="/join">
-              <Zap className="w-4 h-4 sm:w-5 sm:h-5" />
-              Join DevNest
-            </Link>
+            <Zap className="w-4 h-4 sm:w-5 sm:h-5" />
+            <span>Join DevNest</span>
           </Button>
 
           <a

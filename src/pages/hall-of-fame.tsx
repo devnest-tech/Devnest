@@ -139,133 +139,121 @@ export default function HallOfFamePage() {
   return (
     <Layout>
       <Head>
-        <title>Hall of Fame | DevNest</title>
+        <title>DevNest | Hall of Fame & Competition Champions</title>
         <meta
           name="description"
-          content="Celebrating our champions - Winners of Promptathon and DataDash competitions"
+          content="Celebrating our champions — Winners of DevNest Promptathon and DataDash hackathons."
         />
       </Head>
 
-      <div className="relative min-h-screen py-20 overflow-hidden">
-        {/* Main Content */}
+      <div className="relative min-h-screen py-16 sm:py-24 overflow-hidden">
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Header */}
-          <div className="text-center mb-16">
-            <div className="mb-6 inline-flex items-center gap-3 px-4 py-2 rounded-full bg-primary/10 border border-primary/30">
-              <Trophy className="w-6 h-6 text-primary" />
-
-              <span className="text-primary text-sm font-medium">
-                <span className="emoji-white">🏆</span> Champions
-              </span>
+          {/* Left-Aligned Header */}
+          <div className="text-left mb-16 max-w-3xl">
+            <div className="badge-pill mb-4">
+              <Trophy className="w-3.5 h-3.5 text-primary" />
+              <span>DevNest Champions Gallery</span>
+              <span className="text-muted-foreground/60">•</span>
+              <span className="text-foreground/80 font-medium">Honor Roll</span>
             </div>
 
-            <h1 className="text-5xl sm:text-6xl font-poppins font-bold mb-4">
-              <ShinyText
-                text="Hall of Fame"
-                className="glow-text"
-                speed={2}
-              />
+            <h1 className="text-4xl sm:text-5xl md:text-6xl font-poppins font-bold tracking-tight mb-4 text-foreground">
+              Hall of <span className="text-gradient-primary">Fame</span>
             </h1>
 
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Celebrating the brilliant minds who conquered our competitions.
-              Their innovation, teamwork, and determination inspire us all.
+            <p className="text-base sm:text-lg text-muted-foreground leading-relaxed">
+              Celebrating our top performers and hackathon victors. These student squads pushed
+              technical boundaries, built innovative solutions under time pressure, and set new
+              benchmarks for DevNest excellence.
             </p>
           </div>
 
           {/* Promptathon Section */}
           <div className="mb-20">
             <div className="text-center mb-12">
-              <div className="inline-flex items-center gap-3 mb-4">
-                <div className="h-px w-16 bg-gradient-to-r from-transparent to-primary" />
-
-                <h2 className="text-3xl sm:text-4xl font-poppins font-bold text-primary">
-                  Promptathon Winners
+              <div className="inline-flex items-center gap-3 mb-2">
+                <div className="h-px w-12 bg-gradient-to-r from-transparent to-primary/40" />
+                <h2 className="text-2xl sm:text-3xl font-poppins font-bold text-foreground">
+                  Promptathon Champions
                 </h2>
-
-                <div className="h-px w-16 bg-gradient-to-l from-transparent to-primary" />
+                <div className="h-px w-12 bg-gradient-to-l from-transparent to-primary/40" />
               </div>
 
-              <p className="text-muted-foreground">
-                Masters of AI Prompt Engineering - 2024
+              <p className="text-xs sm:text-sm text-muted-foreground">
+                Masters of AI Prompt Engineering & Creative AI Logic • 2024
               </p>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
               {promptathonWinners.map((team, index) => (
                 <div
                   key={index}
-                  className="group relative glass-effect rounded-2xl overflow-hidden border border-border hover:border-primary/50 transition-[border-color,box-shadow] duration-150 hover:shadow-lg hover:shadow-primary/10"
+                  className="group relative glass-panel rounded-3xl overflow-hidden border border-border/80 hover:border-primary/40 shadow-subtle hover:shadow-premium-hover transition-all duration-300 flex flex-col justify-between"
                 >
                   {/* Position Badge */}
-                  <div className="absolute top-4 right-4 z-20">
+                  <div className="absolute top-3.5 right-3.5 z-20">
                     <div
-                      className={`flex items-center gap-2 px-3 py-1.5 rounded-full bg-gradient-to-r ${getPositionColor(
+                      className={`flex items-center gap-1.5 px-3 py-1 rounded-full bg-gradient-to-r ${getPositionColor(
                         team.position,
-                      )} text-white font-semibold text-sm shadow-lg`}
+                      )} text-white font-bold text-xs shadow-md`}
                     >
                       {getPositionIcon(team.position)}
-                      {team.position}
+                      <span>{team.position}</span>
                     </div>
                   </div>
 
                   {/* Team Photo */}
-                  <div className="relative h-64 bg-muted overflow-hidden">
+                  <div className="relative h-56 bg-secondary/50 overflow-hidden border-b border-border/50">
                     <Image
                       src={team.image}
                       alt={`${team.teamName} - ${team.position}`}
                       fill
-                      className="object-cover group-hover:scale-105 transition-transform duration-200"
+                      sizes="(max-width: 768px) 100vw, 33vw"
+                      className="object-cover group-hover:scale-105 transition-transform duration-300"
                       onError={(e) => {
                         const target = e.target as HTMLImageElement;
                         target.src = "/placeholder-team.jpg";
                       }}
                     />
-
-                    <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/30 to-transparent" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/20 to-transparent" />
                   </div>
 
                   {/* Team Info */}
-                  <div className="p-6">
-                    <div className="flex items-center gap-2 mb-3">
-                      <Users className="w-5 h-5 text-primary" />
+                  <div className="p-6 flex-1 flex flex-col justify-between">
+                    <div>
+                      <div className="flex items-center gap-2 mb-3">
+                        <Users className="w-4 h-4 text-primary" />
+                        <h3 className="text-lg font-bold font-poppins text-foreground">
+                          {team.teamName}
+                        </h3>
+                      </div>
 
-                      <h3 className="text-xl font-bold">
-                        {team.teamName}
-                      </h3>
-                    </div>
-
-                    {/* Team Members */}
-                    <div className="space-y-2 mb-4">
-                      {team.members.map((member, idx) => (
-                        <div
-                          key={idx}
-                          className="flex items-start gap-2 text-sm"
-                        >
-                          <div className="w-1.5 h-1.5 rounded-full bg-primary mt-1.5 flex-shrink-0" />
-
-                          <div>
+                      {/* Team Members */}
+                      <div className="space-y-1.5 mb-4">
+                        {team.members.map((member, idx) => (
+                          <div
+                            key={idx}
+                            className="flex items-center justify-between text-xs py-1 px-2.5 rounded-lg bg-secondary/50 border border-border/40"
+                          >
                             <span className="font-semibold text-foreground">
                               {member.name}
                             </span>
-
                             {member.role && (
-                              <span className="text-muted-foreground ml-2">
-                                • {member.role}
+                              <span className="text-[11px] text-muted-foreground font-medium">
+                                {member.role}
                               </span>
                             )}
                           </div>
-                        </div>
-                      ))}
+                        ))}
+                      </div>
                     </div>
 
                     {/* Event Badge */}
-                    <div className="flex items-center justify-between pt-4 border-t border-border">
-                      <span className="text-xs text-muted-foreground font-medium">
-                        {team.event} {team.year}
+                    <div className="flex items-center justify-between pt-3 border-t border-border/50 text-xs text-muted-foreground">
+                      <span className="font-medium">
+                        {team.event} • {team.year}
                       </span>
-
-                      <Trophy className="w-5 h-5 text-primary/60" />
+                      <Trophy className="w-4 h-4 text-primary" />
                     </div>
                   </div>
                 </div>
@@ -274,98 +262,91 @@ export default function HallOfFamePage() {
           </div>
 
           {/* DataDash Section */}
-          <div>
+          <div className="mb-20">
             <div className="text-center mb-12">
-              <div className="inline-flex items-center gap-3 mb-4">
-                <div className="h-px w-16 bg-gradient-to-r from-transparent to-primary" />
-
-                <h2 className="text-3xl sm:text-4xl font-poppins font-bold text-primary">
-                  DataDash Winners
+              <div className="inline-flex items-center gap-3 mb-2">
+                <div className="h-px w-12 bg-gradient-to-r from-transparent to-primary/40" />
+                <h2 className="text-2xl sm:text-3xl font-poppins font-bold text-foreground">
+                  DataDash Champions
                 </h2>
-
-                <div className="h-px w-16 bg-gradient-to-l from-transparent to-primary" />
+                <div className="h-px w-12 bg-gradient-to-l from-transparent to-primary/40" />
               </div>
 
-              <p className="text-muted-foreground">
-                Data Science Excellence - 2024
+              <p className="text-xs sm:text-sm text-muted-foreground">
+                Data Science Excellence & Analytics Innovation • 2024
               </p>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
               {datadashWinners.map((team, index) => (
                 <div
                   key={index}
-                  className="group relative glass-effect rounded-2xl overflow-hidden border border-border hover:border-primary/50 transition-[border-color,box-shadow] duration-150 hover:shadow-lg hover:shadow-primary/10"
+                  className="group relative glass-panel rounded-3xl overflow-hidden border border-border/80 hover:border-primary/40 shadow-subtle hover:shadow-premium-hover transition-all duration-300 flex flex-col justify-between"
                 >
                   {/* Position Badge */}
-                  <div className="absolute top-4 right-4 z-20">
+                  <div className="absolute top-3.5 right-3.5 z-20">
                     <div
-                      className={`flex items-center gap-2 px-3 py-1.5 rounded-full bg-gradient-to-r ${getPositionColor(
+                      className={`flex items-center gap-1.5 px-3 py-1 rounded-full bg-gradient-to-r ${getPositionColor(
                         team.position,
-                      )} text-white font-semibold text-sm shadow-lg`}
+                      )} text-white font-bold text-xs shadow-md`}
                     >
                       {getPositionIcon(team.position)}
-                      {team.position}
+                      <span>{team.position}</span>
                     </div>
                   </div>
 
                   {/* Team Photo */}
-                  <div className="relative h-64 bg-muted overflow-hidden">
+                  <div className="relative h-56 bg-secondary/50 overflow-hidden border-b border-border/50">
                     <Image
                       src={team.image}
                       alt={`${team.teamName} - ${team.position}`}
                       fill
-                      className="object-cover group-hover:scale-105 transition-transform duration-200"
+                      sizes="(max-width: 768px) 100vw, 33vw"
+                      className="object-cover group-hover:scale-105 transition-transform duration-300"
                       onError={(e) => {
                         const target = e.target as HTMLImageElement;
                         target.src = "/placeholder-team.jpg";
                       }}
                     />
-
-                    <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/30 to-transparent" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/20 to-transparent" />
                   </div>
 
                   {/* Team Info */}
-                  <div className="p-6">
-                    <div className="flex items-center gap-2 mb-3">
-                      <Users className="w-5 h-5 text-primary" />
+                  <div className="p-6 flex-1 flex flex-col justify-between">
+                    <div>
+                      <div className="flex items-center gap-2 mb-3">
+                        <Users className="w-4 h-4 text-primary" />
+                        <h3 className="text-lg font-bold font-poppins text-foreground">
+                          {team.teamName}
+                        </h3>
+                      </div>
 
-                      <h3 className="text-xl font-bold">
-                        {team.teamName}
-                      </h3>
-                    </div>
-
-                    {/* Team Members */}
-                    <div className="space-y-2 mb-4">
-                      {team.members.map((member, idx) => (
-                        <div
-                          key={idx}
-                          className="flex items-start gap-2 text-sm"
-                        >
-                          <div className="w-1.5 h-1.5 rounded-full bg-primary mt-1.5 flex-shrink-0" />
-
-                          <div>
+                      {/* Team Members */}
+                      <div className="space-y-1.5 mb-4">
+                        {team.members.map((member, idx) => (
+                          <div
+                            key={idx}
+                            className="flex items-center justify-between text-xs py-1 px-2.5 rounded-lg bg-secondary/50 border border-border/40"
+                          >
                             <span className="font-semibold text-foreground">
                               {member.name}
                             </span>
-
                             {member.role && (
-                              <span className="text-muted-foreground ml-2">
-                                • {member.role}
+                              <span className="text-[11px] text-muted-foreground font-medium">
+                                {member.role}
                               </span>
                             )}
                           </div>
-                        </div>
-                      ))}
+                        ))}
+                      </div>
                     </div>
 
                     {/* Event Badge */}
-                    <div className="flex items-center justify-between pt-4 border-t border-border">
-                      <span className="text-xs text-muted-foreground font-medium">
-                        {team.event} {team.year}
+                    <div className="flex items-center justify-between pt-3 border-t border-border/50 text-xs text-muted-foreground">
+                      <span className="font-medium">
+                        {team.event} • {team.year}
                       </span>
-
-                      <Trophy className="w-5 h-5 text-primary/60" />
+                      <Trophy className="w-4 h-4 text-primary" />
                     </div>
                   </div>
                 </div>
@@ -374,23 +355,24 @@ export default function HallOfFamePage() {
           </div>
 
           {/* Bottom CTA */}
-          <div className="mt-20 text-center glass-effect rounded-2xl p-8 border border-primary/20">
-            <Trophy className="w-12 h-12 text-primary mx-auto mb-4" />
+          <div className="mt-16 text-center glass-panel rounded-3xl p-8 sm:p-12 border border-border/80 shadow-premium max-w-2xl mx-auto">
+            <div className="w-12 h-12 rounded-2xl bg-primary/10 border border-primary/20 flex items-center justify-center text-primary mx-auto mb-4">
+              <Trophy className="w-6 h-6" />
+            </div>
 
-            <h3 className="text-2xl font-bold mb-3">
+            <h3 className="text-2xl sm:text-3xl font-poppins font-bold text-foreground mb-3">
               Want to Join the Hall of Fame?
             </h3>
 
-            <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
-              Participate in our upcoming competitions and showcase your
-              skills. The next champion could be you!
+            <p className="text-sm text-muted-foreground mb-6 max-w-md mx-auto leading-relaxed">
+              Register for our next flagship competition, build something remarkable, and claim your place among DevNest champions.
             </p>
 
             <Link
               href="/events"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-primary hover:bg-primary/90 text-white rounded-lg font-semibold transition-colors duration-150"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-primary hover:bg-primary/90 text-primary-foreground rounded-xl font-semibold text-xs sm:text-sm shadow-subtle hover:shadow-glow-primary transition-all duration-200 active:scale-95"
             >
-              View Upcoming Events
+              <span>Explore Upcoming Hackathons</span>
             </Link>
           </div>
         </div>

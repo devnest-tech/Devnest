@@ -22,3 +22,6 @@ scripts
 
 # Temporarily exclude certificates for initial push
 public/certificates/
+
+# AI agent workflows and configurations
+.agents/

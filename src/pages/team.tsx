@@ -1,7 +1,7 @@
 import Head from "next/head";
 import { Layout } from "@/components/Layout";
 import { TeamCard } from "@/components/TeamCard";
-import Image from "next/image";
+import { Users, GraduationCap } from "lucide-react";
 import teamData from "@/data/team.json";
 
 interface TeamMember {
@@ -32,61 +32,60 @@ export default function TeamPage() {
   return (
     <Layout>
       <Head>
-        <title>DevNest | Team</title>
+        <title>DevNest | Core Team & Past Members</title>
+        <meta
+          name="description"
+          content="Meet the passionate leaders, engineers, and mentors shaping DevNest tech community."
+        />
       </Head>
 
-      <div className="relative min-h-screen py-20">
+      <div className="relative min-h-screen py-16 sm:py-24">
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Header */}
-          <div className="text-center mb-20">
-            <div className="mb-6 inline-flex items-center gap-3 px-4 py-2 rounded-full bg-primary/10 border border-primary/30">
-              <Image
-                src="/logo.svg"
-                alt="DevNest"
-                width={24}
-                height={24}
-                className="w-6 h-6 object-contain"
-              />
-
-              <span className="text-primary text-sm font-medium">
-                <span className="emoji-white">👥</span> Our Core Team
-              </span>
+          {/* Left-Aligned Header */}
+          <div className="text-left mb-16 max-w-3xl">
+            <div className="badge-pill mb-4">
+              <Users className="w-3.5 h-3.5 text-primary" />
+              <span>DevNest Leadership</span>
+              <span className="text-muted-foreground/60">•</span>
+              <span className="text-foreground/80 font-medium">Council Directory</span>
             </div>
 
-            <h1 className="text-5xl sm:text-6xl font-poppins font-bold mb-4 text-foreground">
-              Meet The Nest
+            <h1 className="text-4xl sm:text-5xl md:text-6xl font-poppins font-bold tracking-tight mb-4 text-foreground">
+              Meet The <span className="text-gradient-primary">Nest</span>
             </h1>
 
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Passionate leaders and mentors driving innovation across
-              multiple tech domains. Together, we build the future of DevNest.
+            <p className="text-base sm:text-lg text-muted-foreground leading-relaxed">
+              Passionate leaders, developers, and mentors driving technical innovation across
+              multiple disciplines. Hover over any member card to view their complete bio and
+              connect on GitHub, LinkedIn, or Instagram.
             </p>
           </div>
 
-          {/* Team Grid */}
+          {/* Core Team Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
             {team.map((member) => (
               <TeamCard key={member.id} member={member} />
             ))}
           </div>
 
-          {/* Alumni Section */}
+          {/* Past Members Section */}
           {alumni.length > 0 && (
-            <div className="mt-24">
-              <div className="text-center mb-16">
-                <div className="mb-6 inline-flex items-center gap-3 px-4 py-2 rounded-full bg-primary/10 border border-primary/30">
-                  <span className="text-primary text-sm font-medium">
-                    <span className="emoji-white">🎓</span> DevNest Alumni
-                  </span>
+            <div className="mt-28 pt-16 border-t border-border/60 text-left">
+              <div className="mb-14 max-w-3xl">
+                <div className="badge-pill mb-4">
+                  <GraduationCap className="w-3.5 h-3.5 text-primary" />
+                  <span>Graduated Cohorts</span>
+                  <span className="text-muted-foreground/60">•</span>
+                  <span className="text-foreground/80 font-medium">Past Members</span>
                 </div>
 
-                <h2 className="text-4xl sm:text-5xl font-poppins font-bold mb-4 glow-text">
-                  Our Alumni
+                <h2 className="text-3xl sm:text-4xl md:text-5xl font-poppins font-bold tracking-tight mb-4 text-foreground">
+                  Past <span className="text-gradient-primary">Members</span>
                 </h2>
 
-                <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                  Celebrating those who built DevNest&apos;s foundation and
-                  continue to inspire the community with their contributions.
+                <p className="text-base sm:text-lg text-muted-foreground leading-relaxed">
+                  Celebrating the pioneers who established DevNest&apos;s foundation and continue to
+                  inspire our community across the global technology industry.
                 </p>
               </div>
 

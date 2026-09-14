@@ -4,13 +4,14 @@ import { gsap } from 'gsap';
 
 type MenuItem = {
   label: string;
-  href: string;
+  href?: string;
   ariaLabel?: string;
   rotation?: number;
   hoverStyles?: {
     bgColor?: string;
     textColor?: string;
   };
+  onClick?: () => void;
 };
 
 export type BubbleMenuProps = {
@@ -21,50 +22,15 @@ export type BubbleMenuProps = {
   menuAriaLabel?: string;
   menuBg?: string;
   menuContentColor?: string;
+  overlayBg?: string;
   useFixedPosition?: boolean;
   items?: MenuItem[];
   animationEase?: string;
   animationDuration?: number;
   staggerDelay?: number;
+  pillMinHeight?: string;
+  pillFontSize?: string;
 };
-
-const DEFAULT_ITEMS: MenuItem[] = [
-  {
-    label: 'home',
-    href: '#',
-    ariaLabel: 'Home',
-    rotation: -8,
-    hoverStyles: { bgColor: '#3b82f6', textColor: '#ffffff' }
-  },
-  {
-    label: 'about',
-    href: '#',
-    ariaLabel: 'About',
-    rotation: 8,
-    hoverStyles: { bgColor: '#10b981', textColor: '#ffffff' }
-  },
-  {
-    label: 'projects',
-    href: '#',
-    ariaLabel: 'Documentation',
-    rotation: 8,
-    hoverStyles: { bgColor: '#f59e0b', textColor: '#ffffff' }
-  },
-  {
-    label: 'blog',
-    href: '#',
-    ariaLabel: 'Blog',
-    rotation: 8,
-    hoverStyles: { bgColor: '#ef4444', textColor: '#ffffff' }
-  },
-  {
-    label: 'contact',
-    href: '#',
-    ariaLabel: 'Contact',
-    rotation: -8,
-    hoverStyles: { bgColor: '#8b5cf6', textColor: '#ffffff' }
-  }
-];
 
 export default function BubbleMenu({
   logo,
@@ -74,20 +40,23 @@ export default function BubbleMenu({
   menuAriaLabel = 'Toggle menu',
   menuBg = '#fff',
   menuContentColor = '#111',
+  overlayBg = 'rgba(10,10,10,0.92)',
   useFixedPosition = false,
   items,
   animationEase = 'back.out(1.5)',
-  animationDuration = 0.5,
-  staggerDelay = 0.12
+  animationDuration = 0.45,
+  staggerDelay = 0.08,
+  pillMinHeight = '56px',
+  pillFontSize = 'clamp(0.9rem, 1.2vw, 1.1rem)',
 }: BubbleMenuProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [showOverlay, setShowOverlay] = useState(false);
 
   const overlayRef = useRef<HTMLDivElement>(null);
-  const bubblesRef = useRef<HTMLAnchorElement[]>([]);
+  const bubblesRef = useRef<HTMLElement[]>([]);
   const labelRefs = useRef<HTMLSpanElement[]>([]);
 
-  const menuItems = items?.length ? items : DEFAULT_ITEMS;
+  const menuItems = items?.length ? items : [];
 
   const containerClassName = [
     'bubble-menu',
@@ -107,6 +76,14 @@ export default function BubbleMenu({
     if (nextState) setShowOverlay(true);
     setIsMenuOpen(nextState);
     onMenuClick?.(nextState);
+  };
+
+  const handleItemClick = (item: MenuItem) => {
+    // Close menu first
+    setIsMenuOpen(false);
+    if (item.onClick) {
+      item.onClick();
+    }
   };
 
   useEffect(() => {
@@ -188,32 +165,38 @@ export default function BubbleMenu({
           transition: transform 0.3s ease, opacity 0.3s ease;
           transform-origin: center;
         }
+        /* desktop-compact: 3 columns for 5 items, then handle 4th/5th offsets */
         .bubble-menu-items .pill-list .pill-col:nth-child(4):nth-last-child(2) {
           margin-left: calc(100% / 6);
         }
         .bubble-menu-items .pill-list .pill-col:nth-child(4):last-child {
           margin-left: calc(100% / 3);
         }
+        .bubble-menu-items .pill-list .pill-col:nth-child(5):last-child {
+          margin-left: calc(100% / 6);
+        }
         @media (min-width: 900px) {
           .bubble-menu-items .pill-link {
             transform: rotate(var(--item-rot));
+            letter-spacing: 0.04em;
+            font-weight: 500;
           }
           .bubble-menu-items .pill-link:hover {
-            transform: rotate(var(--item-rot)) scale(1.06);
+            transform: rotate(var(--item-rot)) scale(1.05);
             background: var(--hover-bg) !important;
             color: var(--hover-color) !important;
           }
           .bubble-menu-items .pill-link:active {
-            transform: rotate(var(--item-rot)) scale(.94);
+            transform: rotate(var(--item-rot)) scale(.95);
           }
         }
         @media (max-width: 899px) {
           .bubble-menu-items {
-            padding-top: 120px;
+            padding-top: 100px;
             align-items: flex-start;
           }
           .bubble-menu-items .pill-list {
-            row-gap: 16px;
+            row-gap: 12px;
           }
           .bubble-menu-items .pill-list .pill-col {
             flex: 0 0 100% !important;
@@ -221,17 +204,17 @@ export default function BubbleMenu({
             overflow: visible;
           }
           .bubble-menu-items .pill-link {
-            font-size: clamp(1.2rem, 3vw, 4rem);
-            padding: clamp(1rem, 2vw, 2rem) 0;
-            min-height: 80px !important;
+            font-size: 1rem !important;
+            padding: 1rem 0 !important;
+            min-height: 56px !important;
           }
           .bubble-menu-items .pill-link:hover {
-            transform: scale(1.06);
+            transform: scale(1.04);
             background: var(--hover-bg);
             color: var(--hover-color);
           }
           .bubble-menu-items .pill-link:active {
-            transform: scale(.94);
+            transform: scale(.96);
           }
         }
       `}</style>
@@ -281,10 +264,9 @@ export default function BubbleMenu({
             isMenuOpen ? 'open' : '',
             'inline-flex flex-col items-center justify-center',
             'rounded-full',
-            'bg-white',
-            'shadow-[0_4px_16px_rgba(0,0,0,0.12)]',
+            'shadow-[0_2px_12px_rgba(0,0,0,0.10)]',
             'pointer-events-auto',
-            'w-12 h-12 md:w-14 md:h-14',
+            'w-10 h-10 md:w-11 md:h-11',
             'border-0 cursor-pointer p-0',
             'will-change-transform'
           ].join(' ')}
@@ -296,20 +278,30 @@ export default function BubbleMenu({
           <span
             className="menu-line block mx-auto rounded-[2px]"
             style={{
-              width: 26,
+              width: 20,
               height: 2,
               background: menuContentColor,
-              transform: isMenuOpen ? 'translateY(4px) rotate(45deg)' : 'none'
+              transform: isMenuOpen ? 'translateY(3px) rotate(45deg)' : 'none'
             }}
           />
           <span
             className="menu-line short block mx-auto rounded-[2px]"
             style={{
-              marginTop: '6px',
-              width: 26,
+              marginTop: '5px',
+              width: isMenuOpen ? 20 : 14,
               height: 2,
               background: menuContentColor,
-              transform: isMenuOpen ? 'translateY(-4px) rotate(-45deg)' : 'none'
+              opacity: isMenuOpen ? 0 : 1
+            }}
+          />
+          <span
+            className="menu-line block mx-auto rounded-[2px]"
+            style={{
+              marginTop: '5px',
+              width: 20,
+              height: 2,
+              background: menuContentColor,
+              transform: isMenuOpen ? 'translateY(-9px) rotate(-45deg)' : 'none'
             }}
           />
         </button>
@@ -326,6 +318,7 @@ export default function BubbleMenu({
             'pointer-events-none',
             'z-[1000]'
           ].join(' ')}
+          style={{ background: overlayBg, backdropFilter: 'blur(4px)' }}
           aria-hidden={!isMenuOpen}
         >
           <ul
@@ -351,60 +344,119 @@ export default function BubbleMenu({
                   'box-border'
                 ].join(' ')}
               >
-                <a
-                  role="menuitem"
-                  href={item.href}
-                  aria-label={item.ariaLabel || item.label}
-                  className={[
-                    'pill-link',
-                    'w-full',
-                    'rounded-[999px]',
-                    'no-underline',
-                    'bg-white',
-                    'text-inherit',
-                    'shadow-[0_4px_14px_rgba(0,0,0,0.10)]',
-                    'flex items-center justify-center',
-                    'relative',
-                    'transition-[background,color] duration-300 ease-in-out',
-                    'box-border',
-                    'whitespace-nowrap overflow-hidden'
-                  ].join(' ')}
-                  style={
-                    {
-                      ['--item-rot']: `${item.rotation ?? 0}deg`,
-                      ['--pill-bg']: menuBg,
-                      ['--pill-color']: menuContentColor,
-                      ['--hover-bg']: item.hoverStyles?.bgColor || '#f3f4f6',
-                      ['--hover-color']: item.hoverStyles?.textColor || menuContentColor,
-                      background: 'var(--pill-bg)',
-                      color: 'var(--pill-color)',
-                      minHeight: 'var(--pill-min-h, 160px)',
-                      padding: 'clamp(1.5rem, 3vw, 8rem) 0',
-                      fontSize: 'clamp(1.5rem, 4vw, 4rem)',
-                      fontWeight: 400,
-                      lineHeight: 0,
-                      willChange: 'transform',
-                      height: 10
-                    } as CSSProperties
-                  }
-                  ref={el => {
-                    if (el) bubblesRef.current[idx] = el;
-                  }}
-                >
-                  <span
-                    className="pill-label inline-block"
-                    style={{
-                      willChange: 'transform, opacity',
-                      height: '1.2em',
-                      lineHeight: 1.2
-                    }}
+                {item.onClick ? (
+                  <button
+                    role="menuitem"
+                    aria-label={item.ariaLabel || item.label}
+                    className={[
+                      'pill-link',
+                      'w-full',
+                      'rounded-[999px]',
+                      'no-underline',
+                      'bg-white',
+                      'text-inherit',
+                      'shadow-[0_4px_14px_rgba(0,0,0,0.10)]',
+                      'flex items-center justify-center',
+                      'relative',
+                      'transition-[background,color] duration-300 ease-in-out',
+                      'box-border',
+                      'whitespace-nowrap overflow-hidden',
+                      'border-0 cursor-pointer'
+                    ].join(' ')}
+                    style={
+                      {
+                        ['--item-rot']: `${item.rotation ?? 0}deg`,
+                        ['--pill-bg']: menuBg,
+                        ['--pill-color']: menuContentColor,
+                        ['--hover-bg']: item.hoverStyles?.bgColor || '#f3f4f6',
+                        ['--hover-color']: item.hoverStyles?.textColor || menuContentColor,
+                        background: 'var(--pill-bg)',
+                        color: 'var(--pill-color)',
+                        minHeight: pillMinHeight,
+                        padding: '0.75rem 2.5rem',
+                        fontSize: pillFontSize,
+                        fontWeight: 500,
+                        lineHeight: 1,
+                        willChange: 'transform',
+                        height: 'auto'
+                      } as CSSProperties
+                    }
                     ref={el => {
-                      if (el) labelRefs.current[idx] = el;
+                      if (el) bubblesRef.current[idx] = el;
                     }}
+                    onClick={() => handleItemClick(item)}
                   >
-                    {item.label}
-                  </span>
-                </a>
+                    <span
+                      className="pill-label inline-block"
+                      style={{
+                        willChange: 'transform, opacity',
+                        height: '1.2em',
+                        lineHeight: 1.2
+                      }}
+                      ref={el => {
+                        if (el) labelRefs.current[idx] = el;
+                      }}
+                    >
+                      {item.label}
+                    </span>
+                  </button>
+                ) : (
+                  <a
+                    role="menuitem"
+                    href={item.href || '#'}
+                    aria-label={item.ariaLabel || item.label}
+                    className={[
+                      'pill-link',
+                      'w-full',
+                      'rounded-[999px]',
+                      'no-underline',
+                      'bg-white',
+                      'text-inherit',
+                      'shadow-[0_4px_14px_rgba(0,0,0,0.10)]',
+                      'flex items-center justify-center',
+                      'relative',
+                      'transition-[background,color] duration-300 ease-in-out',
+                      'box-border',
+                      'whitespace-nowrap overflow-hidden'
+                    ].join(' ')}
+                    style={
+                      {
+                        ['--item-rot']: `${item.rotation ?? 0}deg`,
+                        ['--pill-bg']: menuBg,
+                        ['--pill-color']: menuContentColor,
+                        ['--hover-bg']: item.hoverStyles?.bgColor || '#f3f4f6',
+                        ['--hover-color']: item.hoverStyles?.textColor || menuContentColor,
+                        background: 'var(--pill-bg)',
+                        color: 'var(--pill-color)',
+                        minHeight: pillMinHeight,
+                        padding: '0.75rem 2.5rem',
+                        fontSize: pillFontSize,
+                        fontWeight: 500,
+                        lineHeight: 1,
+                        willChange: 'transform',
+                        height: 'auto'
+                      } as CSSProperties
+                    }
+                    ref={el => {
+                      if (el) bubblesRef.current[idx] = el;
+                    }}
+                    onClick={() => handleItemClick(item)}
+                  >
+                    <span
+                      className="pill-label inline-block"
+                      style={{
+                        willChange: 'transform, opacity',
+                        height: '1.2em',
+                        lineHeight: 1.2
+                      }}
+                      ref={el => {
+                        if (el) labelRefs.current[idx] = el;
+                      }}
+                    >
+                      {item.label}
+                    </span>
+                  </a>
+                )}
               </li>
             ))}
           </ul>

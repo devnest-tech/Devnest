@@ -8,6 +8,7 @@ export default {
     fontFamily: {
       poppins: ["Poppins", "sans-serif"],
       manrope: ["Manrope", "sans-serif"],
+      space: ["'Space Grotesk'", "sans-serif"],
     },
     container: {
       center: true,
@@ -17,6 +18,9 @@ export default {
       },
     },
     extend: {
+      borderWidth: {
+        "3": "3px",
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
@@ -61,6 +65,18 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
+        neo: {
+          yellow: "#FFE600",
+          pink: "#FF70A6",
+          purple: "#C4B5FD",
+          mint: "#88EA73",
+          blue: "#70D6FF",
+          orange: "#FF9F43",
+          cream: "#FAF7EE",
+          paper: "#FFFDF5",
+          black: "#000000",
+          white: "#FFFFFF",
+        },
         neon: {
           green: "#00B871",
           blue: "#00CFFD",
@@ -71,6 +87,19 @@ export default {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
+      },
+      boxShadow: {
+        "neo-sm": "2px 2px 0px 0px #000000",
+        "neo": "4px 4px 0px 0px #000000",
+        "neo-lg": "6px 6px 0px 0px #000000",
+        "neo-xl": "8px 8px 0px 0px #000000",
+        "neo-hover": "6px 6px 0px 0px #000000",
+        "neo-active": "1px 1px 0px 0px #000000",
+        "subtle": "0 1px 3px 0 rgba(0, 0, 0, 0.04), 0 1px 2px -1px rgba(0, 0, 0, 0.04)",
+        "premium": "0 12px 32px -8px rgba(0, 0, 0, 0.08), 0 4px 12px -2px rgba(0, 0, 0, 0.03)",
+        "premium-hover": "0 20px 40px -12px rgba(0, 0, 0, 0.12), 0 8px 24px -4px rgba(0, 0, 0, 0.06)",
+        "glow-primary": "0 0 24px -4px rgba(255, 255, 255, 0.25)",
+        "glow-primary-lg": "0 0 44px -6px rgba(255, 255, 255, 0.35)",
       },
       keyframes: {
         "accordion-down": {

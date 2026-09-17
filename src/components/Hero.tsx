@@ -1,9 +1,19 @@
-import { useEffect, useState } from "react";
-import Image from "next/image";
+import { useEffect, useState, useRef } from "react";
+import dynamic from "next/dynamic";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Zap, Users } from "lucide-react";
+import {
+  Zap,
+  Users,
+  Calendar,
+  Layers,
+  Sparkles,
+  ArrowRight,
+  Terminal,
+  RefreshCw,
+} from "lucide-react";
 import TextType from "@/components/TextType";
+import { useJoinModal } from "@/context/JoinModalContext";
 
 const HERO_QUOTES = [
   '"Build something that makes a difference."',
@@ -14,6 +24,7 @@ const HERO_QUOTES = [
 ] as const;
 
 export function Hero() {
+  const { openJoinModal } = useJoinModal();
   const [counters, setCounters] = useState({
     members: 0,
     events: 0,
@@ -22,18 +33,75 @@ export function Hero() {
   const [displayedQuote, setDisplayedQuote] = useState(
     '"Together, we build. Together, we innovate. Together, we are DevNest."',
   );
+  const [quoteIndex, setQuoteIndex] = useState(0);
+  const [scrollProgress, setScrollProgress] = useState(0);
+  const [isDesktop, setIsDesktop] = useState(false);
+  const lastProgressRef = useRef(0);
+
+  // Screen width detection throttled with requestAnimationFrame, only updates if breakpoint changes
+  useEffect(() => {
+    let resizeRaf: number | null = null;
+    const updateWidth = () => {
+      if (resizeRaf) cancelAnimationFrame(resizeRaf);
+      resizeRaf = window.requestAnimationFrame(() => {
+        const desktop = window.innerWidth >= 1024;
+        setIsDesktop((prev) => (prev !== desktop ? desktop : prev));
+      });
+    };
+    updateWidth();
+    window.addEventListener("resize", updateWidth, { passive: true });
+    return () => {
+      window.removeEventListener("resize", updateWidth);
+      if (resizeRaf) cancelAnimationFrame(resizeRaf);
+    };
+  }, []);
+
+  // Scroll position tracking for left/right parting animation
+  // Throttled via requestAnimationFrame and short-circuited when beyond the 500px threshold
+  useEffect(() => {
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (prefersReducedMotion) return;
+
+    let ticking = false;
+
+    const handleScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          const scrollY = window.scrollY;
+          const maxScroll = 500;
+          const progress = Math.min(Math.max(scrollY / maxScroll, 0), 1);
+
+          // Only trigger state update if progress change is noticeable or hits bounds (0 or 1)
+          if (
+            Math.abs(progress - lastProgressRef.current) > 0.005 ||
+            (progress === 0 && lastProgressRef.current !== 0) ||
+            (progress === 1 && lastProgressRef.current !== 1)
+          ) {
+            lastProgressRef.current = progress;
+            setScrollProgress(progress);
+          }
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll();
+
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   // Defer counter animation until after initial render
   useEffect(() => {
-    // Use requestIdleCallback to defer animation until browser is idle
     const timeoutId = setTimeout(() => {
       const counterTargets = {
         members: 150,
         events: 3,
       };
 
-      const duration = 2000;
-      const steps = 60;
+      const duration = 1800;
+      const steps = 50;
       let currentStep = 0;
 
       const interval = setInterval(() => {
@@ -52,169 +120,219 @@ export function Hero() {
       }, duration / steps);
 
       return () => clearInterval(interval);
-    }, 100); // Small delay to allow page to render first
+    }, 100);
 
     return () => clearTimeout(timeoutId);
   }, []);
 
-  // Defer quote rotation until after initial render
-  useEffect(() => {
-    const timeoutId = setTimeout(() => {
-      const quoteInterval = setInterval(() => {
-        setDisplayedQuote(
-          HERO_QUOTES[Math.floor(Math.random() * HERO_QUOTES.length)],
-        );
-      }, 8000);
+  // Rotate quote
+  const handleRotateQuote = () => {
+    const nextIndex = (quoteIndex + 1) % HERO_QUOTES.length;
+    setQuoteIndex(nextIndex);
+    setDisplayedQuote(HERO_QUOTES[nextIndex]);
+  };
 
-      return () => clearInterval(quoteInterval);
-    }, 3000); // Delay quote rotation by 3 seconds
-
-    return () => clearTimeout(timeoutId);
-  }, []);
+  const shiftAmount = isDesktop ? 130 : 35;
 
   return (
-    <div className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      <div className="absolute inset-0 opacity-[0.04] z-[1]">
-        <div
-          className="absolute inset-0"
-          style={{
-            backgroundImage: `
-              linear-gradient(0deg, transparent 24%, rgba(0, 184, 113, 0.08) 25%, rgba(0, 184, 113, 0.08) 26%, transparent 27%, transparent 74%, rgba(0, 184, 113, 0.08) 75%, rgba(0, 184, 113, 0.08) 76%, transparent 77%, transparent),
-              linear-gradient(90deg, transparent 24%, rgba(0, 184, 113, 0.08) 25%, rgba(0, 184, 113, 0.08) 26%, transparent 27%, transparent 74%, rgba(0, 184, 113, 0.08) 75%, rgba(0, 184, 113, 0.08) 76%, transparent 77%, transparent)
-            `,
-            backgroundSize: "50px 50px",
-          }}
-        />
-      </div>
-
-      {/* Removed animated glowing orbs - using global background from Layout instead */}
-
-      {/* Hero Content */}
-      <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center">
-        {/* Tagline */}
-        <div className="mb-6 inline-block">
-          <span className="inline-block px-4 py-2 rounded-full bg-primary/15 border border-primary/40 text-primary text-sm font-semibold shadow-sm">
-            <span className="emoji-white">🚀</span> Google Campus Ambassador Initiative
-          </span>
-        </div>
-
-        {/* Logo & Name */}
-        <div className="mb-6 sm:mb-8 flex items-center justify-center gap-3 sm:gap-4">
-          <Image
-            src="/logo.svg"
-            alt="DevNest Logo"
-            width={80}
-            height={80}
-            priority
-            className="w-16 h-16 sm:w-20 sm:h-20 object-contain"
-          />
-          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-poppins font-bold text-primary">
-             DevNest
-          </h1>
-        </div>
-
-        {/* Main Heading */}
-        <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-poppins font-bold mb-3 sm:mb-4 text-foreground px-2">
-          <TextType
-            text={[
-              "At DevNest, we don't just learn technology — we live it",
-              "Build. Innovate. Transform.",
-              "Where ideas become reality"
-            ]}
-            typingSpeed={50}
-            pauseDuration={1000}
-            showCursor
-            cursorCharacter="|"
-            deletingSpeed={30}
-            cursorBlinkDuration={0.5}
-            className="text-foreground"
-          />
-        </h2>
-
-        {/* Subheading */}
-        <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto mb-4 sm:mb-6 px-4">
-          A student-driven community of innovators, creators, and tech enthusiasts — led by Google Campus Ambassadors at Lamrin Tech Skills University Punjab
-        </p>
-
-        {/* Description */}
-        <div className="max-w-3xl mx-auto mb-6 sm:mb-8 px-4">
-          <p className="text-sm sm:text-base md:text-lg text-muted-foreground leading-relaxed">
-            Blending creativity, innovation, and hands-on learning. We bring together passionate minds from diverse technical domains — Artificial Intelligence, Cybersecurity, Cloud Computing, Data Science, and Web Development — to collaborate, build, and grow through real-world experiences.
-          </p>
-        </div>
-
-        {/* CTA Buttons */}
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 mb-8 sm:mb-12 px-4">
-          <Button
-            asChild
-            size="lg"
-            className="w-full sm:w-auto bg-primary hover:bg-primary/90 text-primary-foreground gap-2 transition-colors duration-150"
-          >
-            <Link href="/join">
-              <Zap className="w-4 h-4 sm:w-5 sm:h-5" />
-              Join the Nest
-            </Link>
-          </Button>
-          <Button
-            asChild
-            size="lg"
-            variant="outline"
-            className="w-full sm:w-auto border-primary/50 text-foreground hover:bg-primary/10 hover:border-primary gap-2 transition-colors duration-150"
-          >
-            <Link href="/events"><span className="emoji-white">📅</span> Explore Events</Link>
-          </Button>
-        </div>
-
-        {/* Rotating Quote */}
-        <div className="mb-8 sm:mb-12 text-center px-4">
-          <div className="glass-effect rounded-2xl p-4 sm:p-6 inline-block max-w-2xl w-full border border-border">
-            <p className="text-base sm:text-lg md:text-xl italic text-foreground font-manrope">
-              {displayedQuote}
-            </p>
-          </div>
-        </div>
-
-        {/* Stats Grid */}
-        <div className="grid grid-cols-2 gap-4 md:gap-8 mt-12 sm:mt-16 px-2 max-w-2xl mx-auto">
-          <div className="rounded-2xl p-4 sm:p-6 border border-border bg-card shadow-sm hover:shadow-md transition-shadow duration-150">
-            <Users className="w-6 h-6 sm:w-8 sm:h-8 text-primary mx-auto mb-2" />
-            <div className="text-2xl sm:text-3xl md:text-4xl font-poppins font-bold text-primary mb-1">
-              {counters.members}+
-            </div>
-            <p className="text-xs sm:text-sm text-muted-foreground">
-              Community Members
-            </p>
-          </div>
-          
-
-          <div className="rounded-2xl p-4 sm:p-6 border border-border bg-card shadow-sm hover:shadow-md transition-shadow duration-150">
-            <Zap className="w-6 h-6 sm:w-8 sm:h-8 text-primary mx-auto mb-2" />
-            <div className="text-2xl sm:text-3xl md:text-4xl font-poppins font-bold text-primary mb-1">
-              {counters.events}+
-            </div>
-            <p className="text-xs sm:text-sm text-muted-foreground">
-              Tech Events
-            </p>
-          </div>
-        </div>
-
-        {/* Scroll Indicator */}
-        <div className="mt-12 sm:mt-16">
-          <div className="text-sm sm:text-base text-muted-foreground mb-2">Scroll to explore</div>
-          <div className="flex justify-center">
-            <svg
-              className="w-5 h-5 sm:w-6 sm:h-6 text-primary"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
+    <div className="relative flex flex-col overflow-hidden">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full overflow-x-clip">
+        {/* Full Viewport First Fold */}
+        <div className="min-h-[calc(100vh-4rem)] sm:min-h-[calc(100vh-5rem)] flex items-center py-6 sm:py-8">
+          {/* 2-Column Asymmetric Left-Aligned Grid with Parting Parallax */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center w-full">
+            {/* Left Column (Content & CTAs) */}
+            <div
+              className="lg:col-span-7 flex flex-col items-start text-left transition-transform duration-75 ease-out"
+              style={{
+                transform: `translateX(-${scrollProgress * shiftAmount}px)`,
+                opacity: Math.max(1 - scrollProgress * 0.4, 0.5),
+                willChange: "transform, opacity",
+              }}
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M19 14l-7 7m0 0l-7-7m7 7V3"
-              />
-            </svg>
+              {/* Top Brand Pill with Live Beacon */}
+              <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-[#FFE600] border-2 border-black text-xs font-bold tracking-wide shadow-[2px_2px_0px_#000] text-black mb-4 sm:mb-5">
+                <span className="relative flex h-2.5 w-2.5">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-black opacity-75" />
+                  <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-black" />
+                </span>
+                <span>Google Campus Ambassador Initiative</span>
+              </div>
+
+              {/* Display Headline */}
+              <h1
+                className="text-3xl sm:text-4xl lg:text-[50px] font-space font-black tracking-tight text-black leading-[1.12] mb-4 transition-all"
+              >
+                Where Student Developers Build{" "}
+                <span className="bg-[#FFE600] text-black px-2.5 py-0.5 rounded-md border-2 border-black shadow-[3px_3px_0px_#000] inline-block -rotate-1">
+                  The Future
+                </span>
+              </h1>
+
+              {/* Subheading / Typing Line */}
+              <div className="text-sm sm:text-base font-bold text-neutral-900 mb-3 min-h-[24px] font-mono">
+                <TextType
+                  text={[
+                    "At DevNest, we don't just learn technology — we live it.",
+                    "Build. Innovate. Transform.",
+                    "Where student ideas become real-world products.",
+                  ]}
+                  typingSpeed={45}
+                  pauseDuration={1400}
+                  showCursor
+                  cursorCharacter="|"
+                  deletingSpeed={25}
+                  cursorBlinkDuration={0.6}
+                  className="text-black font-semibold"
+                />
+              </div>
+
+              {/* Narrative Description */}
+              <p className="text-xs sm:text-sm text-neutral-800 leading-relaxed max-w-lg mb-6 font-medium">
+                A premier student-driven technical society at Lamrin Tech Skills University Punjab.
+                Fostering hands-on engineering across Artificial Intelligence, Cybersecurity, Cloud
+                Systems, and Fullstack Web &amp; Mobile Development.
+              </p>
+
+              {/* Left-Aligned CTA Button */}
+              <div className="flex flex-wrap items-center gap-3 justify-start w-full sm:w-auto">
+                <Button
+                  asChild
+                  size="default"
+                  className="rounded-xl px-7 h-12 bg-[#FFE600] hover:bg-[#FFDE59] text-black font-black border-2 border-black shadow-[4px_4px_0px_#000] hover:shadow-[6px_6px_0px_#000] hover:-translate-x-0.5 hover:-translate-y-0.5 active:translate-x-0.5 active:translate-y-0.5 active:shadow-none gap-2 text-sm transition-all duration-150 w-full sm:w-auto cursor-pointer group"
+                >
+                  <Link href="/events" className="flex items-center gap-2">
+                    <span>Explore 2026 Events</span>
+                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                  </Link>
+                </Button>
+              </div>
+            </div>
+
+            {/* Right Column (Neobrutalist Window Card) */}
+            <div
+              className="lg:col-span-5 transition-transform duration-75 ease-out"
+              style={{
+                transform: `translateX(${scrollProgress * shiftAmount}px)`,
+                opacity: Math.max(1 - scrollProgress * 0.4, 0.5),
+                willChange: "transform, opacity",
+              }}
+            >
+              <div className="relative rounded-3xl border-3 border-black bg-white p-5 sm:p-6 shadow-[8px_8px_0px_#000] overflow-hidden">
+                {/* Window Titlebar */}
+                <div className="flex items-center justify-between pb-3.5 mb-4 border-b-2 border-black bg-[#FAF7EE] -mx-5 -mt-5 px-5 pt-3.5 sm:-mx-6 sm:-mt-6 sm:px-6 sm:pt-4">
+                  <div className="flex items-center gap-2">
+                    <span className="w-3 h-3 rounded-full bg-[#FF5F56] border border-black inline-block" />
+                    <span className="w-3 h-3 rounded-full bg-[#FFBD2E] border border-black inline-block" />
+                    <span className="w-3 h-3 rounded-full bg-[#27C93F] border border-black inline-block" />
+                    <span className="text-[11px] font-mono font-bold text-black ml-2">
+                      ~/devnest/session
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-1.5 text-[10px] font-mono font-bold text-black bg-[#88EA73] px-2.5 py-0.5 rounded-full border-2 border-black shadow-[1px_1px_0px_#000]">
+                    <span className="w-1.5 h-1.5 rounded-full bg-black animate-pulse" />
+                    LIVE
+                  </div>
+                </div>
+
+                {/* Terminal / Quote Display */}
+                <div className="space-y-3.5">
+                  <div className="rounded-2xl border-2 border-black bg-[#C4B5FD]/25 p-4 shadow-[2px_2px_0px_#000]">
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="text-[10px] font-bold uppercase tracking-wider text-black flex items-center gap-1.5">
+                        <Terminal className="w-3.5 h-3.5 text-black" />
+                        Club Philosophy
+                      </span>
+                      <button
+                        onClick={handleRotateQuote}
+                        className="p-1 rounded-md border border-black bg-white hover:bg-[#FFE600] text-black transition-colors"
+                        title="Next Quote"
+                      >
+                        <RefreshCw className="w-3 h-3" />
+                      </button>
+                    </div>
+                    <p className="text-xs sm:text-sm italic text-black font-semibold leading-relaxed">
+                      {displayedQuote}
+                    </p>
+                    <p className="text-[10px] font-bold text-neutral-600 uppercase tracking-wider mt-2.5">
+                      — DevNest Tech Society
+                    </p>
+                  </div>
+
+                  {/* Upcoming Event Highlight */}
+                  <Link
+                    href="/events"
+                    className="flex items-center justify-between p-3 px-4 rounded-xl bg-[#FFE600] hover:bg-[#FFDE59] border-2 border-black shadow-[3px_3px_0px_#000] hover:shadow-[4px_4px_0px_#000] hover:-translate-x-0.5 hover:-translate-y-0.5 active:translate-x-0.5 active:translate-y-0.5 active:shadow-none transition-all group"
+                  >
+                    <span className="text-black text-xs font-bold flex items-center gap-2">
+                      <Calendar className="w-3.5 h-3.5 text-black" />
+                      Upcoming Event
+                    </span>
+                    <span className="text-xs font-black text-black flex items-center gap-1.5">
+                      Tech Quiz &amp; CTF
+                      <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+                    </span>
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* 4 High-Impact Neobrutalism Metrics Pop Cards */}
+        <div className="pt-10 sm:pt-14 pb-8 sm:pb-12">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
+            {/* Card 1: Active Members (Yellow) */}
+            <div className="rounded-2xl border-2 border-black bg-[#FFE600] p-4 sm:p-5 shadow-[5px_5px_0px_#000] hover:-translate-x-1 hover:-translate-y-1 hover:shadow-[7px_7px_0px_#000] transition-all duration-150 text-black">
+              <div className="w-9 h-9 rounded-xl bg-white border-2 border-black text-black flex items-center justify-center mb-3 shadow-[2px_2px_0px_#000]">
+                <Users className="w-4 h-4" />
+              </div>
+              <div className="text-2xl sm:text-3xl font-space font-black text-black tracking-tight mb-0.5">
+                {counters.members}+
+              </div>
+              <p className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-black">
+                Active Members
+              </p>
+            </div>
+
+            {/* Card 2: Flagship Events (Sky Blue) */}
+            <div className="rounded-2xl border-2 border-black bg-[#70D6FF] p-4 sm:p-5 shadow-[5px_5px_0px_#000] hover:-translate-x-1 hover:-translate-y-1 hover:shadow-[7px_7px_0px_#000] transition-all duration-150 text-black">
+              <div className="w-9 h-9 rounded-xl bg-white border-2 border-black text-black flex items-center justify-center mb-3 shadow-[2px_2px_0px_#000]">
+                <Calendar className="w-4 h-4" />
+              </div>
+              <div className="text-2xl sm:text-3xl font-space font-black text-black tracking-tight mb-0.5">
+                {counters.events}+
+              </div>
+              <p className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-black">
+                Flagship Events
+              </p>
+            </div>
+
+            {/* Card 3: Tech Domains (Retro Lavender) */}
+            <div className="rounded-2xl border-2 border-black bg-[#C4B5FD] p-4 sm:p-5 shadow-[5px_5px_0px_#000] hover:-translate-x-1 hover:-translate-y-1 hover:shadow-[7px_7px_0px_#000] transition-all duration-150 text-black">
+              <div className="w-9 h-9 rounded-xl bg-white border-2 border-black text-black flex items-center justify-center mb-3 shadow-[2px_2px_0px_#000]">
+                <Layers className="w-4 h-4" />
+              </div>
+              <div className="text-2xl sm:text-3xl font-space font-black text-black tracking-tight mb-0.5">
+                5
+              </div>
+              <p className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-black">
+                Tech Domains
+              </p>
+            </div>
+
+            {/* Card 4: Student Driven (Mint/Lime) */}
+            <div className="rounded-2xl border-2 border-black bg-[#88EA73] p-4 sm:p-5 shadow-[5px_5px_0px_#000] hover:-translate-x-1 hover:-translate-y-1 hover:shadow-[7px_7px_0px_#000] transition-all duration-150 text-black">
+              <div className="w-9 h-9 rounded-xl bg-white border-2 border-black text-black flex items-center justify-center mb-3 shadow-[2px_2px_0px_#000]">
+                <Sparkles className="w-4 h-4" />
+              </div>
+              <div className="text-2xl sm:text-3xl font-space font-black text-black tracking-tight mb-0.5">
+                100%
+              </div>
+              <p className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-black">
+                Student Driven
+              </p>
+            </div>
           </div>
         </div>
       </div>

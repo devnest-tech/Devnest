@@ -1,16 +1,24 @@
 import { ReactNode, useState } from "react";
+import dynamic from "next/dynamic";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import {
-  Menu,
-  X,
   Github,
   Linkedin,
   Instagram,
-  MessageCircle,
+  Mail,
+  ArrowUpRight,
+  Sparkles,
+  ChevronRight,
+  Home,
+  Calendar,
+  Code,
+  Zap,
+  BookOpen,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-
+import { useJoinModal } from "@/context/JoinModalContext";
 interface LayoutProps {
   children: ReactNode;
   pauseTerminal?: boolean;
@@ -25,6 +33,8 @@ export function Layout({
   enableTerminal = false,
 }: LayoutProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { openJoinModal } = useJoinModal();
+  const router = useRouter();
 
   const navItems = [
     { label: "Home", href: "/" },
@@ -35,400 +45,414 @@ export function Layout({
     { label: "Contact", href: "/contact" },
   ];
 
+  const mobileBottomNav = [
+    { label: "Home", href: "/", icon: Home },
+    { label: "Events", href: "/events", icon: Calendar },
+    { label: "Projects", href: "/projects", icon: Code },
+    { label: "Blog", href: "/blogs", icon: BookOpen },
+    { label: "Join", href: "/membership", icon: Zap, highlight: true },
+  ];
+
+  const isNavActive = (href: string) => {
+    if (href === "/") return router.pathname === "/";
+    return router.pathname.startsWith(href);
+  };
+
   return (
-    <div>
-      <div className="min-h-screen bg-background text-foreground flex flex-col relative">
-        {/* Terminal is optional per page for better performance */}
+    <div className="min-h-screen bg-[#FAF7EE] text-black flex flex-col relative selection:bg-[#FFE600] selection:text-black">
+      {/* Neobrutalism Architectural Dot Grid Background */}
+      <div className="pointer-events-none fixed inset-0 z-0 neo-grid-bg opacity-70" aria-hidden="true" />
 
-        {/* Minimal page background */}
-        <div
-          className="pointer-events-none fixed inset-0 z-0 opacity-[0.025]"
-          style={{
-            backgroundImage:
-              "linear-gradient(hsl(var(--primary)) 1px, transparent 1px), linear-gradient(90deg, hsl(var(--primary)) 1px, transparent 1px)",
-            backgroundSize: "48px 48px",
-          }}
-        />
+      {/* Navigation Header */}
+      <header className="sticky top-0 z-50 w-full bg-[#FAF7EE] border-b-2 border-black shadow-[0_3px_0px_0px_#000] transition-colors">
+        {/* Top Accent Solid Line */}
+        <div className="h-[3px] w-full bg-[#FFE600] border-b border-black" />
 
-        {/* Navigation */}
-        <nav className="sticky top-0 z-50 bg-background/95 border-b border-border shadow-sm">
-          {/* Gradient Accent Line */}
-          <div
-            className={`absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent ${
-              customTheme === "blue-gold"
-                ? "via-blue-400"
-                : customTheme === "violet"
-                  ? "via-violet-400"
-                  : "via-primary"
-            } to-transparent opacity-50`}
-          />
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-16 sm:h-20">
+            {/* Brand Logo */}
+            <Link
+              href="/"
+              className="flex items-center group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black rounded-xl"
+            >
+              <Image
+                src="/devnest-logo.png"
+                alt="Devnest — BUILD. LEARN. INNOVATE —"
+                width={175}
+                height={49}
+                priority
+                className="h-10 sm:h-12 w-auto object-contain transition-transform duration-200 group-hover:scale-105"
+              />
+            </Link>
 
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-            <div className="flex items-center justify-between h-16 sm:h-20">
-              {/* Logo */}
-              <Link href="/" className="flex items-center gap-3 group relative">
-                <Image
-                  src="/logo.svg"
-                  alt="DevNest Logo"
-                  width={44}
-                  height={44}
-                  priority
-                  className="w-11 h-11 object-contain group-hover:scale-105 transition-transform duration-150"
-                />
-
-                <div className="hidden sm:flex flex-col">
-                  <span
-                    className={`font-poppins font-bold text-xl ${
-                      customTheme === "blue-gold"
-                        ? "text-blue-400"
-                        : customTheme === "violet"
-                          ? "text-violet-400"
-                          : "text-primary"
-                    }`}
-                  >
-                    DevNest
-                  </span>
-
-                  <span className="text-[10px] text-muted-foreground font-medium -mt-1">
-                    Tech Community
-                  </span>
-                </div>
-              </Link>
-
-              {/* Desktop Nav */}
-              <div className="hidden md:flex items-center gap-2">
-                {navItems.map((item) => (
+            {/* Desktop Segmented Navigation */}
+            <nav className="hidden md:flex items-center gap-1 p-1 rounded-2xl bg-white border-2 border-black shadow-[3px_3px_0px_#000]">
+              {navItems.map((item) => {
+                const active = isNavActive(item.href);
+                return (
                   <Link
                     key={item.href}
                     href={item.href}
-                    className={`px-4 py-2.5 rounded-xl text-sm font-medium transition-colors duration-150 ${
-                      customTheme === "blue-gold"
-                        ? "hover:text-blue-400"
-                        : customTheme === "violet"
-                          ? "hover:text-violet-300"
-                          : "hover:text-primary"
+                    className={`relative px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all duration-150 ${
+                      active
+                        ? "bg-[#FFE600] text-black border-2 border-black shadow-[2px_2px_0px_#000]"
+                        : "text-black hover:bg-[#FAF7EE] hover:border-2 hover:border-black hover:shadow-[2px_2px_0px_#000] border-2 border-transparent"
                     }`}
                   >
                     {item.label}
                   </Link>
-                ))}
-              </div>
+                );
+              })}
+            </nav>
 
-              {/* Right actions */}
-              <div className="flex items-center gap-2">
-                <Button
-                  asChild
-                  size="sm"
-                  className={`${
-                    customTheme === "violet"
-                      ? "bg-violet-600 hover:bg-violet-500 text-white"
-                      : "bg-primary hover:bg-primary/90 text-primary-foreground"
-                  } hidden sm:inline-flex gap-2 transition-colors duration-150`}
-                >
-                  <Link href="/membership">
-                    <span className="emoji-white">🚀</span> Join
-                  </Link>
-                </Button>
+            {/* Right Action */}
+            <div className="flex items-center gap-2.5">
+              <Button
+                size="sm"
+                onClick={openJoinModal}
+                className="hidden sm:inline-flex gap-1.5 font-bold text-xs bg-[#FFE600] text-black border-2 border-black shadow-[3px_3px_0px_#000] hover:bg-[#FFDE59] hover:shadow-[5px_5px_0px_#000] hover:-translate-x-0.5 hover:-translate-y-0.5 active:translate-x-0.5 active:translate-y-0.5 active:shadow-none"
+              >
+                <span>Join Community</span>
+                <ArrowUpRight className="w-3.5 h-3.5" />
+              </Button>
 
-                {/* Mobile Menu Button */}
-                <button
-                  onClick={() => setIsMenuOpen(!isMenuOpen)}
-                  className={`md:hidden p-2.5 rounded-xl transition-colors duration-150 border border-transparent ${
-                    customTheme === "violet"
-                      ? "hover:bg-violet-500/10 hover:border-violet-400/30"
-                      : "hover:bg-primary/10 hover:border-primary/30"
-                  }`}
-                  aria-label="Toggle menu"
-                  aria-expanded={isMenuOpen}
-                >
-                  <div className="w-6 h-5 flex flex-col justify-between items-end relative">
-                    <span
-                      className={`h-0.5 bg-foreground rounded-full transition-[width,transform] duration-200 ${
-                        isMenuOpen
-                          ? "w-6 rotate-45 translate-y-2"
-                          : "w-6"
-                      }`}
-                    />
-
-                    <span
-                      className={`h-0.5 bg-foreground rounded-full transition-[width,opacity] duration-200 ${
-                        isMenuOpen
-                          ? "w-0 opacity-0"
-                          : "w-5"
-                      }`}
-                    />
-
-                    <span
-                      className={`h-0.5 bg-foreground rounded-full transition-[width,transform] duration-200 ${
-                        isMenuOpen
-                          ? "w-6 -rotate-45 -translate-y-2"
-                          : "w-4"
-                      }`}
-                    />
-                  </div>
-                </button>
-              </div>
+              {/* Mobile hamburger toggle */}
+              <button
+                onClick={() => setIsMenuOpen(!isMenuOpen)}
+                className="md:hidden p-2.5 rounded-xl border-2 border-black bg-[#FFE600] text-black shadow-[2px_2px_0px_#000] hover:shadow-[3px_3px_0px_#000] active:translate-x-0.5 active:translate-y-0.5 active:shadow-none transition-all focus-visible:outline-none"
+                aria-label="Toggle navigation menu"
+                aria-expanded={isMenuOpen}
+              >
+                <div className="w-5 h-4 flex flex-col justify-between items-center relative">
+                  <span
+                    className={`h-0.5 bg-black rounded-full transition-all duration-200 ${
+                      isMenuOpen ? "w-5 rotate-45 translate-y-1.5" : "w-5"
+                    }`}
+                  />
+                  <span
+                    className={`h-0.5 bg-black rounded-full transition-all duration-200 ${
+                      isMenuOpen ? "opacity-0 scale-x-0" : "w-5"
+                    }`}
+                  />
+                  <span
+                    className={`h-0.5 bg-black rounded-full transition-all duration-200 ${
+                      isMenuOpen ? "w-5 -rotate-45 -translate-y-2" : "w-5"
+                    }`}
+                  />
+                </div>
+              </button>
             </div>
+          </div>
 
-            {/* Mobile Nav */}
-            {isMenuOpen && (
-              <div className="md:hidden pb-6 pt-4 space-y-2 animate-in slide-in-from-top duration-150 border-t border-border mt-2">
-                {navItems.map((item) => (
+          {/* Mobile Navigation Drawer */}
+          {isMenuOpen && (
+            <div className="md:hidden pb-6 pt-3 space-y-1.5 border-t-2 border-black bg-white rounded-2xl p-4 mt-2 shadow-[4px_4px_0px_#000] animate-in slide-in-from-top duration-200">
+              {navItems.map((item) => {
+                const active = isNavActive(item.href);
+                return (
                   <Link
                     key={item.href}
                     href={item.href}
-                    className={`block px-5 py-3.5 rounded-xl text-base font-medium transition-colors duration-150 active:scale-[0.98] border border-border group ${
-                      customTheme === "violet"
-                        ? "hover:bg-violet-500/10 hover:text-violet-300 hover:border-violet-400/40"
-                        : "hover:bg-primary/10 hover:text-primary hover:border-primary/40"
-                    }`}
                     onClick={() => setIsMenuOpen(false)}
+                    className={`flex items-center justify-between px-4 py-2.5 rounded-xl text-sm font-bold transition-all duration-150 ${
+                      active
+                        ? "bg-[#FFE600] text-black border-2 border-black shadow-[2px_2px_0px_#000]"
+                        : "text-black hover:bg-[#FAF7EE] border-2 border-transparent"
+                    }`}
                   >
-                    <span className="flex items-center justify-between">
-                      {item.label}
-
-                      <span
-                        className={`${
-                          customTheme === "violet"
-                            ? "text-violet-300"
-                            : "text-primary"
-                        } opacity-0 group-hover:opacity-100 transition-opacity duration-150`}
-                      >
-                        →
-                      </span>
-                    </span>
+                    <span>{item.label}</span>
+                    <ChevronRight
+                      className={`w-4 h-4 transition-transform ${
+                        active ? "text-black translate-x-0.5" : "text-neutral-500"
+                      }`}
+                    />
                   </Link>
-                ))}
+                );
+              })}
 
-                <div className="pt-3 px-1">
-                  <Button
-                    className={`w-full gap-2 py-4 font-semibold text-base rounded-xl ${
-                      customTheme === "violet"
-                        ? "bg-violet-600 hover:bg-violet-500 text-white"
-                        : "bg-primary hover:bg-primary/90 text-primary-foreground"
-                    } transition-colors duration-150`}
-                    asChild
-                  >
-                    <Link href="/join">
-                      <span className="flex items-center gap-2 justify-center">
-                        <span className="emoji-white">🚀</span>
-                        Join DevNest
-                      </span>
-                    </Link>
-                  </Button>
-                </div>
+              <div className="pt-2">
+                <Button
+                  onClick={() => {
+                    setIsMenuOpen(false);
+                    openJoinModal();
+                  }}
+                  className="w-full gap-2 py-3 rounded-xl font-bold bg-[#FFE600] text-black border-2 border-black shadow-[3px_3px_0px_#000]"
+                >
+                  <span>Join DevNest Community</span>
+                  <ArrowUpRight className="w-4 h-4" />
+                </Button>
               </div>
-            )}
+            </div>
+          )}
+        </div>
+
+        {/* Signature Neobrutalism Scrolling Ticker Banner */}
+        <div className="w-full bg-[#FFE600] border-t-2 border-black py-2 overflow-hidden text-black font-mono font-bold text-xs uppercase tracking-widest select-none">
+          <div className="neo-marquee-content flex gap-8 whitespace-nowrap">
+            <span>✦ DEVNEST TECH CLUB</span>
+            <span>•</span>
+            <span>LTSU PUNJAB</span>
+            <span>•</span>
+            <span>BUILD • CODE • INNOVATE</span>
+            <span>•</span>
+            <span>HACKATHONS &amp; CTF</span>
+            <span>•</span>
+            <span>AI &amp; CLOUD ARCHITECTURE</span>
+            <span>•</span>
+            <span>CYBERSECURITY</span>
+            <span>•</span>
+            <span>GOOGLE CAMPUS AMBASSADOR INITIATIVE</span>
+            <span>•</span>
+            <span>150+ ACTIVE STUDENT DEVELOPERS</span>
+            <span>✦</span>
+            <span>✦ DEVNEST TECH CLUB</span>
+            <span>•</span>
+            <span>LTSU PUNJAB</span>
+            <span>•</span>
+            <span>BUILD • CODE • INNOVATE</span>
+            <span>•</span>
+            <span>HACKATHONS &amp; CTF</span>
+            <span>•</span>
+            <span>AI &amp; CLOUD ARCHITECTURE</span>
+            <span>•</span>
+            <span>CYBERSECURITY</span>
+            <span>•</span>
+            <span>GOOGLE CAMPUS AMBASSADOR INITIATIVE</span>
+            <span>•</span>
+            <span>150+ ACTIVE STUDENT DEVELOPERS</span>
+            <span>✦</span>
           </div>
-        </nav>
+        </div>
+      </header>
 
-        {/* Main Content */}
-        <main className="flex-grow relative z-[2]">{children}</main>
+      {/* Main Content Area with clearance for mobile bottom bar */}
+      <main className="flex-grow relative z-10 pb-20 md:pb-0">{children}</main>
 
-        {/* Footer */}
-        <footer className="bg-muted/50 border-t border-border/40 mt-20">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 mb-8">
-              {/* Brand */}
-              <div className="text-center sm:text-left">
-                <div className="flex items-center gap-2 mb-4 justify-center sm:justify-start">
+      {/* Neobrutalism Signature Footer */}
+      <footer className="relative z-10 bg-[#FAF7EE] border-t-3 border-black text-black mt-24 shadow-[0_-4px_0px_#000]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 lg:gap-8 mb-16">
+            {/* Column 1: Brand Bio */}
+            <div className="lg:col-span-2 space-y-4">
+              <Link href="/" className="inline-flex items-center gap-3 group">
+                <div className="w-10 h-10 rounded-xl p-1 bg-[#FFE600] border-2 border-black shadow-[2px_2px_0px_#000] flex items-center justify-center">
                   <Image
                     src="/logo.svg"
                     alt="DevNest Logo"
-                    width={40}
-                    height={40}
-                    className="w-10 h-10 object-contain"
+                    width={36}
+                    height={36}
+                    className="w-full h-full object-contain"
                   />
-
-                  <span
-                    className={`font-poppins font-bold text-lg ${
-                      customTheme === "violet"
-                        ? "text-violet-400"
-                        : "text-primary"
-                    }`}
-                  >
-                    DevNest
-                  </span>
                 </div>
+                <span className="font-poppins font-black text-xl tracking-tight text-black">
+                  Dev<span className="bg-[#FFE600] px-1.5 py-0.5 ml-0.5 rounded-md border-2 border-black shadow-[1.5px_1.5px_0px_#000]">Nest</span>
+                </span>
+              </Link>
 
-                <p className="text-sm text-muted-foreground">
-                  Build. Learn. Innovate.
-                </p>
+              <p className="text-sm text-neutral-700 leading-relaxed max-w-sm font-medium">
+                The premier technical club of Lamrin Tech Skills University Punjab. Fostering hands-on innovation, curiosity, and leadership across software, AI, cloud, and cybersecurity.
+              </p>
+
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#FFE600] border-2 border-black shadow-[2px_2px_0px_#000] text-xs text-black font-bold">
+                <span className="w-2 h-2 rounded-full bg-black animate-pulse" />
+                Google Campus Ambassador Initiative
               </div>
+            </div>
 
-              {/* Quick Links */}
-              <div className="text-center sm:text-left">
-                <h3 className="font-poppins font-semibold mb-4">
-                  Quick Links
-                </h3>
-
-                <ul className="space-y-2 text-sm">
-                  {navItems.map((item) => (
-                    <li key={item.href}>
-                      <Link
-                        href={item.href}
-                        className={`text-muted-foreground transition-colors duration-150 ${
-                          customTheme === "violet"
-                            ? "hover:text-violet-300"
-                            : "hover:text-primary"
-                        }`}
-                      >
-                        {item.label}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              {/* Community */}
-              <div className="text-center sm:text-left">
-                <h3 className="font-poppins font-semibold mb-4">
-                  Community
-                </h3>
-
-                <ul className="space-y-2 text-sm">
-                  <li>
+            {/* Column 2: Navigation */}
+            <div>
+              <h3 className="font-space font-bold text-xs uppercase tracking-[0.15em] text-black mb-4">
+                Explore
+              </h3>
+              <ul className="space-y-2.5 text-sm font-semibold">
+                {navItems.map((item) => (
+                  <li key={item.href}>
                     <Link
-                      href="/blogs"
-                      className={`text-muted-foreground transition-colors duration-150 ${
-                        customTheme === "violet"
-                          ? "hover:text-violet-300"
-                          : "hover:text-primary"
-                      }`}
+                      href={item.href}
+                      className="text-neutral-700 hover:text-black hover:underline transition-colors duration-150 inline-flex items-center gap-1 group"
                     >
-                      Blog
+                      <span>{item.label}</span>
                     </Link>
                   </li>
+                ))}
+              </ul>
+            </div>
 
-                  <li>
-                    <a
-                      href="#"
-                      className={`text-muted-foreground transition-colors duration-150 ${
-                        customTheme === "violet"
-                          ? "hover:text-violet-300"
-                          : "hover:text-primary"
-                      }`}
-                    >
-                      Discord
-                    </a>
-                  </li>
+            {/* Column 3: Community & Resources */}
+            <div>
+              <h3 className="font-space font-bold text-xs uppercase tracking-[0.15em] text-black mb-4">
+                Community
+              </h3>
+              <ul className="space-y-2.5 text-sm font-semibold">
+                <li>
+                  <Link
+                    href="/membership"
+                    className="text-neutral-700 hover:text-black hover:underline transition-colors duration-150"
+                  >
+                    Membership Registration
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/events/schedule"
+                    className="text-neutral-700 hover:text-black hover:underline transition-colors duration-150"
+                  >
+                    2026 Event Schedule
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/certificate-download"
+                    className="text-neutral-700 hover:text-black hover:underline transition-colors duration-150"
+                  >
+                    Download Certificate
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/hall-of-fame"
+                    className="text-neutral-700 hover:text-black hover:underline transition-colors duration-150"
+                  >
+                    Hall of Fame
+                  </Link>
+                </li>
+              </ul>
+            </div>
 
-                  <li>
-                    <a
-                      href="#"
-                      className={`text-muted-foreground transition-colors duration-150 ${
-                        customTheme === "violet"
-                          ? "hover:text-violet-300"
-                          : "hover:text-primary"
-                      }`}
-                    >
-                      Forum
-                    </a>
-                  </li>
-                </ul>
-              </div>
-
-              {/* Newsletter */}
-              <div className="text-center sm:text-left">
-                <h3 className="font-poppins font-semibold mb-4">
+            {/* Column 4: Newsletter */}
+            <div>
+              <div className="p-5 rounded-2xl bg-white border-2 border-black shadow-[4px_4px_0px_#000]">
+                <h3 className="font-space font-bold text-xs uppercase tracking-[0.15em] text-black mb-2">
                   Stay Updated
                 </h3>
-
-                <div className="flex flex-col sm:flex-row gap-2">
+                <p className="text-xs text-neutral-600 mb-3 leading-relaxed font-medium">
+                  Get notified about upcoming hackathons, workshops, and tech talks.
+                </p>
+                <div className="space-y-2.5">
                   <input
                     type="email"
-                    placeholder="Your email"
-                    className={`flex-1 px-3 py-2 rounded-lg bg-input text-sm text-foreground placeholder-muted-foreground border border-border focus:outline-none focus:ring-2 ${
-                      customTheme === "violet"
-                        ? "focus:ring-violet-400"
-                        : "focus:ring-primary"
-                    }`}
+                    placeholder="name@university.edu"
+                    className="w-full px-3.5 py-2 rounded-xl bg-[#FAF7EE] text-xs text-black placeholder:text-neutral-500 border-2 border-black shadow-[2px_2px_0px_#000] focus:outline-none focus:ring-2 focus:ring-black transition-all font-medium"
                   />
-
                   <Button
                     size="sm"
-                    className={`w-full sm:w-auto transition-colors duration-150 ${
-                      customTheme === "violet"
-                        ? "bg-violet-600 hover:bg-violet-500 text-white"
-                        : "bg-primary hover:bg-primary/90 text-primary-foreground"
-                    }`}
+                    className="w-full bg-[#FFE600] hover:bg-[#FFDE59] text-black text-xs font-bold rounded-xl border-2 border-black shadow-[3px_3px_0px_#000] hover:-translate-x-0.5 hover:-translate-y-0.5 active:translate-x-0.5 active:translate-y-0.5 active:shadow-none transition-all"
+                    onClick={() => alert("Thank you for subscribing to DevNest updates!")}
                   >
                     Subscribe
                   </Button>
                 </div>
               </div>
             </div>
+          </div>
 
-            {/* Social Links */}
-            <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-8 border-t border-border/40">
-              <p className="text-xs sm:text-sm text-muted-foreground text-center sm:text-left">
-                © 2026 DevNest | Built with{" "}
-                <span className="emoji-white">💚</span> by Innovators
-              </p>
+          {/* Sub-Footer Divider & Socials */}
+          <div className="pt-8 border-t-2 border-black flex flex-col sm:flex-row items-center justify-between gap-4">
+            <p className="text-xs font-semibold text-neutral-700 text-center sm:text-left">
+              © 2026 DevNest • Lamrin Tech Skills University Punjab • All rights reserved.
+            </p>
 
-              <div className="flex items-center gap-4 sm:gap-4">
-                <a
-                  href="https://github.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={`text-muted-foreground transition-colors duration-150 p-2 rounded-lg ${
-                    customTheme === "violet"
-                      ? "hover:text-violet-300 hover:bg-violet-500/10"
-                      : "hover:text-primary hover:bg-primary/10"
-                  }`}
-                  aria-label="GitHub"
-                  title="GitHub"
-                >
-                  <Github className="w-5 h-5" />
-                </a>
+            <div className="flex items-center gap-3">
+              <a
+                href="https://github.com/devnest-tech"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-10 h-10 flex items-center justify-center rounded-xl bg-white border-2 border-black text-black shadow-[2px_2px_0px_#000] hover:bg-[#FFE600] hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[4px_4px_0px_#000] active:translate-x-0.5 active:translate-y-0.5 active:shadow-none transition-all"
+                aria-label="GitHub"
+                title="GitHub"
+              >
+                <Github className="w-4 h-4" />
+              </a>
 
-                <a
-                  href="https://www.linkedin.com/company/devnestclub"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={`text-muted-foreground transition-colors duration-150 p-2 rounded-lg ${
-                    customTheme === "violet"
-                      ? "hover:text-violet-300 hover:bg-violet-500/10"
-                      : "hover:text-primary hover:bg-primary/10"
-                  }`}
-                  aria-label="LinkedIn"
-                  title="LinkedIn"
-                >
-                  <Linkedin className="w-5 h-5" />
-                </a>
+              <a
+                href="https://www.linkedin.com/company/devnestclub"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-10 h-10 flex items-center justify-center rounded-xl bg-white border-2 border-black text-black shadow-[2px_2px_0px_#000] hover:bg-[#70D6FF] hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[4px_4px_0px_#000] active:translate-x-0.5 active:translate-y-0.5 active:shadow-none transition-all"
+                aria-label="LinkedIn"
+                title="LinkedIn"
+              >
+                <Linkedin className="w-4 h-4" />
+              </a>
 
-                <a
-                  href="https://www.instagram.com/devnest_tech_club/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={`text-muted-foreground transition-colors duration-150 p-2 rounded-lg ${
-                    customTheme === "violet"
-                      ? "hover:text-violet-300 hover:bg-violet-500/10"
-                      : "hover:text-primary hover:bg-primary/10"
-                  }`}
-                  aria-label="Instagram"
-                  title="Instagram"
-                >
-                  <Instagram className="w-5 h-5" />
-                </a>
+              <a
+                href="https://www.instagram.com/devnest_tech_club/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-10 h-10 flex items-center justify-center rounded-xl bg-white border-2 border-black text-black shadow-[2px_2px_0px_#000] hover:bg-[#FF70A6] hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[4px_4px_0px_#000] active:translate-x-0.5 active:translate-y-0.5 active:shadow-none transition-all"
+                aria-label="Instagram"
+                title="Instagram"
+              >
+                <Instagram className="w-4 h-4" />
+              </a>
 
-                <a
-                  href="mailto:devnest.techclub@gmail.com"
-                  className={`text-muted-foreground transition-colors duration-150 p-2 rounded-lg ${
-                    customTheme === "violet"
-                      ? "hover:text-violet-300 hover:bg-violet-500/10"
-                      : "hover:text-primary hover:bg-primary/10"
-                  }`}
-                  aria-label="Email"
-                  title="Email"
-                >
-                  <MessageCircle className="w-5 h-5" />
-                </a>
-              </div>
+              <a
+                href="mailto:devnest.techclub@gmail.com"
+                className="w-10 h-10 flex items-center justify-center rounded-xl bg-white border-2 border-black text-black shadow-[2px_2px_0px_#000] hover:bg-[#88EA73] hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[4px_4px_0px_#000] active:translate-x-0.5 active:translate-y-0.5 active:shadow-none transition-all"
+                aria-label="Email"
+                title="Email DevNest"
+              >
+                <Mail className="w-4 h-4" />
+              </a>
             </div>
           </div>
-        </footer>
-      </div>
+        </div>
+      </footer>
+
+      {/* Ergonomic Thumb-Friendly Mobile Bottom Navigation Dock */}
+      <nav
+        aria-label="Mobile Bottom Navigation"
+        className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-[#FAF7EE] border-t-2 border-black pb-safe shadow-[0_-3px_0px_#000] transition-all duration-200"
+      >
+        <div className="grid grid-cols-5 items-center h-16 px-2">
+          {mobileBottomNav.map((item) => {
+            const active =
+              item.href === "/"
+                ? router.pathname === "/"
+                : router.pathname.startsWith(item.href) ||
+                  (item.href === "/blogs" && router.pathname.startsWith("/blog"));
+            const Icon = item.icon;
+
+            if (item.highlight) {
+              return (
+                <button
+                  key={item.href}
+                  type="button"
+                  onClick={openJoinModal}
+                  className="flex flex-col items-center justify-center -mt-3.5 group focus:outline-none"
+                  aria-label="Join DevNest Community"
+                >
+                  <div className="w-12 h-12 rounded-2xl bg-[#FFE600] text-black border-2 border-black flex items-center justify-center shadow-[3px_3px_0px_#000] group-hover:scale-105 active:scale-95 transition-all">
+                    <Icon className="w-6 h-6" />
+                  </div>
+                  <span className="text-[10px] font-bold text-black mt-1">
+                    {item.label}
+                  </span>
+                </button>
+              );
+            }
+
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                className={`flex flex-col items-center justify-center py-1.5 rounded-xl transition-all duration-150 min-h-[44px] ${
+                  active
+                    ? "text-black font-bold"
+                    : "text-neutral-600 hover:text-black"
+                }`}
+              >
+                <div className={`p-1 rounded-lg ${active ? "bg-[#FFE600] border border-black shadow-[1px_1px_0px_#000]" : ""}`}>
+                  <Icon className="w-5 h-5" />
+                </div>
+                <span className="text-[10px] font-bold tracking-tight mt-0.5">
+                  {item.label}
+                </span>
+              </Link>
+            );
+          })}
+        </div>
+      </nav>
     </div>
   );
 }

@@ -1,5 +1,6 @@
-import { Calendar, Clock, Users, Zap, ChevronDown } from "lucide-react";
+import { Calendar, Clock, Users, Zap, ChevronDown, ArrowLeft, CheckCircle2, Sparkles, ArrowRight } from "lucide-react";
 import Link from "next/link";
+import Head from "next/head";
 import { Layout } from "@/components/Layout";
 import { Button } from "@/components/ui/button";
 import {
@@ -18,7 +19,7 @@ const events = [
 		speaker: "Mr. Amit Kumar Jaiswal",
 		speakerRole: "Founder – Aptitude360.online",
 		speakerDetails: "IIM Graduate | 15+ years | Mentored 10,000+ students | UPSC, CAT, SSC, Banking Expert",
-		icon: <span className="emoji-white">🎓</span>,
+		icon: "🎓",
 		status: "completed",
 		schedule: [
 			{ time: "10:00 - 10:10", activity: "Inaugural Address", description: "Welcome address and introduction of the speaker" },
@@ -31,7 +32,7 @@ const events = [
 	{
 		id: 2,
 		title: "Promptathon in Yuva Kaushal",
-		subtitle: <>AI Prompt Engineering Competition - Grand Success! <span className="emoji-white">🎉</span></>,
+		subtitle: "AI Prompt Engineering Competition – Grand Success!",
 		month: "February 25, 2026",
 		duration: "4 Hours",
 		teamSize: "Individual or 2 members",
@@ -50,9 +51,9 @@ const events = [
 	{
 		id: 3,
 		title: "DataForge Datathon & CyberSprint CTF",
-		subtitle: "Dual Track Competition",
+		subtitle: "Dual Track Flagship Innovation Competition",
 		month: "April 2026",
-		icon: <span className="emoji-white">🛡️</span>,
+		icon: "🛡️",
 		status: "upcoming",
 		schedule: [
 			{ time: "09:00 - 09:30", activity: "Registration", description: "Participant check-in for Datathon and CTF tracks" },
@@ -67,9 +68,9 @@ const events = [
 	{
 		id: 4,
 		title: "IdeaFusion Ideathon",
-		subtitle: "Innovation & Entrepreneurship",
+		subtitle: "Innovation & Startup Ideation",
 		month: "May 2026",
-		icon: <span className="emoji-white">💡</span>,
+		icon: "💡",
 		status: "upcoming",
 		schedule: [
 			{ time: "09:30 - 10:00", activity: "Registration", description: "Team check-in and seating" },
@@ -84,9 +85,9 @@ const events = [
 	{
 		id: 5,
 		title: "CyberSprint Hackathon",
-		subtitle: "Cybersecurity Focus",
+		subtitle: "Cybersecurity & Web Defense Focus",
 		month: "June 2026",
-		icon: <span className="emoji-white">🔐</span>,
+		icon: "🔐",
 		status: "upcoming",
 		schedule: [
 			{ time: "09:00 - 09:30", activity: "Registration & Team Check-in", description: "Team verification, ID confirmation, system allocation" },
@@ -99,51 +100,92 @@ const events = [
 			{ time: "17:30 - 18:00", activity: "Valedictory Session", description: "Result declaration, prize distribution, closing remarks" },
 		],
 	},
+	{
+		id: 6,
+		title: "Prarambh 2026: Tech Quiz & Capture The Flag (CTF)",
+		subtitle: "Venue: IBM Lab in Lamrin Tech Skills University Punjab — Tech Quiz (1st Year) & CTF (2nd/3rd Year Seniors)",
+		month: "August 18, 2026",
+		duration: "Full Day (09:30 - 17:30)",
+		teamSize: "Tech Quiz: Individual | CTF: 1-2 Members",
+		icon: "🏆",
+		status: "upcoming",
+		schedule: [
+			{ time: "09:30 - 10:00", activity: "Reporting & Verification", description: "Candidate check-in, student ID verification, and system setup in IBM Lab, Lamrin Tech Skills University Punjab" },
+			{ time: "10:00 - 10:30", activity: "Opening Address & Rules Briefing", description: "Inauguration, announcement of rules for Tech Quiz (Freshers) and CTF (2nd & 3rd Year separate sections)" },
+			{ time: "10:30 - 13:00", activity: "Phase I: Tech Quiz & CTF Preliminary", description: "Tech Quiz Round 1 & 2 (1st Year Freshers) | CTF Jeopardy Challenges & Flag Captures (Senior Divisions)" },
+			{ time: "13:00 - 14:00", activity: "Lunch & Networking Break", description: "Buffet lunch & networking with senior mentors" },
+			{ time: "14:00 - 16:15", activity: "Phase II: Tech Quiz Finale & CTF Advanced", description: "Tech Quiz Rapid-Fire Buzzer Finale | CTF Advanced Exploitation & Defense flags" },
+			{ time: "16:15 - 17:00", activity: "Scoreboard Freeze & Final Evaluation", description: "Jury verification of flags and scores across all three divisions" },
+			{ time: "17:00 - 17:30", activity: "Prize Distribution & Valedictory", description: "Announcement of Freshers Tech Quiz Champions, 2nd Year CTF Winners, and 3rd Year CTF Winners" },
+		],
+	},
 ];
 
 export default function SchedulePage() {
 	return (
 		<Layout>
-			<div className="min-h-screen bg-gradient-to-b from-background via-background to-muted/30 py-16 sm:py-20">
-				<div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-					{/* Header */}
-					<div className="mb-12 sm:mb-16 text-center">
-						<div className="mb-6 inline-block">
-							<span className="inline-block px-4 py-2 rounded-full bg-primary/15 border border-primary/40 text-primary text-sm font-semibold shadow-sm">
-								<span className="emoji-white">📅</span> February - June 2026
-							</span>
+			<Head>
+				<title>DevNest | 2026 Event Schedule & Roadmap</title>
+				<meta
+					name="description"
+					content="Complete official schedule of DevNest hackathons, technical sessions, and competitions for 2026."
+				/>
+			</Head>
+
+			<div className="min-h-screen py-16 sm:py-24">
+				<div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+					{/* Navigation Back Link */}
+					<div className="mb-8">
+						<Link
+							href="/events"
+							className="inline-flex items-center gap-2 text-xs font-semibold text-muted-foreground hover:text-primary transition-colors duration-200"
+						>
+							<ArrowLeft className="w-4 h-4" />
+							<span>Back to All Events</span>
+						</Link>
+					</div>
+
+					{/* Left-Aligned Header */}
+					<div className="mb-12 text-left">
+						<div className="badge-pill mb-4">
+							<Sparkles className="w-3.5 h-3.5 text-primary" />
+							<span>February – June 2026 Roadmap</span>
+							<span className="text-muted-foreground/60">•</span>
+							<span className="text-foreground/80 font-medium">Official Timeline</span>
 						</div>
 
-						<h1 className="text-4xl sm:text-5xl md:text-6xl font-poppins font-bold mb-4 glow-text">
-							Event Schedule
+						<h1 className="text-4xl sm:text-5xl md:text-6xl font-poppins font-bold tracking-tight mb-4 text-foreground">
+							Event <span className="text-gradient-primary">Schedule</span>
 						</h1>
 
-						<p className="mx-auto mt-4 sm:mt-6 max-w-2xl text-base sm:text-lg text-muted-foreground px-2">
-							Technical, Innovation & Industry Connect Events - 2026
-						</p>
-
-						<p className="mx-auto mt-2 max-w-3xl text-xs sm:text-sm text-muted-foreground">
-							Lamrin Tech Skills University Punjab | University School of Engineering & Technology (USET)
+						<p className="max-w-2xl text-base sm:text-lg text-muted-foreground leading-relaxed">
+							Technical, Innovation & Industry Connect Flagship Events — Lamrin Tech Skills University Punjab.
+							Click any session to view the complete hourly breakdown and participation details.
 						</p>
 					</div>
 
 					{/* Events Accordion */}
-					<Accordion type="single" collapsible className="space-y-4 sm:space-y-6">
+					<Accordion type="single" collapsible className="space-y-4">
 						{events.map((event, idx) => (
 							<AccordionItem
 								key={event.id}
 								value={`event-${event.id}`}
-								className="glass-effect rounded-xl overflow-hidden border-none hover-lift"
+								className="glass-panel rounded-2xl border border-border/80 hover:border-primary/40 shadow-subtle transition-all duration-200 overflow-hidden"
 							>
-								<AccordionTrigger className="hover:no-underline p-6 sm:p-8 [&[data-state=open]>div>div>svg]:rotate-180">
-									<div className="flex flex-col sm:flex-row items-start justify-between gap-4 w-full">
-										<div className="flex items-start gap-3 sm:gap-4 flex-1">
-											<span className="text-3xl sm:text-4xl">{event.icon}</span>
+								<AccordionTrigger className="hover:no-underline p-5 sm:p-7 [&[data-state=open]>div>div>div>svg]:rotate-180">
+									<div className="flex flex-col sm:flex-row items-start justify-between gap-4 w-full text-left">
+										<div className="flex items-start gap-3.5 sm:gap-4 flex-1">
+											<span className="text-3xl sm:text-4xl shrink-0" aria-hidden="true">{event.icon}</span>
 
-											<div className="flex-1 text-left">
-												<h2 className="text-lg sm:text-xl md:text-2xl font-poppins font-bold mb-1">
-													Event {idx + 1}: {event.title}
-												</h2>
+											<div className="flex-1">
+												<div className="flex items-center gap-2 mb-1 flex-wrap">
+													<span className="px-2 py-0.5 rounded-md bg-secondary text-[11px] font-semibold text-muted-foreground border border-border/60">
+														Event {idx + 1}
+													</span>
+													<h2 className="text-base sm:text-lg md:text-xl font-poppins font-bold text-foreground">
+														{event.title}
+													</h2>
+												</div>
 
 												<p className="text-xs sm:text-sm text-muted-foreground">
 													{event.subtitle}
@@ -151,98 +193,117 @@ export default function SchedulePage() {
 											</div>
 										</div>
 
-										<div className="flex items-center gap-3 flex-wrap">
-											{event.status === "completed" && (
-												<div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-green-500/20 text-green-600 dark:text-green-400 text-xs sm:text-sm font-semibold border border-green-500/30 shadow-sm">
-													✓ Completed
+										<div className="flex items-center gap-2.5 shrink-0 self-end sm:self-center">
+											{event.status === "completed" ? (
+												<div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-semibold border border-primary/20">
+													<CheckCircle2 className="w-3.5 h-3.5" />
+													<span>Completed</span>
+												</div>
+											) : (
+												<div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-secondary text-muted-foreground text-xs font-medium border border-border/60">
+													<Clock className="w-3.5 h-3.5" />
+													<span>Upcoming</span>
 												</div>
 											)}
 
-											<div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/25 text-primary text-xs sm:text-sm font-semibold border border-primary/20 shadow-sm">
-												<Calendar className="h-3 w-3 sm:h-4 sm:w-4" />
-												{event.month}
+											<div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-secondary text-foreground text-xs font-semibold border border-border/60">
+												<Calendar className="h-3 w-3 text-primary" />
+												<span>{event.month}</span>
 											</div>
 
-											<ChevronDown className="h-5 w-5 text-primary shrink-0 transition-transform duration-200" />
+											<div className="p-1 rounded-lg bg-secondary text-muted-foreground">
+												<ChevronDown className="h-4 w-4 text-primary shrink-0 transition-transform duration-200" />
+											</div>
 										</div>
 									</div>
 								</AccordionTrigger>
 
-								<AccordionContent className="px-6 sm:px-8 pb-6 sm:pb-8">
-									<div className="pt-4 border-t border-border/40">
-										{/* Completion Badge for completed events */}
+								<AccordionContent className="px-5 sm:px-7 pb-6 sm:pb-7">
+									<div className="pt-4 border-t border-border/50">
+										{/* Completion Badge */}
 										{event.status === "completed" && (
-											<div className="mb-6 rounded-lg bg-green-500/10 border border-green-500/30 p-4 sm:p-6">
-												<div className="flex items-center gap-2 mb-2">
-													<span className="text-2xl">✓</span>
-													<p className="font-semibold text-base sm:text-lg text-green-600 dark:text-green-400">
-														Event Successfully Completed!
-													</p>
+											<div className="mb-6 rounded-xl bg-primary/5 border border-primary/20 p-4 sm:p-5 flex items-center justify-between gap-4 flex-wrap">
+												<div className="flex items-center gap-3">
+													<div className="w-9 h-9 rounded-xl bg-primary/15 border border-primary/25 flex items-center justify-center text-primary">
+														<CheckCircle2 className="w-5 h-5" />
+													</div>
+													<div>
+														<p className="font-bold text-sm text-foreground">
+															Event Successfully Executed
+														</p>
+														{event.attendees && (
+															<p className="text-xs text-muted-foreground">
+																<strong>{event.attendees}</strong> participants took part and received certificates
+															</p>
+														)}
+													</div>
 												</div>
 
-												{event.attendees && (
-													<p className="text-xs sm:text-sm text-muted-foreground">
-														<strong>{event.attendees}</strong> participants attended this event
-													</p>
-												)}
+												<Link
+													href="/certificate-download"
+													className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-primary text-primary-foreground text-xs font-semibold shadow-subtle hover:shadow-glow-primary transition-all duration-200 active:scale-95"
+												>
+													<span>Download Certificate</span>
+													<ArrowRight className="w-3.5 h-3.5" />
+												</Link>
 											</div>
 										)}
 
-										{/* Event Details */}
+										{/* Speaker Box */}
 										{event.speaker && (
-											<div className="mb-6 rounded-lg bg-background/50 border border-border/40 p-4 sm:p-6">
-												<p className="font-semibold text-sm sm:text-base mb-1">
-													Guest Speaker: {event.speaker}
+											<div className="mb-6 rounded-xl bg-secondary/50 border border-border/60 p-4 sm:p-5">
+												<p className="font-bold text-sm text-foreground mb-0.5">
+													Featured Speaker: {event.speaker}
 												</p>
-												<p className="text-xs sm:text-sm text-muted-foreground mb-2">
+												<p className="text-xs font-medium text-primary mb-1.5">
 													{event.speakerRole}
 												</p>
-												<p className="text-xs sm:text-sm text-muted-foreground">
+												<p className="text-xs text-muted-foreground leading-relaxed">
 													{event.speakerDetails}
 												</p>
 											</div>
 										)}
 
 										{event.duration && (
-											<div className="mb-6 flex flex-wrap gap-3 sm:gap-4 text-xs sm:text-sm text-muted-foreground">
-												<span className="flex items-center gap-2">
-													<Clock className="h-4 w-4 text-primary" />
-													Duration: {event.duration}
+											<div className="mb-6 flex flex-wrap gap-4 text-xs text-muted-foreground">
+												<span className="flex items-center gap-1.5">
+													<Clock className="h-3.5 w-3.5 text-primary" />
+													Duration: <strong className="text-foreground">{event.duration}</strong>
 												</span>
 
 												{event.teamSize && (
-													<span className="flex items-center gap-2">
-														<Users className="h-4 w-4 text-primary" />
-														Team Size: {event.teamSize}
+													<span className="flex items-center gap-1.5">
+														<Users className="h-3.5 w-3.5 text-primary" />
+														Format: <strong className="text-foreground">{event.teamSize}</strong>
 													</span>
 												)}
 											</div>
 										)}
 
-										{/* Schedule */}
+										{/* Timeline */}
 										<div>
-											<h3 className="mb-4 flex items-center gap-2 text-base sm:text-lg font-poppins font-bold">
-												<Clock className="h-5 w-5 text-primary" />
-												Schedule
+											<h3 className="mb-3 flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+												<Clock className="h-3.5 w-3.5 text-primary" />
+												<span>Detailed Session Timeline</span>
 											</h3>
 
-											<div className="space-y-3">
+											<div className="space-y-2.5">
 												{event.schedule.map((item, schedIdx) => (
 													<div
 														key={schedIdx}
-														className="flex flex-col sm:flex-row gap-3 sm:gap-4 rounded-lg bg-muted/30 border border-border/40 p-3 sm:p-4 transition-[background-color,border-color] duration-150 hover:bg-muted/50 hover:border-primary/30"
+														className="flex flex-col sm:flex-row gap-3 rounded-xl bg-secondary/40 border border-border/50 p-3 sm:p-4 hover:border-primary/30 transition-colors"
 													>
-														<div className="flex-shrink-0">
-															<span className="inline-block px-3 py-1 rounded-md bg-primary/15 text-primary font-mono text-xs sm:text-sm font-semibold border border-primary/30 shadow-sm">
+														<div className="shrink-0">
+															<span className="inline-block px-2.5 py-1 rounded-lg bg-primary/10 text-primary font-mono text-xs font-bold border border-primary/20">
 																{item.time}
 															</span>
 														</div>
 
 														<div className="flex-1">
-															<p className="font-semibold text-xs sm:text-sm mb-1">
+															<p className="font-bold text-xs sm:text-sm text-foreground mb-0.5">
 																{item.activity}
 															</p>
-															<p className="text-xs text-muted-foreground">
+															<p className="text-xs text-muted-foreground leading-relaxed">
 																{item.description}
 															</p>
 														</div>
@@ -256,31 +317,32 @@ export default function SchedulePage() {
 						))}
 					</Accordion>
 
-					{/* Footer CTA */}
-					<section className="mt-12 sm:mt-16">
-						<div className="glass-effect rounded-xl p-8 sm:p-12 text-center hover-lift">
-							<h2 className="text-2xl sm:text-3xl md:text-4xl font-poppins font-bold mb-4">
-								Ready to Participate?
+					{/* Bottom Callout */}
+					<section className="mt-16">
+						<div className="glass-panel rounded-3xl p-8 sm:p-10 text-center border border-border/80 shadow-premium">
+							<h2 className="text-2xl sm:text-3xl font-poppins font-bold text-foreground mb-3">
+								Ready to Compete & Innovate?
 							</h2>
 
-							<p className="text-base sm:text-lg text-muted-foreground mb-6 sm:mb-8 max-w-2xl mx-auto px-2">
-								Join us in this exciting series of events designed to enhance your skills and connect with industry experts.
+							<p className="text-sm sm:text-base text-muted-foreground mb-6 max-w-xl mx-auto leading-relaxed">
+								Gain hands-on skills, expand your peer network, and build winning projects under guidance from mentors.
 							</p>
 
-							<div className="flex gap-4 justify-center flex-wrap px-2">
-								<Button size="lg" className="bg-primary hover:bg-primary/90 gap-2 neon-border">
-									<Zap className="w-4 h-4 sm:w-5 sm:h-5" />
-									Register Now
-								</Button>
-
-								<Button
-									size="lg"
-									variant="outline"
-									asChild
-									className="border-primary/30 text-primary hover:bg-primary/10"
+							<div className="flex gap-3 justify-center flex-wrap">
+								<Link
+									href="/events"
+									className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-primary text-primary-foreground font-semibold text-xs sm:text-sm shadow-subtle hover:shadow-glow-primary transition-all duration-200 active:scale-95"
 								>
-									<Link href="/events">View All Events</Link>
-								</Button>
+									<span>View Upcoming Events</span>
+									<ArrowRight className="w-4 h-4" />
+								</Link>
+
+								<Link
+									href="/membership"
+									className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-secondary text-foreground hover:bg-secondary/80 border border-border/80 font-semibold text-xs sm:text-sm transition-all duration-200"
+								>
+									<span>Join DevNest</span>
+								</Link>
 							</div>
 						</div>
 					</section>

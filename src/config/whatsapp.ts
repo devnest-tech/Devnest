@@ -5,7 +5,7 @@
  */
 
 // DevNest WhatsApp group invite link
-export const WHATSAPP_GROUP_LINK = "https://chat.whatsapp.com/JfeqSnI9D4MEqgKBO5WJ8Z";
+export const WHATSAPP_GROUP_LINK = "https://chat.whatsapp.com/GEjvOGVbtWZ51wAjNKwS0V";
 
 // WhatsApp group name (for display purposes)
 export const WHATSAPP_GROUP_NAME = "DevNest Community";

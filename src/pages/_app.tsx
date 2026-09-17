@@ -8,17 +8,38 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 
 import "@/global.css";
 import "@/styles/arcade.css";
+import "@/components/Stepper/Stepper.css";
+
+import Head from "next/head";
+import { JoinModalProvider } from "@/context/JoinModalContext";
+import ClickSpark from "@/components/ClickSpark";
 
 export default function DevnestApp({ Component, pageProps }: AppProps) {
   const [queryClient] = useState(() => new QueryClient());
 
   return (
     <QueryClientProvider client={queryClient}>
-      <ThemeProvider attribute="class" defaultTheme="light" forcedTheme="light" enableSystem={false}>
+      <Head>
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1, maximum-scale=5, viewport-fit=cover"
+        />
+      </Head>
+      <ThemeProvider attribute="class" defaultTheme="light" enableSystem={false}>
         <TooltipProvider>
           <Toaster />
           <Sonner />
-          <Component {...pageProps} />
+          <JoinModalProvider>
+            <ClickSpark
+              sparkColor="#000000"
+              sparkSize={10}
+              sparkRadius={18}
+              sparkCount={8}
+              duration={400}
+            >
+              <Component {...pageProps} />
+            </ClickSpark>
+          </JoinModalProvider>
         </TooltipProvider>
       </ThemeProvider>
     </QueryClientProvider>

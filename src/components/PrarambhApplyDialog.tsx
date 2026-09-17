@@ -219,7 +219,7 @@ export function PrarambhApplyDialog({
             </span>
             <span className="text-xs text-muted-foreground flex items-center gap-1">
               <Calendar className="w-3.5 h-3.5 text-primary" />
-              18 August 2026
+              To be determined
             </span>
             <span className="text-xs text-muted-foreground flex items-center gap-1 font-medium">
               <MapPin className="w-3.5 h-3.5 text-rose-500" />
@@ -286,7 +286,7 @@ export function PrarambhApplyDialog({
               </div>
               <div className="flex justify-between py-1">
                 <span className="text-muted-foreground">Event Date:</span>
-                <span className="font-semibold text-foreground">18 August 2026</span>
+                <span className="font-semibold text-foreground">To be determined</span>
               </div>
             </div>
 

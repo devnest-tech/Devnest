@@ -70,7 +70,7 @@ export default function TeamPage() {
 
           {/* Past Members Section */}
           {alumni.length > 0 && (
-            <div className="mt-28 pt-16 border-t border-border/60 text-left">
+            <div className="mt-28 pt-16 border-t-2 border-black text-left">
               <div className="mb-14 max-w-3xl">
                 <div className="badge-pill mb-4">
                   <GraduationCap className="w-3.5 h-3.5 text-primary" />

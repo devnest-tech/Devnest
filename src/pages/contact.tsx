@@ -83,6 +83,7 @@ export default function ContactPage() {
       content: "devnest.techclub@gmail.com",
       link: "mailto:devnest.techclub@gmail.com",
       description: "Quickest channel for sponsorships, queries, and student concerns.",
+      color: "bg-[#FFE600]",
     },
     {
       icon: MapPin,
@@ -90,6 +91,7 @@ export default function ContactPage() {
       content: "LTSU Campus, Punjab",
       link: "#",
       description: "University School of Engineering & Technology (USET).",
+      color: "bg-[#70D6FF]",
     },
     {
       icon: Linkedin,
@@ -97,6 +99,7 @@ export default function ContactPage() {
       content: "DevNest Club",
       link: "https://www.linkedin.com/company/devnestclub",
       description: "Official announcements, alumni stories, and job boards.",
+      color: "bg-[#C4B5FD]",
     },
     {
       icon: Instagram,
@@ -104,6 +107,7 @@ export default function ContactPage() {
       content: "@devnest_tech_club",
       link: "https://www.instagram.com/devnest_tech_club/",
       description: "Event reels, hackathon BTS, and photo galleries.",
+      color: "bg-[#FF70A6]",
     },
   ];
 
@@ -172,22 +176,22 @@ export default function ContactPage() {
                   href={method.link}
                   target={method.link.startsWith("http") ? "_blank" : "_self"}
                   rel="noopener noreferrer"
-                  className="glass-panel rounded-2xl p-6 border border-border/80 hover:border-primary/40 shadow-subtle hover:shadow-premium-hover transition-all duration-300 flex flex-col justify-between group"
+                  className="rounded-2xl p-6 border-2 border-black bg-white shadow-[4px_4px_0px_#000] hover:shadow-[6px_6px_0px_#000] hover:-translate-x-0.5 hover:-translate-y-0.5 transition-all duration-200 flex flex-col justify-between group"
                 >
                   <div>
-                    <div className="w-12 h-12 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center text-primary mb-4 group-hover:scale-105 transition-transform duration-200">
-                      <Icon className="w-6 h-6" />
+                    <div className={`w-12 h-12 rounded-xl ${method.color} border-2 border-black shadow-[2px_2px_0px_#000] flex items-center justify-center text-black mb-4 group-hover:scale-105 transition-transform duration-200`}>
+                      <Icon className="w-6 h-6 stroke-[2.2]" />
                     </div>
 
-                    <h3 className="font-poppins font-bold text-base text-foreground mb-1">
+                    <h3 className="font-space font-bold text-base text-foreground mb-1">
                       {method.title}
                     </h3>
 
-                    <p className="text-xs sm:text-sm text-primary font-semibold truncate mb-2">
+                    <p className="text-xs sm:text-sm text-black font-mono font-bold truncate mb-2">
                       {method.content}
                     </p>
 
-                    <p className="text-xs text-muted-foreground leading-relaxed">
+                    <p className="text-xs text-muted-foreground leading-relaxed font-medium">
                       {method.description}
                     </p>
                   </div>
@@ -200,9 +204,9 @@ export default function ContactPage() {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-20">
             {/* Contact Form */}
             <div className="lg:col-span-2">
-              <div className="glass-panel rounded-3xl p-6 sm:p-10 border border-border/80 shadow-premium">
+              <div className="rounded-3xl p-6 sm:p-10 border-3 border-black bg-white shadow-[6px_6px_0px_#000]">
                 <div className="mb-8">
-                  <h2 className="text-2xl sm:text-3xl font-poppins font-bold text-foreground mb-2">
+                  <h2 className="text-2xl sm:text-3xl font-space font-bold text-foreground mb-2">
                     Send Us a Message
                   </h2>
                   <p className="text-xs sm:text-sm text-muted-foreground">
@@ -213,7 +217,7 @@ export default function ContactPage() {
                 {!submitted ? (
                   <form onSubmit={handleSubmit} className="space-y-5">
                     {errorMessage && (
-                      <div className="p-3.5 rounded-xl bg-destructive/10 border border-destructive/30 text-destructive text-xs sm:text-sm flex items-start gap-2.5 animate-in fade-in">
+                      <div className="p-3.5 rounded-xl bg-destructive/10 border-2 border-destructive text-destructive text-xs sm:text-sm flex items-start gap-2.5 animate-in fade-in">
                         <AlertCircle className="w-4 h-4 mt-0.5 shrink-0" />
                         <span>{errorMessage}</span>
                       </div>
@@ -221,7 +225,7 @@ export default function ContactPage() {
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <div>
-                        <label className="block text-xs font-semibold text-foreground mb-1.5">
+                        <label className="block text-xs font-bold text-foreground mb-1.5 font-space">
                           Your Name *
                         </label>
                         <input
@@ -231,12 +235,12 @@ export default function ContactPage() {
                           onChange={handleChange}
                           required
                           placeholder="e.g. Jordan Lee"
-                          className="w-full px-4 h-11 rounded-xl bg-background/60 border border-border/80 text-foreground placeholder-muted-foreground focus:outline-none focus:border-primary/50 text-sm shadow-subtle transition-colors"
+                          className="w-full px-4 h-11 rounded-xl bg-white border-2 border-black text-black placeholder:text-zinc-400 focus:outline-none focus:shadow-[3px_3px_0px_#000] text-sm shadow-[2px_2px_0px_#000] transition-all font-medium"
                         />
                       </div>
 
                       <div>
-                        <label className="block text-xs font-semibold text-foreground mb-1.5">
+                        <label className="block text-xs font-bold text-foreground mb-1.5 font-space">
                           Email Address *
                         </label>
                         <input
@@ -246,13 +250,13 @@ export default function ContactPage() {
                           onChange={handleChange}
                           required
                           placeholder="jordan@example.com"
-                          className="w-full px-4 h-11 rounded-xl bg-background/60 border border-border/80 text-foreground placeholder-muted-foreground focus:outline-none focus:border-primary/50 text-sm shadow-subtle transition-colors"
+                          className="w-full px-4 h-11 rounded-xl bg-white border-2 border-black text-black placeholder:text-zinc-400 focus:outline-none focus:shadow-[3px_3px_0px_#000] text-sm shadow-[2px_2px_0px_#000] transition-all font-medium"
                         />
                       </div>
                     </div>
 
                     <div>
-                      <label className="block text-xs font-semibold text-foreground mb-1.5">
+                      <label className="block text-xs font-bold text-foreground mb-1.5 font-space">
                         Subject *
                       </label>
                       <input
@@ -262,12 +266,12 @@ export default function ContactPage() {
                         onChange={handleChange}
                         required
                         placeholder="e.g. Partnership Opportunity / Event Query"
-                        className="w-full px-4 h-11 rounded-xl bg-background/60 border border-border/80 text-foreground placeholder-muted-foreground focus:outline-none focus:border-primary/50 text-sm shadow-subtle transition-colors"
+                        className="w-full px-4 h-11 rounded-xl bg-white border-2 border-black text-black placeholder:text-zinc-400 focus:outline-none focus:shadow-[3px_3px_0px_#000] text-sm shadow-[2px_2px_0px_#000] transition-all font-medium"
                       />
                     </div>
 
                     <div>
-                      <label className="block text-xs font-semibold text-foreground mb-1.5">
+                      <label className="block text-xs font-bold text-foreground mb-1.5 font-space">
                         Message *
                       </label>
                       <textarea
@@ -277,14 +281,14 @@ export default function ContactPage() {
                         required
                         placeholder="Describe your inquiry, event feedback, or sponsorship details..."
                         rows={5}
-                        className="w-full p-3 rounded-xl bg-background/60 border border-border/80 text-foreground placeholder-muted-foreground focus:outline-none focus:border-primary/50 text-sm shadow-subtle transition-colors resize-none"
+                        className="w-full p-3 rounded-xl bg-white border-2 border-black text-black placeholder:text-zinc-400 focus:outline-none focus:shadow-[3px_3px_0px_#000] text-sm shadow-[2px_2px_0px_#000] transition-all resize-none font-medium"
                       />
                     </div>
 
                     <Button
                       type="submit"
                       disabled={loading}
-                      className="w-full h-12 rounded-xl bg-primary hover:bg-primary/90 text-primary-foreground font-semibold text-sm shadow-subtle hover:shadow-glow-primary active:scale-98 transition-all disabled:opacity-70 cursor-pointer"
+                      className="w-full h-12 rounded-xl bg-[#FFE600] hover:bg-[#FFE600]/90 text-black font-space font-extrabold text-sm border-2 border-black shadow-[3px_3px_0px_#000] active:translate-x-0.5 active:translate-y-0.5 active:shadow-none transition-all disabled:opacity-70 cursor-pointer"
                     >
                       {loading ? (
                         <>
@@ -301,11 +305,11 @@ export default function ContactPage() {
                   </form>
                 ) : (
                   <div className="text-center py-10">
-                    <div className="w-16 h-16 rounded-2xl bg-primary/10 border border-primary/20 text-primary flex items-center justify-center mx-auto mb-4">
-                      <CheckCircle2 className="w-8 h-8" />
+                    <div className="w-16 h-16 rounded-2xl bg-[#88EA73] border-2 border-black text-black flex items-center justify-center mx-auto mb-4 shadow-[4px_4px_0px_#000]">
+                      <CheckCircle2 className="w-8 h-8 stroke-[2.5]" />
                     </div>
 
-                    <h3 className="text-2xl font-poppins font-bold text-foreground mb-2">
+                    <h3 className="text-2xl font-space font-bold text-foreground mb-2">
                       Message Dispatched!
                     </h3>
 
@@ -316,7 +320,7 @@ export default function ContactPage() {
                     <Button
                       onClick={() => setSubmitted(false)}
                       variant="outline"
-                      className="rounded-xl text-xs font-semibold"
+                      className="rounded-xl text-xs font-space font-bold border-2 border-black shadow-[2px_2px_0px_#000]"
                     >
                       Send Another Inquiry
                     </Button>
@@ -327,13 +331,13 @@ export default function ContactPage() {
 
             {/* Info Sidebar */}
             <div className="lg:col-span-1">
-              <div className="glass-panel rounded-3xl p-6 sm:p-8 border border-border/80 shadow-subtle space-y-6">
+              <div className="rounded-3xl p-6 sm:p-8 border-3 border-black bg-white shadow-[6px_6px_0px_#000] space-y-6">
                 <div>
-                  <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2">
-                    <MapPin className="w-3.5 h-3.5 text-primary" />
+                  <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-muted-foreground mb-2 font-space">
+                    <MapPin className="w-3.5 h-3.5 text-black" />
                     <span>Campus Headquarters</span>
                   </div>
-                  <p className="text-sm font-medium text-foreground">
+                  <p className="text-sm font-bold text-foreground font-space">
                     Lamrin Tech Skills University
                   </p>
                   <p className="text-xs text-muted-foreground mt-0.5 leading-relaxed">
@@ -342,11 +346,11 @@ export default function ContactPage() {
                 </div>
 
                 <div>
-                  <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2">
-                    <Clock className="w-3.5 h-3.5 text-primary" />
+                  <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-muted-foreground mb-2 font-space">
+                    <Clock className="w-3.5 h-3.5 text-black" />
                     <span>Response Hours</span>
                   </div>
-                  <p className="text-sm font-medium text-foreground">
+                  <p className="text-sm font-bold text-foreground font-space">
                     Monday – Friday: 9:00 AM – 6:00 PM IST
                   </p>
                   <p className="text-xs text-muted-foreground mt-0.5">
@@ -355,8 +359,8 @@ export default function ContactPage() {
                 </div>
 
                 <div>
-                  <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3">
-                    <Sparkles className="w-3.5 h-3.5 text-primary" />
+                  <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-muted-foreground mb-3 font-space">
+                    <Sparkles className="w-3.5 h-3.5 text-black" />
                     <span>Social Channels</span>
                   </div>
 
@@ -370,7 +374,7 @@ export default function ContactPage() {
                           href={social.url}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="w-10 h-10 rounded-xl bg-secondary hover:bg-primary/10 hover:text-primary border border-border/60 flex items-center justify-center text-muted-foreground transition-colors duration-200 active:scale-95"
+                          className="w-10 h-10 rounded-xl bg-white hover:bg-[#FFE600] border-2 border-black shadow-[2px_2px_0px_#000] flex items-center justify-center text-black transition-all duration-150 active:translate-x-0.5 active:translate-y-0.5 active:shadow-none"
                           title={social.label}
                           aria-label={social.label}
                         >
@@ -381,11 +385,11 @@ export default function ContactPage() {
                   </div>
                 </div>
 
-                <div className="p-4 rounded-2xl bg-primary/5 border border-primary/20">
-                  <p className="text-xs font-bold text-foreground mb-1">
+                <div className="p-4 rounded-2xl bg-[#FFE600] border-2 border-black shadow-[3px_3px_0px_#000] text-black">
+                  <p className="text-xs font-bold font-space mb-1">
                     Student Member Tip
                   </p>
-                  <p className="text-xs text-muted-foreground leading-relaxed">
+                  <p className="text-xs text-black/80 font-medium leading-relaxed">
                     For faster queries on ongoing hackathons or team matching, drop a quick note in our community WhatsApp group!
                   </p>
                 </div>
@@ -397,21 +401,21 @@ export default function ContactPage() {
           <div className="mb-12 text-left">
             <div className="mb-8">
               <div className="badge-pill mb-3">
-                <span className="w-2 h-2 rounded-full bg-primary" />
+                <span className="w-2 h-2 rounded-full bg-black" />
                 <span>Help Desk</span>
               </div>
-              <h2 className="text-2xl sm:text-3xl font-poppins font-bold text-foreground">
+              <h2 className="text-2xl sm:text-3xl font-space font-bold text-foreground">
                 Frequently Answered
               </h2>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-              <div className="glass-panel rounded-2xl p-6 border border-border/80 shadow-subtle">
+              <div className="rounded-2xl p-6 border-2 border-black bg-white shadow-[3px_3px_0px_#000] hover:shadow-[5px_5px_0px_#000] transition-all">
                 <div className="flex items-center gap-2.5 mb-2">
-                  <div className="w-8 h-8 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center text-primary shrink-0">
+                  <div className="w-8 h-8 rounded-lg bg-[#FFE600] border-2 border-black shadow-[1.5px_1.5px_0px_#000] flex items-center justify-center text-black shrink-0">
                     <Calendar className="w-4 h-4" />
                   </div>
-                  <h4 className="font-bold text-sm text-foreground">
+                  <h4 className="font-bold text-sm text-foreground font-space">
                     Event Registrations
                   </h4>
                 </div>
@@ -420,12 +424,12 @@ export default function ContactPage() {
                 </p>
               </div>
 
-              <div className="glass-panel rounded-2xl p-6 border border-border/80 shadow-subtle">
+              <div className="rounded-2xl p-6 border-2 border-black bg-white shadow-[3px_3px_0px_#000] hover:shadow-[5px_5px_0px_#000] transition-all">
                 <div className="flex items-center gap-2.5 mb-2">
-                  <div className="w-8 h-8 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center text-primary shrink-0">
+                  <div className="w-8 h-8 rounded-lg bg-[#70D6FF] border-2 border-black shadow-[1.5px_1.5px_0px_#000] flex items-center justify-center text-black shrink-0">
                     <Users className="w-4 h-4" />
                   </div>
-                  <h4 className="font-bold text-sm text-foreground">
+                  <h4 className="font-bold text-sm text-foreground font-space">
                     Joining the Community
                   </h4>
                 </div>
@@ -434,12 +438,12 @@ export default function ContactPage() {
                 </p>
               </div>
 
-              <div className="glass-panel rounded-2xl p-6 border border-border/80 shadow-subtle">
+              <div className="rounded-2xl p-6 border-2 border-black bg-white shadow-[3px_3px_0px_#000] hover:shadow-[5px_5px_0px_#000] transition-all">
                 <div className="flex items-center gap-2.5 mb-2">
-                  <div className="w-8 h-8 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center text-primary shrink-0">
+                  <div className="w-8 h-8 rounded-lg bg-[#FF70A6] border-2 border-black shadow-[1.5px_1.5px_0px_#000] flex items-center justify-center text-black shrink-0">
                     <Briefcase className="w-4 h-4" />
                   </div>
-                  <h4 className="font-bold text-sm text-foreground">
+                  <h4 className="font-bold text-sm text-foreground font-space">
                     Partnerships & Sponsorships
                   </h4>
                 </div>
@@ -448,12 +452,12 @@ export default function ContactPage() {
                 </p>
               </div>
 
-              <div className="glass-panel rounded-2xl p-6 border border-border/80 shadow-subtle">
+              <div className="rounded-2xl p-6 border-2 border-black bg-white shadow-[3px_3px_0px_#000] hover:shadow-[5px_5px_0px_#000] transition-all">
                 <div className="flex items-center gap-2.5 mb-2">
-                  <div className="w-8 h-8 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center text-primary shrink-0">
+                  <div className="w-8 h-8 rounded-lg bg-[#C4B5FD] border-2 border-black shadow-[1.5px_1.5px_0px_#000] flex items-center justify-center text-black shrink-0">
                     <MessageSquare className="w-4 h-4" />
                   </div>
-                  <h4 className="font-bold text-sm text-foreground">
+                  <h4 className="font-bold text-sm text-foreground font-space">
                     Mentorship & Talks
                   </h4>
                 </div>

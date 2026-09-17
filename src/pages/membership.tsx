@@ -1,28 +1,32 @@
 import Head from "next/head";
 import { Layout } from "@/components/Layout";
 import { MembershipForm } from "@/components/MembershipForm";
-import { Users, Zap, Trophy, Rocket, Sparkles, Mail, Instagram, ArrowRight } from "lucide-react";
+import { Users, Zap, Trophy, Rocket, Sparkles, Mail, Instagram } from "lucide-react";
 
 const benefits = [
   {
     icon: Users,
     title: "Vibrant Community",
     description: "Join an active network of 500+ builders, student engineers, and domain leads.",
+    color: "bg-[#FFE600]",
   },
   {
     icon: Zap,
     title: "Flagship Hackathons",
     description: "Get priority admission to datathons, CTF defense sprints, and ideathons.",
+    color: "bg-[#70D6FF]",
   },
   {
     icon: Trophy,
     title: "Prizes & Recognition",
     description: "Compete in algorithmic challenges, win awards, and earn verified certificates.",
+    color: "bg-[#FF70A6]",
   },
   {
     icon: Rocket,
     title: "Industry Mentorship",
     description: "Learn industry-grade workflows, web architectures, and career pathways from experts.",
+    color: "bg-[#88EA73]",
   },
 ];
 
@@ -42,13 +46,13 @@ export default function MembershipPage() {
           {/* Left-Aligned Header Section */}
           <header className="text-left mb-10 sm:mb-16 max-w-3xl">
             <div className="badge-pill mb-4">
-              <Sparkles className="w-3.5 h-3.5 text-primary" />
+              <Sparkles className="w-3.5 h-3.5 text-black" />
               <span>Membership Registration</span>
-              <span className="text-muted-foreground/60">•</span>
-              <span className="text-foreground/80 font-medium">Cohort 2026</span>
+              <span className="text-black/40">•</span>
+              <span className="text-black font-bold">Cohort 2026</span>
             </div>
 
-            <h1 className="text-4xl sm:text-5xl md:text-6xl font-poppins font-bold tracking-tight mb-4 text-foreground">
+            <h1 className="text-4xl sm:text-5xl md:text-6xl font-space font-bold tracking-tight mb-4 text-foreground">
               Join <span className="text-gradient-primary">DevNest</span>
             </h1>
 
@@ -63,13 +67,13 @@ export default function MembershipPage() {
           <div className="mb-20 text-left">
             <div className="mb-8">
               <div className="badge-pill mb-3">
-                <span className="w-2 h-2 rounded-full bg-primary" />
+                <span className="w-2 h-2 rounded-full bg-black" />
                 <span>Member Privileges</span>
               </div>
-              <h2 className="text-2xl sm:text-3xl font-poppins font-bold text-foreground">
+              <h2 className="text-2xl sm:text-3xl font-space font-bold text-foreground">
                 Membership Benefits
               </h2>
-              <p className="text-xs sm:text-sm text-muted-foreground mt-1">
+              <p className="text-xs sm:text-sm text-muted-foreground mt-1 font-medium">
                 Everything you need to accelerate your engineering journey.
               </p>
             </div>
@@ -78,13 +82,13 @@ export default function MembershipPage() {
               {benefits.map((benefit) => (
                 <div
                   key={benefit.title}
-                  className="glass-panel rounded-2xl p-6 border border-border/80 hover:border-primary/40 shadow-subtle hover:shadow-premium-hover transition-all duration-300 flex flex-col justify-between"
+                  className="rounded-2xl p-6 border-2 border-black bg-white shadow-[4px_4px_0px_#000] hover:shadow-[6px_6px_0px_#000] hover:-translate-x-0.5 hover:-translate-y-0.5 transition-all duration-200 flex flex-col justify-between"
                 >
                   <div>
-                    <div className="w-12 h-12 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center text-primary mb-4">
-                      <benefit.icon className="w-6 h-6" />
+                    <div className={`w-12 h-12 rounded-xl ${benefit.color} border-2 border-black shadow-[2px_2px_0px_#000] flex items-center justify-center text-black mb-4`}>
+                      <benefit.icon className="w-6 h-6 stroke-[2.2]" />
                     </div>
-                    <h3 className="text-base font-bold font-poppins text-foreground mb-1.5">
+                    <h3 className="text-base font-bold font-space text-foreground mb-1.5">
                       {benefit.title}
                     </h3>
                     <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
@@ -101,13 +105,13 @@ export default function MembershipPage() {
 
           {/* Questions Contact Section (Left-Aligned) */}
           <section className="mt-20">
-            <div className="glass-panel rounded-3xl p-8 sm:p-10 border border-border/80 shadow-premium flex flex-col md:flex-row items-center justify-between gap-6 text-left">
+            <div className="rounded-3xl border-3 border-black bg-[#FAF7EE] shadow-[6px_6px_0px_#000] p-8 sm:p-10 flex flex-col md:flex-row items-center justify-between gap-6 text-left">
               <div className="max-w-xl">
                 <div className="badge-pill mb-3">
-                  <Mail className="w-3.5 h-3.5 text-primary" />
+                  <Mail className="w-3.5 h-3.5 text-black" />
                   <span>Direct Inquiries</span>
                 </div>
-                <h2 className="text-2xl sm:text-3xl font-poppins font-bold text-foreground mb-2">
+                <h2 className="text-2xl sm:text-3xl font-space font-bold text-foreground mb-2">
                   Have Any Questions?
                 </h2>
                 <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
@@ -117,7 +121,7 @@ export default function MembershipPage() {
               <div className="flex gap-3 shrink-0 flex-wrap">
                 <a
                   href="mailto:devnest.techclub@gmail.com"
-                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-primary text-primary-foreground text-xs sm:text-sm font-semibold shadow-subtle hover:shadow-glow-primary transition-all duration-200 active:scale-95"
+                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#FFE600] text-black text-xs sm:text-sm font-space font-bold border-2 border-black shadow-[3px_3px_0px_#000] hover:bg-[#FFE600]/90 active:translate-x-0.5 active:translate-y-0.5 active:shadow-none transition-all duration-150"
                 >
                   <Mail className="w-4 h-4" />
                   <span>Email Core Team</span>
@@ -127,9 +131,9 @@ export default function MembershipPage() {
                   href="https://instagram.com"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-secondary text-foreground hover:bg-secondary/80 border border-border/80 text-xs sm:text-sm font-semibold transition-all duration-200"
+                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white text-black border-2 border-black shadow-[3px_3px_0px_#000] hover:bg-zinc-100 font-space font-bold text-xs sm:text-sm active:translate-x-0.5 active:translate-y-0.5 active:shadow-none transition-all duration-150"
                 >
-                  <Instagram className="w-4 h-4 text-primary" />
+                  <Instagram className="w-4 h-4 text-black" />
                   <span>Instagram</span>
                 </a>
               </div>

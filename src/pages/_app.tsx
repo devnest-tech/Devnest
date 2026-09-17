@@ -25,13 +25,13 @@ export default function DevnestApp({ Component, pageProps }: AppProps) {
           content="width=device-width, initial-scale=1, maximum-scale=5, viewport-fit=cover"
         />
       </Head>
-      <ThemeProvider attribute="class" defaultTheme="dark" forcedTheme="dark" enableSystem={false}>
+      <ThemeProvider attribute="class" defaultTheme="light" enableSystem={false}>
         <TooltipProvider>
           <Toaster />
           <Sonner />
           <JoinModalProvider>
             <ClickSpark
-              sparkColor="#ffffff"
+              sparkColor="#000000"
               sparkSize={10}
               sparkRadius={18}
               sparkCount={8}

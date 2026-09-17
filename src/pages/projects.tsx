@@ -157,14 +157,14 @@ export default function ProjectsPage() {
           {/* Left-Aligned Header */}
           <div className="text-left max-w-3xl">
             <div className="badge-pill mb-4">
-              <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+              <span className="w-2 h-2 rounded-full bg-black" />
               <span>DevNest Builds</span>
-              <span className="text-muted-foreground/60">•</span>
-              <span className="text-foreground/80 font-medium">Open Source</span>
+              <span className="text-black/40">•</span>
+              <span className="text-black font-bold">Open Source</span>
             </div>
 
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold font-poppins tracking-tight mb-4">
-              Projects & <span className="text-gradient-primary">Showcases</span>
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold font-space tracking-tight mb-4 text-foreground">
+              Projects &amp; <span className="text-gradient-primary">Showcases</span>
             </h1>
 
             <p className="text-base sm:text-lg text-muted-foreground leading-relaxed">
@@ -174,17 +174,17 @@ export default function ProjectsPage() {
           </div>
 
           {/* Filter & Search Bar */}
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 p-4 rounded-2xl border border-border/80 bg-card/90 backdrop-blur-md shadow-subtle">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 p-4 rounded-2xl border-2 border-black bg-white shadow-[4px_4px_0px_#000]">
             {/* Category tabs */}
             <div className="flex items-center gap-1.5 overflow-x-auto w-full sm:w-auto pb-1 sm:pb-0">
               {CATEGORIES.map((cat) => (
                 <button
                   key={cat.key}
                   onClick={() => setActiveCategory(cat.key)}
-                  className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all duration-200 ${
+                  className={`px-3.5 py-1.5 rounded-xl text-xs font-space font-bold whitespace-nowrap border-2 border-black transition-all duration-150 ${
                     activeCategory === cat.key
-                      ? "bg-primary text-primary-foreground shadow-subtle"
-                      : "text-muted-foreground hover:text-foreground hover:bg-muted/60"
+                      ? "bg-[#FFE600] text-black shadow-[2px_2px_0px_#000]"
+                      : "bg-white text-black/80 hover:bg-zinc-100"
                   }`}
                 >
                   {cat.label}
@@ -194,22 +194,22 @@ export default function ProjectsPage() {
 
             {/* Search input */}
             <div className="relative w-full sm:w-64">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-black" />
               <input
                 type="text"
                 placeholder="Search projects or tech..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-9 pr-3 py-1.5 rounded-xl text-xs bg-background/80 border border-border/70 focus:border-primary focus:outline-none transition-colors"
+                className="w-full pl-9 pr-3 py-1.5 rounded-xl text-xs bg-white border-2 border-black text-black placeholder:text-zinc-400 focus:shadow-[3px_3px_0px_#000] focus:outline-none shadow-[2px_2px_0px_#000] transition-all font-medium"
               />
             </div>
           </div>
 
           {/* Projects Grid */}
           {filteredProjects.length === 0 ? (
-            <div className="text-center py-20 rounded-3xl border border-border/70 bg-card/50">
-              <FolderGit2 className="w-12 h-12 text-muted-foreground mx-auto mb-3" />
-              <h3 className="text-lg font-semibold mb-1">No Projects Found</h3>
+            <div className="text-center py-20 rounded-3xl border-2 border-black bg-white shadow-[4px_4px_0px_#000]">
+              <FolderGit2 className="w-12 h-12 text-black mx-auto mb-3" />
+              <h3 className="text-lg font-space font-bold mb-1 text-foreground">No Projects Found</h3>
               <p className="text-sm text-muted-foreground">
                 No projects matched your active search or category filter.
               </p>
@@ -219,27 +219,27 @@ export default function ProjectsPage() {
               {filteredProjects.map((project) => (
                 <div
                   key={project.id}
-                  className="group rounded-3xl border border-border/80 bg-card/90 backdrop-blur-sm p-6 shadow-subtle hover-lift transition-all duration-300 flex flex-col justify-between"
+                  className="rounded-3xl border-2 border-black bg-white p-6 shadow-[4px_4px_0px_#000] hover:shadow-[6px_6px_0px_#000] hover:-translate-x-0.5 hover:-translate-y-0.5 transition-all duration-200 flex flex-col justify-between"
                 >
                   <div>
                     {/* Header line */}
                     <div className="flex items-center justify-between gap-2 mb-4">
-                      <span className="px-2.5 py-1 rounded-full text-[11px] font-semibold tracking-wide bg-primary/10 text-primary border border-primary/20">
+                      <span className="px-2.5 py-1 rounded-full text-[11px] font-space font-bold tracking-wide bg-[#FFE600] text-black border-2 border-black shadow-[1.5px_1.5px_0px_#000]">
                         {project.categoryLabel}
                       </span>
                       {project.featured && (
-                        <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-amber-500 bg-amber-500/10 px-2 py-0.5 rounded-full border border-amber-500/20">
-                          <Star className="w-3 h-3 fill-amber-500" />
+                        <span className="inline-flex items-center gap-1 text-[11px] font-space font-bold text-black bg-[#FF70A6] px-2.5 py-0.5 rounded-full border-2 border-black shadow-[1.5px_1.5px_0px_#000]">
+                          <Star className="w-3 h-3 fill-black text-black" />
                           Featured
                         </span>
                       )}
                     </div>
 
-                    <h2 className="text-xl font-bold font-poppins text-foreground mb-2.5 group-hover:text-primary transition-colors">
+                    <h2 className="text-xl font-bold font-space text-foreground mb-2.5">
                       {project.title}
                     </h2>
 
-                    <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed mb-6">
+                    <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed mb-6 font-medium">
                       {project.description}
                     </p>
                   </div>
@@ -250,7 +250,7 @@ export default function ProjectsPage() {
                       {project.techStack.map((tech) => (
                         <span
                           key={tech}
-                          className="px-2 py-0.5 rounded-md bg-background border border-border/60 text-[11px] font-mono text-muted-foreground"
+                          className="px-2.5 py-1 rounded-md bg-[#FAF7EE] border-2 border-black text-[11px] font-mono font-bold text-black shadow-[1px_1px_0px_#000]"
                         >
                           {tech}
                         </span>
@@ -258,14 +258,14 @@ export default function ProjectsPage() {
                     </div>
 
                     {/* Action links */}
-                    <div className="pt-4 border-t border-border/60 flex items-center justify-between">
+                    <div className="pt-4 border-t-2 border-black/10 flex items-center justify-between">
                       <div className="flex items-center gap-2">
                         {project.githubUrl && (
                           <a
                             href={project.githubUrl}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="p-2 rounded-xl border border-border/80 text-muted-foreground hover:text-foreground hover:border-primary/40 hover:bg-muted/50 transition-colors"
+                            className="p-2 rounded-xl border-2 border-black bg-white text-black hover:bg-[#FFE600] shadow-[2px_2px_0px_#000] active:translate-x-0.5 active:translate-y-0.5 active:shadow-none transition-all"
                             title="View GitHub Repository"
                           >
                             <Github className="w-4 h-4" />
@@ -274,7 +274,7 @@ export default function ProjectsPage() {
                         {project.liveUrl && (
                           <Link
                             href={project.liveUrl}
-                            className="p-2 rounded-xl border border-border/80 text-muted-foreground hover:text-foreground hover:border-primary/40 hover:bg-muted/50 transition-colors"
+                            className="p-2 rounded-xl border-2 border-black bg-white text-black hover:bg-[#FFE600] shadow-[2px_2px_0px_#000] active:translate-x-0.5 active:translate-y-0.5 active:shadow-none transition-all"
                             title="Open Project"
                           >
                             <ExternalLink className="w-4 h-4" />
@@ -282,10 +282,10 @@ export default function ProjectsPage() {
                         )}
                       </div>
 
-                      <Button asChild size="sm" variant="ghost" className="text-xs gap-1.5 text-primary hover:text-primary rounded-xl">
+                      <Button asChild size="sm" className="text-xs gap-1.5 bg-[#FFE600] hover:bg-[#FFE600]/90 text-black font-space font-bold border-2 border-black shadow-[2px_2px_0px_#000] rounded-xl active:translate-x-0.5 active:translate-y-0.5 active:shadow-none">
                         <Link href="/membership">
                           <span>Contribute</span>
-                          <ArrowRight className="w-3.5 h-3.5" />
+                          <ArrowRight className="w-3.5 h-3.5 stroke-[2.5]" />
                         </Link>
                       </Button>
                     </div>
@@ -296,20 +296,20 @@ export default function ProjectsPage() {
           )}
 
           {/* Submit Project Banner (Left-Aligned) */}
-          <div className="rounded-3xl border border-border/80 bg-gradient-to-br from-card via-card to-primary/[0.04] p-8 sm:p-10 shadow-premium flex flex-col md:flex-row items-center justify-between gap-6 text-left">
+          <div className="rounded-3xl border-3 border-black bg-[#FFE600] text-black p-8 sm:p-10 shadow-[6px_6px_0px_#000] flex flex-col md:flex-row items-center justify-between gap-6 text-left">
             <div className="max-w-xl">
-              <div className="w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center mb-3 border border-primary/20">
-                <Sparkles className="w-5 h-5" />
+              <div className="w-10 h-10 rounded-xl bg-white text-black flex items-center justify-center mb-3 border-2 border-black shadow-[2px_2px_0px_#000]">
+                <Sparkles className="w-5 h-5 stroke-[2.2]" />
               </div>
-              <h2 className="text-2xl sm:text-3xl font-bold font-poppins mb-2">
+              <h2 className="text-2xl sm:text-3xl font-bold font-space mb-2 text-black">
                 Building something extraordinary?
               </h2>
-              <p className="text-sm text-muted-foreground leading-relaxed">
+              <p className="text-sm text-black/85 font-medium leading-relaxed">
                 DevNest showcases projects built by club members and student squads. Get peer reviews,
                 find collaborators, and feature your project in the official gallery.
               </p>
             </div>
-            <Button asChild className="rounded-xl px-6 h-11 shadow-subtle shrink-0">
+            <Button asChild className="rounded-xl px-6 h-11 bg-black text-white hover:bg-zinc-800 border-2 border-black shadow-[3px_3px_0px_#000] font-space font-bold active:translate-x-0.5 active:translate-y-0.5 active:shadow-none shrink-0">
               <Link href="/contact">
                 Submit Project for Review
                 <ArrowRight className="w-4 h-4 ml-2" />

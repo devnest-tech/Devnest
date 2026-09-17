@@ -500,14 +500,15 @@ export function AdminMessagesView({
 
                           {/* Delete */}
                           <Button
-                            variant="ghost"
+                            variant="destructive"
                             size="sm"
                             disabled={actionLoadingId === msg.id}
                             onClick={() => setDeleteConfirmId(msg.id)}
-                            className="rounded-xl h-8 px-2 text-destructive hover:bg-destructive/10 cursor-pointer"
+                            className="rounded-xl h-8 px-2.5 text-xs font-space font-bold border-2 border-black bg-[#FF5F56] text-white hover:bg-[#FA4D44] shadow-[2px_2px_0px_#000] cursor-pointer gap-1"
                             title="Delete Inquiry"
                           >
                             <Trash2 className="w-3.5 h-3.5" />
+                            <span>Delete</span>
                           </Button>
                         </div>
                       </td>
@@ -616,14 +617,16 @@ export function AdminMessagesView({
                   </a>
 
                   <Button
-                    variant="ghost"
+                    variant="destructive"
                     size="sm"
                     onClick={() => {
                       setDeleteConfirmId(selectedMessage.id);
                     }}
-                    className="rounded-xl h-10 px-3 text-destructive hover:bg-destructive/10 text-xs cursor-pointer"
+                    className="rounded-xl h-10 px-4 text-xs font-space font-bold border-2 border-black bg-[#FF5F56] text-white hover:bg-[#FA4D44] shadow-[3px_3px_0px_#000] cursor-pointer gap-1.5"
+                    title="Delete Message"
                   >
-                    <Trash2 className="w-3.5 h-3.5" />
+                    <Trash2 className="w-4 h-4" />
+                    <span>Delete Message</span>
                   </Button>
                 </div>
               </div>
@@ -655,7 +658,7 @@ export function AdminMessagesView({
               variant="outline"
               size="sm"
               onClick={() => setDeleteConfirmId(null)}
-              className="rounded-xl text-xs font-semibold cursor-pointer"
+              className="rounded-xl text-xs font-semibold cursor-pointer border-2 border-black shadow-[2px_2px_0px_#000]"
             >
               Cancel
             </Button>
@@ -672,7 +675,7 @@ export function AdminMessagesView({
                   setDeleteConfirmId(null);
                 }
               }}
-              className="rounded-xl text-xs font-semibold gap-1.5 cursor-pointer"
+              className="rounded-xl text-xs font-space font-bold border-2 border-black bg-[#FF5F56] text-white hover:bg-[#FA4D44] shadow-[3px_3px_0px_#000] gap-1.5 cursor-pointer"
             >
               {actionLoadingId === deleteConfirmId ? (
                 <Loader2 className="w-3.5 h-3.5 animate-spin" />

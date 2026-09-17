@@ -157,12 +157,12 @@ export function JoinCommunityStepper({
   if (isCompleted) {
     return (
       <div className="py-6 sm:py-8 text-center space-y-5 animate-in fade-in zoom-in-95 duration-300">
-        <div className="w-16 h-16 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-500 flex items-center justify-center mx-auto shadow-glow-primary">
-          <CheckCircle2 className="w-9 h-9" />
+        <div className="w-16 h-16 rounded-2xl bg-[#88EA73] border-2 border-black text-black flex items-center justify-center mx-auto shadow-[4px_4px_0px_#000]">
+          <CheckCircle2 className="w-9 h-9 stroke-[2.5]" />
         </div>
 
         <div className="space-y-1.5 max-w-md mx-auto">
-          <h3 className="text-2xl sm:text-3xl font-bold font-poppins text-foreground">
+          <h3 className="text-2xl sm:text-3xl font-bold font-space text-foreground">
             Welcome to DevNest, {fullName}!
           </h3>
           <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
@@ -170,18 +170,18 @@ export function JoinCommunityStepper({
           </p>
         </div>
 
-        <div className="p-4 rounded-2xl bg-secondary/50 border border-border/70 text-left text-xs space-y-2 max-w-sm mx-auto shadow-subtle">
-          <div className="flex justify-between py-1 border-b border-border/50">
-            <span className="text-muted-foreground">Member Name:</span>
-            <span className="font-semibold text-foreground">{fullName}</span>
+        <div className="p-4 rounded-2xl bg-white border-2 border-black text-left text-xs space-y-2 max-w-sm mx-auto shadow-[3px_3px_0px_#000]">
+          <div className="flex justify-between py-1 border-b-2 border-black/10">
+            <span className="text-muted-foreground font-semibold">Member Name:</span>
+            <span className="font-bold text-foreground">{fullName}</span>
           </div>
-          <div className="flex justify-between py-1 border-b border-border/50">
-            <span className="text-muted-foreground">Roll / ID:</span>
-            <span className="font-mono font-semibold text-foreground">{rollNumber}</span>
+          <div className="flex justify-between py-1 border-b-2 border-black/10">
+            <span className="text-muted-foreground font-semibold">Roll / ID:</span>
+            <span className="font-mono font-bold text-foreground">{rollNumber}</span>
           </div>
           <div className="flex justify-between py-1">
-            <span className="text-muted-foreground">Branch &amp; Year:</span>
-            <span className="font-semibold text-foreground">{branch} ({year})</span>
+            <span className="text-muted-foreground font-semibold">Branch &amp; Year:</span>
+            <span className="font-bold text-foreground">{branch} ({year})</span>
           </div>
         </div>
 
@@ -191,13 +191,13 @@ export function JoinCommunityStepper({
             href={WHATSAPP_GROUP_LINK}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center justify-center gap-2.5 w-full py-3.5 px-5 rounded-2xl bg-[#25D366] hover:bg-[#20bd5a] text-white font-bold text-sm sm:text-base shadow-md hover:shadow-emerald-500/30 transition-all duration-200 active:scale-[0.98]"
+            className="inline-flex items-center justify-center gap-2.5 w-full py-3.5 px-5 rounded-2xl bg-[#25D366] hover:bg-[#20bd5a] text-black font-space font-extrabold text-sm sm:text-base border-2 border-black shadow-[4px_4px_0px_#000] transition-all duration-150 active:translate-x-0.5 active:translate-y-0.5 active:shadow-none"
           >
-            <MessageCircle className="w-5 h-5 fill-current" />
+            <MessageCircle className="w-5 h-5 fill-current stroke-black stroke-2" />
             <span>Join {WHATSAPP_GROUP_NAME}</span>
           </a>
-          <p className="text-[11px] text-muted-foreground">
-            Official invite link: <span className="font-mono text-foreground/80">chat.whatsapp.com/GEjvOGVbtWZ51wAjNKwS0V</span>
+          <p className="text-[11px] text-muted-foreground font-medium">
+            Official invite link: <span className="font-mono font-bold text-foreground">chat.whatsapp.com/GEjvOGVbtWZ51wAjNKwS0V</span>
           </p>
         </div>
 
@@ -282,32 +282,32 @@ export function JoinCommunityStepper({
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 pt-1">
-              <div className="p-3 rounded-2xl bg-secondary/50 border border-border/70 space-y-1">
-                <div className="w-7 h-7 rounded-lg bg-primary/10 text-primary flex items-center justify-center mb-1.5">
-                  <Zap className="w-4 h-4" />
+              <div className="p-3 rounded-2xl bg-[#FFE600] border-2 border-black shadow-[3px_3px_0px_#000] text-black space-y-1">
+                <div className="w-7 h-7 rounded-lg bg-white border-2 border-black flex items-center justify-center mb-1.5 shadow-[1px_1px_0px_#000]">
+                  <Zap className="w-4 h-4 text-black" />
                 </div>
-                <h4 className="text-xs font-bold text-foreground">Priority Entry</h4>
-                <p className="text-[11px] text-muted-foreground leading-snug">
+                <h4 className="text-xs font-bold text-black font-space">Priority Entry</h4>
+                <p className="text-[11px] text-black/80 font-medium leading-snug">
                   Early admission to flagship hackathons, CTFs, and ideathons.
                 </p>
               </div>
 
-              <div className="p-3 rounded-2xl bg-secondary/50 border border-border/70 space-y-1">
-                <div className="w-7 h-7 rounded-lg bg-emerald-500/10 text-emerald-500 flex items-center justify-center mb-1.5">
-                  <Users className="w-4 h-4" />
+              <div className="p-3 rounded-2xl bg-[#70D6FF] border-2 border-black shadow-[3px_3px_0px_#000] text-black space-y-1">
+                <div className="w-7 h-7 rounded-lg bg-white border-2 border-black flex items-center justify-center mb-1.5 shadow-[1px_1px_0px_#000]">
+                  <Users className="w-4 h-4 text-black" />
                 </div>
-                <h4 className="text-xs font-bold text-foreground">500+ Network</h4>
-                <p className="text-[11px] text-muted-foreground leading-snug">
+                <h4 className="text-xs font-bold text-black font-space">500+ Network</h4>
+                <p className="text-[11px] text-black/80 font-medium leading-snug">
                   Peer builders, mentors, and past national winners.
                 </p>
               </div>
 
-              <div className="p-3 rounded-2xl bg-secondary/50 border border-border/70 space-y-1">
-                <div className="w-7 h-7 rounded-lg bg-purple-500/10 text-purple-500 flex items-center justify-center mb-1.5">
-                  <Rocket className="w-4 h-4" />
+              <div className="p-3 rounded-2xl bg-[#C4B5FD] border-2 border-black shadow-[3px_3px_0px_#000] text-black space-y-1">
+                <div className="w-7 h-7 rounded-lg bg-white border-2 border-black flex items-center justify-center mb-1.5 shadow-[1px_1px_0px_#000]">
+                  <Rocket className="w-4 h-4 text-black" />
                 </div>
-                <h4 className="text-xs font-bold text-foreground">Tech Stacks</h4>
-                <p className="text-[11px] text-muted-foreground leading-snug">
+                <h4 className="text-xs font-bold text-black font-space">Tech Stacks</h4>
+                <p className="text-[11px] text-black/80 font-medium leading-snug">
                   Hands-on roadmaps for AI/ML, Web, Security &amp; Cloud.
                 </p>
               </div>
@@ -430,10 +430,10 @@ export function JoinCommunityStepper({
                     key={y}
                     type="button"
                     onClick={() => setYear(y)}
-                    className={`py-1.5 px-2 rounded-xl border text-xs font-semibold transition-all ${
+                    className={`py-1.5 px-2 rounded-xl border-2 border-black text-xs font-space font-bold transition-all ${
                       year === y
-                        ? "bg-primary text-primary-foreground border-primary shadow-subtle"
-                        : "bg-secondary/60 text-muted-foreground border-border hover:bg-secondary"
+                        ? "bg-[#FFE600] text-black shadow-[2px_2px_0px_#000]"
+                        : "bg-white text-black/80 hover:bg-zinc-100"
                     }`}
                   >
                     {y}
@@ -451,7 +451,7 @@ export function JoinCommunityStepper({
                 placeholder="e.g. Computer Science & Engineering / Cyber Security"
                 value={branch}
                 onChange={(e) => setBranch(e.target.value)}
-                className="rounded-xl bg-secondary/50 border-border text-xs h-9"
+                className="rounded-xl border-2 border-black text-xs h-9 bg-white text-black"
               />
             </div>
 
@@ -469,10 +469,10 @@ export function JoinCommunityStepper({
                       key={domain}
                       type="button"
                       onClick={() => toggleInterest(domain)}
-                      className={`px-2.5 py-1 rounded-xl text-[11px] font-medium border transition-all ${
+                      className={`px-2.5 py-1 rounded-xl text-[11px] border-2 border-black font-space transition-all ${
                         active
-                          ? "bg-primary/15 text-primary border-primary/40 font-semibold"
-                          : "bg-secondary/40 text-muted-foreground border-border hover:bg-secondary"
+                          ? "bg-[#FFE600] text-black font-bold shadow-[2px_2px_0px_#000]"
+                          : "bg-white text-black/80 hover:bg-zinc-100 font-medium"
                       }`}
                     >
                       {domain}
@@ -510,30 +510,30 @@ export function JoinCommunityStepper({
               </p>
             </div>
 
-            <div className="p-3.5 rounded-2xl bg-secondary/50 border border-border/70 space-y-2 text-xs">
-              <div className="flex justify-between py-1 border-b border-border/50">
-                <span className="text-muted-foreground">Full Name:</span>
-                <span className="font-semibold text-foreground">{fullName || "Not provided"}</span>
+            <div className="p-3.5 rounded-2xl bg-white border-2 border-black shadow-[3px_3px_0px_#000] space-y-2 text-xs">
+              <div className="flex justify-between py-1 border-b-2 border-black/10">
+                <span className="text-muted-foreground font-semibold">Full Name:</span>
+                <span className="font-bold text-foreground">{fullName || "Not provided"}</span>
               </div>
-              <div className="flex justify-between py-1 border-b border-border/50">
-                <span className="text-muted-foreground">University Email:</span>
+              <div className="flex justify-between py-1 border-b-2 border-black/10">
+                <span className="text-muted-foreground font-semibold">University Email:</span>
                 <span className="font-medium text-foreground">{email || "Not provided"}</span>
               </div>
-              <div className="flex justify-between py-1 border-b border-border/50">
-                <span className="text-muted-foreground">Roll / ID Number:</span>
-                <span className="font-mono font-semibold text-foreground">{rollNumber || "Not provided"}</span>
+              <div className="flex justify-between py-1 border-b-2 border-black/10">
+                <span className="text-muted-foreground font-semibold">Roll / ID Number:</span>
+                <span className="font-mono font-bold text-foreground">{rollNumber || "Not provided"}</span>
               </div>
-              <div className="flex justify-between py-1 border-b border-border/50">
-                <span className="text-muted-foreground">Academic Tier:</span>
-                <span className="font-semibold text-foreground">{year} • {branch}</span>
+              <div className="flex justify-between py-1 border-b-2 border-black/10">
+                <span className="text-muted-foreground font-semibold">Academic Tier:</span>
+                <span className="font-bold text-foreground">{year} • {branch}</span>
               </div>
               <div className="py-1">
-                <span className="text-muted-foreground block mb-1">Selected Domains:</span>
+                <span className="text-muted-foreground font-semibold block mb-1">Selected Domains:</span>
                 <div className="flex flex-wrap gap-1">
                   {selectedInterests.map((interest) => (
                     <span
                       key={interest}
-                      className="px-2 py-0.5 rounded-md bg-primary/10 text-primary text-[10px] font-semibold"
+                      className="px-2 py-0.5 rounded-md bg-[#FFE600] text-black border border-black text-[10px] font-bold"
                     >
                       {interest}
                     </span>
@@ -542,8 +542,8 @@ export function JoinCommunityStepper({
               </div>
             </div>
 
-            <div className="p-2.5 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-[11px] text-emerald-600 dark:text-emerald-400 flex items-center gap-2">
-              <MessageCircle className="w-4 h-4 shrink-0" />
+            <div className="p-2.5 rounded-xl bg-[#88EA73] border-2 border-black shadow-[2px_2px_0px_#000] text-[11px] text-black font-semibold flex items-center gap-2">
+              <MessageCircle className="w-4 h-4 shrink-0 text-black stroke-[2.5]" />
               <span>Click Activate to unlock instant access to the DevNest WhatsApp community.</span>
             </div>
           </div>

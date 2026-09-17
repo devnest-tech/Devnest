@@ -136,18 +136,12 @@ export function Hero() {
 
   return (
     <div className="relative flex flex-col overflow-hidden">
-      {/* Ambient glow layers */}
-      <div className="pointer-events-none absolute inset-0 -z-9 overflow-hidden">
-        <div className="absolute top-1/4 left-1/3 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[350px] bg-primary/6 rounded-full blur-3xl" />
-        <div className="absolute top-1/2 right-10 w-[400px] h-[250px] bg-secondary/8 rounded-full blur-3xl" />
-      </div>
-
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full overflow-x-clip">
-        {/* Full Viewport First Fold - Ensures nothing below is visible without scrolling */}
+        {/* Full Viewport First Fold */}
         <div className="min-h-[calc(100vh-4rem)] sm:min-h-[calc(100vh-5rem)] flex items-center py-6 sm:py-8">
           {/* 2-Column Asymmetric Left-Aligned Grid with Parting Parallax */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-8 items-center w-full">
-            {/* Left Column (Content & CTAs) - Shifts Left on Scroll */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center w-full">
+            {/* Left Column (Content & CTAs) */}
             <div
               className="lg:col-span-7 flex flex-col items-start text-left transition-transform duration-75 ease-out"
               style={{
@@ -157,27 +151,26 @@ export function Hero() {
               }}
             >
               {/* Top Brand Pill with Live Beacon */}
-              <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-white/[0.04] border border-white/12 text-[11px] sm:text-xs font-semibold tracking-wide backdrop-blur-md mb-4 sm:mb-5">
-                <span className="relative flex h-2 w-2">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75" />
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-white" />
+              <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-[#FFE600] border-2 border-black text-xs font-bold tracking-wide shadow-[2px_2px_0px_#000] text-black mb-4 sm:mb-5">
+                <span className="relative flex h-2.5 w-2.5">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-black opacity-75" />
+                  <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-black" />
                 </span>
-                <span className="text-foreground/90">Google Campus Ambassador Initiative</span>
+                <span>Google Campus Ambassador Initiative</span>
               </div>
 
               {/* Display Headline */}
               <h1
-                className="text-3xl sm:text-4xl lg:text-[46px] font-poppins font-bold tracking-tight text-foreground leading-[1.16] mb-3.5 transition-all"
-                style={{
-                  letterSpacing: `${-0.02 - scrollProgress * 0.015}em`,
-                }}
+                className="text-3xl sm:text-4xl lg:text-[50px] font-space font-black tracking-tight text-black leading-[1.12] mb-4 transition-all"
               >
                 Where Student Developers Build{" "}
-                <span className="text-gradient-primary">The Future</span>
+                <span className="bg-[#FFE600] text-black px-2.5 py-0.5 rounded-md border-2 border-black shadow-[3px_3px_0px_#000] inline-block -rotate-1">
+                  The Future
+                </span>
               </h1>
 
               {/* Subheading / Typing Line */}
-              <div className="text-sm sm:text-base font-medium text-foreground/85 mb-3 min-h-[24px]">
+              <div className="text-sm sm:text-base font-bold text-neutral-900 mb-3 min-h-[24px] font-mono">
                 <TextType
                   text={[
                     "At DevNest, we don't just learn technology — we live it.",
@@ -190,15 +183,15 @@ export function Hero() {
                   cursorCharacter="|"
                   deletingSpeed={25}
                   cursorBlinkDuration={0.6}
-                  className="text-foreground/90"
+                  className="text-black font-semibold"
                 />
               </div>
 
               {/* Narrative Description */}
-              <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed max-w-lg mb-6">
+              <p className="text-xs sm:text-sm text-neutral-800 leading-relaxed max-w-lg mb-6 font-medium">
                 A premier student-driven technical society at Lamrin Tech Skills University Punjab.
                 Fostering hands-on engineering across Artificial Intelligence, Cybersecurity, Cloud
-                Systems, and Fullstack Web & Mobile Development.
+                Systems, and Fullstack Web &amp; Mobile Development.
               </p>
 
               {/* Left-Aligned CTA Button */}
@@ -206,17 +199,17 @@ export function Hero() {
                 <Button
                   asChild
                   size="default"
-                  className="rounded-xl px-6 h-11 bg-primary hover:bg-primary/95 text-primary-foreground font-semibold shadow-glow-primary gap-2 text-xs sm:text-sm transition-all duration-200 w-full sm:w-auto cursor-pointer group"
+                  className="rounded-xl px-7 h-12 bg-[#FFE600] hover:bg-[#FFDE59] text-black font-black border-2 border-black shadow-[4px_4px_0px_#000] hover:shadow-[6px_6px_0px_#000] hover:-translate-x-0.5 hover:-translate-y-0.5 active:translate-x-0.5 active:translate-y-0.5 active:shadow-none gap-2 text-sm transition-all duration-150 w-full sm:w-auto cursor-pointer group"
                 >
                   <Link href="/events" className="flex items-center gap-2">
                     <span>Explore 2026 Events</span>
-                    <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
+                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                   </Link>
                 </Button>
               </div>
             </div>
 
-            {/* Right Column (Executive Terminal / Preview Card) - Shifts Right on Scroll */}
+            {/* Right Column (Neobrutalist Window Card) */}
             <div
               className="lg:col-span-5 transition-transform duration-75 ease-out"
               style={{
@@ -225,43 +218,43 @@ export function Hero() {
                 willChange: "transform, opacity",
               }}
             >
-              <div className="relative rounded-3xl border border-white/15 bg-white/[0.03] backdrop-blur-2xl p-4 sm:p-5 shadow-premium overflow-hidden">
+              <div className="relative rounded-3xl border-3 border-black bg-white p-5 sm:p-6 shadow-[8px_8px_0px_#000] overflow-hidden">
                 {/* Window Titlebar */}
-                <div className="flex items-center justify-between pb-3 mb-3 border-b border-white/10">
+                <div className="flex items-center justify-between pb-3.5 mb-4 border-b-2 border-black bg-[#FAF7EE] -mx-5 -mt-5 px-5 pt-3.5 sm:-mx-6 sm:-mt-6 sm:px-6 sm:pt-4">
                   <div className="flex items-center gap-2">
-                    <span className="w-2.5 h-2.5 rounded-full bg-red-500/80 inline-block" />
-                    <span className="w-2.5 h-2.5 rounded-full bg-amber-500/80 inline-block" />
-                    <span className="w-2.5 h-2.5 rounded-full bg-emerald-500/80 inline-block" />
-                    <span className="text-[11px] font-mono text-muted-foreground ml-2">
+                    <span className="w-3 h-3 rounded-full bg-[#FF5F56] border border-black inline-block" />
+                    <span className="w-3 h-3 rounded-full bg-[#FFBD2E] border border-black inline-block" />
+                    <span className="w-3 h-3 rounded-full bg-[#27C93F] border border-black inline-block" />
+                    <span className="text-[11px] font-mono font-bold text-black ml-2">
                       ~/devnest/session
                     </span>
                   </div>
-                  <div className="flex items-center gap-1.5 text-[10px] font-mono text-foreground bg-white/10 backdrop-blur-md px-2 py-0.5 rounded-full border border-white/15">
-                    <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
+                  <div className="flex items-center gap-1.5 text-[10px] font-mono font-bold text-black bg-[#88EA73] px-2.5 py-0.5 rounded-full border-2 border-black shadow-[1px_1px_0px_#000]">
+                    <span className="w-1.5 h-1.5 rounded-full bg-black animate-pulse" />
                     LIVE
                   </div>
                 </div>
 
                 {/* Terminal / Quote Display */}
-                <div className="space-y-3">
-                  <div className="rounded-2xl border border-white/10 bg-black/40 backdrop-blur-md p-4">
+                <div className="space-y-3.5">
+                  <div className="rounded-2xl border-2 border-black bg-[#C4B5FD]/25 p-4 shadow-[2px_2px_0px_#000]">
                     <div className="flex items-center justify-between mb-2">
-                      <span className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground flex items-center gap-1.5">
-                        <Terminal className="w-3 h-3 text-foreground" />
+                      <span className="text-[10px] font-bold uppercase tracking-wider text-black flex items-center gap-1.5">
+                        <Terminal className="w-3.5 h-3.5 text-black" />
                         Club Philosophy
                       </span>
                       <button
                         onClick={handleRotateQuote}
-                        className="p-1 rounded-md text-muted-foreground hover:text-white transition-colors"
+                        className="p-1 rounded-md border border-black bg-white hover:bg-[#FFE600] text-black transition-colors"
                         title="Next Quote"
                       >
                         <RefreshCw className="w-3 h-3" />
                       </button>
                     </div>
-                    <p className="text-xs sm:text-sm italic text-foreground/90 font-medium leading-relaxed">
+                    <p className="text-xs sm:text-sm italic text-black font-semibold leading-relaxed">
                       {displayedQuote}
                     </p>
-                    <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider mt-2.5">
+                    <p className="text-[10px] font-bold text-neutral-600 uppercase tracking-wider mt-2.5">
                       — DevNest Tech Society
                     </p>
                   </div>
@@ -269,15 +262,15 @@ export function Hero() {
                   {/* Upcoming Event Highlight */}
                   <Link
                     href="/events"
-                    className="flex items-center justify-between p-2.5 px-3.5 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] border border-white/10 hover:border-white/25 transition-all group backdrop-blur-md"
+                    className="flex items-center justify-between p-3 px-4 rounded-xl bg-[#FFE600] hover:bg-[#FFDE59] border-2 border-black shadow-[3px_3px_0px_#000] hover:shadow-[4px_4px_0px_#000] hover:-translate-x-0.5 hover:-translate-y-0.5 active:translate-x-0.5 active:translate-y-0.5 active:shadow-none transition-all group"
                   >
-                    <span className="text-muted-foreground text-xs flex items-center gap-2">
-                      <Calendar className="w-3.5 h-3.5 text-foreground" />
+                    <span className="text-black text-xs font-bold flex items-center gap-2">
+                      <Calendar className="w-3.5 h-3.5 text-black" />
                       Upcoming Event
                     </span>
-                    <span className="text-xs font-semibold text-foreground group-hover:text-white transition-colors flex items-center gap-1.5">
+                    <span className="text-xs font-black text-black flex items-center gap-1.5">
                       Tech Quiz &amp; CTF
-                      <ArrowRight className="w-3.5 h-3.5 text-muted-foreground group-hover:text-white group-hover:translate-x-0.5 transition-all" />
+                      <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
                     </span>
                   </Link>
                 </div>
@@ -286,53 +279,57 @@ export function Hero() {
           </div>
         </div>
 
-        {/* Full-Width Left-Aligned Metrics Strip - Positioned Below Initial Viewport Fold */}
+        {/* 4 High-Impact Neobrutalism Metrics Pop Cards */}
         <div className="pt-10 sm:pt-14 pb-8 sm:pb-12">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
-            <div className="rounded-2xl border border-white/12 bg-white/[0.03] backdrop-blur-2xl p-3.5 sm:p-4 shadow-[0_8px_32px_0_rgba(0,0,0,0.36)] hover-lift hover:border-white/25 hover:bg-white/[0.06] transition-all">
-              <div className="w-8 h-8 rounded-xl bg-white/10 text-foreground flex items-center justify-center mb-2 border border-white/15">
-                <Users className="w-3.5 h-3.5" />
+            {/* Card 1: Active Members (Yellow) */}
+            <div className="rounded-2xl border-2 border-black bg-[#FFE600] p-4 sm:p-5 shadow-[5px_5px_0px_#000] hover:-translate-x-1 hover:-translate-y-1 hover:shadow-[7px_7px_0px_#000] transition-all duration-150 text-black">
+              <div className="w-9 h-9 rounded-xl bg-white border-2 border-black text-black flex items-center justify-center mb-3 shadow-[2px_2px_0px_#000]">
+                <Users className="w-4 h-4" />
               </div>
-              <div className="text-2xl sm:text-3xl font-poppins font-bold text-foreground tracking-tight mb-0.5">
+              <div className="text-2xl sm:text-3xl font-space font-black text-black tracking-tight mb-0.5">
                 {counters.members}+
               </div>
-              <p className="text-[10px] sm:text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+              <p className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-black">
                 Active Members
               </p>
             </div>
 
-            <div className="rounded-2xl border border-white/12 bg-white/[0.03] backdrop-blur-2xl p-3.5 sm:p-4 shadow-[0_8px_32px_0_rgba(0,0,0,0.36)] hover-lift hover:border-white/25 hover:bg-white/[0.06] transition-all">
-              <div className="w-8 h-8 rounded-xl bg-white/10 text-foreground flex items-center justify-center mb-2 border border-white/15">
-                <Calendar className="w-3.5 h-3.5" />
+            {/* Card 2: Flagship Events (Sky Blue) */}
+            <div className="rounded-2xl border-2 border-black bg-[#70D6FF] p-4 sm:p-5 shadow-[5px_5px_0px_#000] hover:-translate-x-1 hover:-translate-y-1 hover:shadow-[7px_7px_0px_#000] transition-all duration-150 text-black">
+              <div className="w-9 h-9 rounded-xl bg-white border-2 border-black text-black flex items-center justify-center mb-3 shadow-[2px_2px_0px_#000]">
+                <Calendar className="w-4 h-4" />
               </div>
-              <div className="text-2xl sm:text-3xl font-poppins font-bold text-foreground tracking-tight mb-0.5">
+              <div className="text-2xl sm:text-3xl font-space font-black text-black tracking-tight mb-0.5">
                 {counters.events}+
               </div>
-              <p className="text-[10px] sm:text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+              <p className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-black">
                 Flagship Events
               </p>
             </div>
 
-            <div className="rounded-2xl border border-white/12 bg-white/[0.03] backdrop-blur-2xl p-3.5 sm:p-4 shadow-[0_8px_32px_0_rgba(0,0,0,0.36)] hover-lift hover:border-white/25 hover:bg-white/[0.06] transition-all">
-              <div className="w-8 h-8 rounded-xl bg-white/10 text-foreground flex items-center justify-center mb-2 border border-white/15">
-                <Layers className="w-3.5 h-3.5" />
+            {/* Card 3: Tech Domains (Retro Lavender) */}
+            <div className="rounded-2xl border-2 border-black bg-[#C4B5FD] p-4 sm:p-5 shadow-[5px_5px_0px_#000] hover:-translate-x-1 hover:-translate-y-1 hover:shadow-[7px_7px_0px_#000] transition-all duration-150 text-black">
+              <div className="w-9 h-9 rounded-xl bg-white border-2 border-black text-black flex items-center justify-center mb-3 shadow-[2px_2px_0px_#000]">
+                <Layers className="w-4 h-4" />
               </div>
-              <div className="text-2xl sm:text-3xl font-poppins font-bold text-foreground tracking-tight mb-0.5">
+              <div className="text-2xl sm:text-3xl font-space font-black text-black tracking-tight mb-0.5">
                 5
               </div>
-              <p className="text-[10px] sm:text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+              <p className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-black">
                 Tech Domains
               </p>
             </div>
 
-            <div className="rounded-2xl border border-white/12 bg-white/[0.03] backdrop-blur-2xl p-3.5 sm:p-4 shadow-[0_8px_32px_0_rgba(0,0,0,0.36)] hover-lift hover:border-white/25 hover:bg-white/[0.06] transition-all">
-              <div className="w-8 h-8 rounded-xl bg-white/10 text-foreground flex items-center justify-center mb-2 border border-white/15">
-                <Sparkles className="w-3.5 h-3.5" />
+            {/* Card 4: Student Driven (Mint/Lime) */}
+            <div className="rounded-2xl border-2 border-black bg-[#88EA73] p-4 sm:p-5 shadow-[5px_5px_0px_#000] hover:-translate-x-1 hover:-translate-y-1 hover:shadow-[7px_7px_0px_#000] transition-all duration-150 text-black">
+              <div className="w-9 h-9 rounded-xl bg-white border-2 border-black text-black flex items-center justify-center mb-3 shadow-[2px_2px_0px_#000]">
+                <Sparkles className="w-4 h-4" />
               </div>
-              <div className="text-2xl sm:text-3xl font-poppins font-bold text-foreground tracking-tight mb-0.5">
+              <div className="text-2xl sm:text-3xl font-space font-black text-black tracking-tight mb-0.5">
                 100%
               </div>
-              <p className="text-[10px] sm:text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+              <p className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-black">
                 Student Driven
               </p>
             </div>

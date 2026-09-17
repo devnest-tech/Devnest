@@ -1,5 +1,5 @@
 /** @import must precede all other statements */
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800;900&family=Manrope:wght@400;500;600;700;800&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Poppins:wght@600;700;800;900&family=Manrope:wght@400;500;600;700;800&display=swap");
 
 @font-face {
   font-family: 'SerenityEmoji';
@@ -16,129 +16,123 @@
 @layer base {
 
   /**
-   * Tailwind CSS theme
-   * tailwind.config.ts expects the following color variables to be expressed as HSL values.
-   * A different format will require also updating the theme in tailwind.config.ts.
+   * Neobrutalism UI Theme (Sepideh Yazdi Reference)
+   * High contrast, solid pitch black borders, hard unblurred drop shadows,
+   * warm retro cream paper canvas (#FAF7EE) and saturated pop accents.
   */
-  /* ─── Premium Black & White Theme ─────────────────────────────────────────── */
-  /* Palette: #000000 (pure black) · #141414 (card surface) · #262626 (border) · #FFFFFF (stark white) */
 
   :root {
-    /* Pure black background */
-    --background: 0 0% 0%;
-    --foreground: 0 0% 98%;
+    /* Warm retro cream paper background */
+    --background: 43 45% 96%;
+    --foreground: 0 0% 0%;
 
-    --card: 0 0% 6%;
-    --card-foreground: 0 0% 95%;
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 0%;
 
-    --popover: 0 0% 7%;
-    --popover-foreground: 0 0% 95%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 0%;
 
-    /* Primary — crisp stark white */
-    --primary: 0 0% 100%;
+    /* Primary — saturated canary yellow */
+    --primary: 54 100% 50%;
     --primary-foreground: 0 0% 0%;
 
-    /* Secondary — subtle charcoal */
-    --secondary: 0 0% 15%;
-    --secondary-foreground: 0 0% 95%;
+    /* Secondary — retro lavender */
+    --secondary: 258 90% 85%;
+    --secondary-foreground: 0 0% 0%;
 
-    /* Muted — dark neutral */
-    --muted: 0 0% 12%;
-    --muted-foreground: 0 0% 65%;
+    /* Muted — soft retro beige */
+    --muted: 40 25% 90%;
+    --muted-foreground: 0 0% 30%;
 
-    /* Accent — silver/zinc highlight */
-    --accent: 0 0% 18%;
-    --accent-foreground: 0 0% 100%;
+    /* Accent — bubblegum pink / coral */
+    --accent: 338 100% 72%;
+    --accent-foreground: 0 0% 0%;
 
-    --destructive: 0 72% 55%;
-    --destructive-foreground: 0 0% 97%;
+    --destructive: 358 100% 67%;
+    --destructive-foreground: 0 0% 100%;
 
-    /* Borders & inputs */
-    --border: 0 0% 18%;
-    --input: 0 0% 12%;
-    --ring: 0 0% 85%;
+    /* Borders & inputs — pitch black strokes */
+    --border: 0 0% 0%;
+    --input: 0 0% 0%;
+    --ring: 54 100% 50%;
 
-    --radius: 0.5rem;
+    --radius: 0.75rem;
 
     /* Sidebar */
-    --sidebar-background: 0 0% 4%;
-    --sidebar-foreground: 0 0% 95%;
-    --sidebar-primary: 0 0% 100%;
+    --sidebar-background: 43 45% 96%;
+    --sidebar-foreground: 0 0% 0%;
+    --sidebar-primary: 54 100% 50%;
     --sidebar-primary-foreground: 0 0% 0%;
-    --sidebar-accent: 0 0% 15%;
-    --sidebar-accent-foreground: 0 0% 95%;
-    --sidebar-border: 0 0% 18%;
-    --sidebar-ring: 0 0% 85%;
+    --sidebar-accent: 258 90% 85%;
+    --sidebar-accent-foreground: 0 0% 0%;
+    --sidebar-border: 0 0% 0%;
+    --sidebar-ring: 54 100% 50%;
 
-    /* GooeyNav color variables — Monochrome */
-    --color-1: #ffffff;
-    --color-2: #666666;
-    --color-3: #cccccc;
-    --color-4: #ffffff;
+    /* GooeyNav color variables */
+    --color-1: #FFE600;
+    --color-2: #FF70A6;
+    --color-3: #70D6FF;
+    --color-4: #000000;
   }
 
-  /* Dark class mirrors :root since the site is always dark */
+  /* Dark class mirrors Neobrutalism palette to maintain bold high contrast */
   .dark {
-    --background: 0 0% 0%;
-    --foreground: 0 0% 98%;
+    --background: 43 45% 96%;
+    --foreground: 0 0% 0%;
 
-    --card: 0 0% 6%;
-    --card-foreground: 0 0% 95%;
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 0%;
 
-    --popover: 0 0% 7%;
-    --popover-foreground: 0 0% 95%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 0%;
 
-    --primary: 0 0% 100%;
+    --primary: 54 100% 50%;
     --primary-foreground: 0 0% 0%;
 
-    --secondary: 0 0% 15%;
-    --secondary-foreground: 0 0% 95%;
+    --secondary: 258 90% 85%;
+    --secondary-foreground: 0 0% 0%;
 
-    --muted: 0 0% 12%;
-    --muted-foreground: 0 0% 65%;
+    --muted: 40 25% 90%;
+    --muted-foreground: 0 0% 30%;
 
-    --accent: 0 0% 18%;
-    --accent-foreground: 0 0% 100%;
+    --accent: 338 100% 72%;
+    --accent-foreground: 0 0% 0%;
 
-    --destructive: 0 72% 55%;
-    --destructive-foreground: 0 0% 97%;
+    --destructive: 358 100% 67%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 0 0% 18%;
-    --input: 0 0% 12%;
-    --ring: 0 0% 85%;
+    --border: 0 0% 0%;
+    --input: 0 0% 0%;
+    --ring: 54 100% 50%;
 
-    --sidebar-background: 0 0% 4%;
-    --sidebar-foreground: 0 0% 95%;
-    --sidebar-primary: 0 0% 100%;
+    --sidebar-background: 43 45% 96%;
+    --sidebar-foreground: 0 0% 0%;
+    --sidebar-primary: 54 100% 50%;
     --sidebar-primary-foreground: 0 0% 0%;
-    --sidebar-accent: 0 0% 15%;
-    --sidebar-accent-foreground: 0 0% 95%;
-    --sidebar-border: 0 0% 18%;
-    --sidebar-ring: 0 0% 85%;
+    --sidebar-accent: 258 90% 85%;
+    --sidebar-accent-foreground: 0 0% 0%;
+    --sidebar-border: 0 0% 0%;
+    --sidebar-ring: 54 100% 50%;
 
-    /* GooeyNav color variables — Monochrome */
-    --color-1: #ffffff;
-    --color-2: #666666;
-    --color-3: #cccccc;
-    --color-4: #ffffff;
+    --color-1: #FFE600;
+    --color-2: #FF70A6;
+    --color-3: #70D6FF;
+    --color-4: #000000;
   }
 }
 
 @layer base {
   * {
-    @apply border-border;
+    border-color: #000000;
   }
 
   body {
     @apply bg-background text-foreground font-manrope;
-  }
-
-  /* Global emoji styling - white pixel font */
-  body {
+    background-color: #FAF7EE;
+    color: #000000;
     font-family: 'Manrope', 'SerenityEmoji', sans-serif;
   }
 
-  /* Force white color for emoji unicode ranges */
   body :is(h1, h2, h3, h4, h5, h6, p, span, div, a, button, li, td, th, label) {
     font-family: inherit;
   }
@@ -149,8 +143,8 @@
   h4,
   h5,
   h6 {
-    @apply font-poppins;
-    font-family: 'Poppins', 'SerenityEmoji', sans-serif;
+    font-family: 'Space Grotesk', 'Poppins', sans-serif;
+    color: #000000;
   }
 
   :where(p, span, li, a, button, label, td, th, div) {
@@ -171,128 +165,119 @@
 
 @layer components {
 
-  /* Emoji styling - monochrome white pixel emojis */
+  /* Neobrutalism Dot Grid Canvas Background */
+  .neo-grid-bg {
+    background-color: #FAF7EE;
+    background-image: radial-gradient(#000000 1.2px, transparent 1.2px);
+    background-size: 24px 24px;
+  }
+
+  /* Emoji styling */
   .emoji-white {
     font-family: 'SerenityEmoji', sans-serif;
-    filter: grayscale(100%);
   }
 
   .glow-text {
-    color: hsl(var(--primary)) !important;
-    background: none !important;
-    background-image: none !important;
-    background-clip: initial !important;
-    -webkit-background-clip: initial !important;
-    -webkit-text-fill-color: currentColor !important;
-    filter: none !important;
-    opacity: 1 !important;
+    color: #000000 !important;
+    background: #FFE600 !important;
+    padding: 0 0.35rem !important;
+    border: 2px solid #000000 !important;
+    box-shadow: 2px 2px 0px #000000 !important;
+    display: inline-block !important;
+    border-radius: 4px !important;
+    -webkit-text-fill-color: #000000 !important;
     text-shadow: none !important;
   }
 
   .dark .glow-text {
-    color: hsl(var(--primary)) !important;
-    background: none !important;
-    background-image: none !important;
-    background-clip: initial !important;
-    -webkit-background-clip: initial !important;
-    -webkit-text-fill-color: currentColor !important;
-    filter: none !important;
-    opacity: 1 !important;
+    color: #000000 !important;
+    background: #FFE600 !important;
+    padding: 0 0.35rem !important;
+    border: 2px solid #000000 !important;
+    box-shadow: 2px 2px 0px #000000 !important;
+    display: inline-block !important;
+    border-radius: 4px !important;
+    -webkit-text-fill-color: #000000 !important;
     text-shadow: none !important;
   }
 
-  .glass-panel {
-    background: rgba(16, 16, 22, 0.5) !important;
-    backdrop-filter: blur(24px) saturate(190%) !important;
-    -webkit-backdrop-filter: blur(24px) saturate(190%) !important;
-    border: 1px solid rgba(255, 255, 255, 0.12) !important;
-    box-shadow: 
-      0 8px 32px 0 rgba(0, 0, 0, 0.36),
-      inset 0 1px 0 0 rgba(255, 255, 255, 0.14) !important;
-    transition: all 250ms cubic-bezier(0.16, 1, 0.3, 1);
+  /* Neobrutalism Opaque Cards with Hard Shadows (Zero blur, 100% opacity) */
+  .glass-panel,
+  .glass-effect,
+  .neobrutal-card {
+    background: #FFFFFF !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    border: 2.5px solid #000000 !important;
+    box-shadow: 4px 4px 0px 0px #000000 !important;
+    border-radius: 16px;
+    transition: transform 150ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 150ms cubic-bezier(0.16, 1, 0.3, 1);
   }
 
-  .glass-panel:hover {
-    background: rgba(24, 24, 32, 0.65) !important;
-    border-color: rgba(255, 255, 255, 0.24) !important;
-    box-shadow: 
-      0 16px 44px -4px rgba(0, 0, 0, 0.5),
-      inset 0 1px 0 0 rgba(255, 255, 255, 0.22) !important;
+  .glass-panel:hover,
+  .glass-effect:hover,
+  .neobrutal-card:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0px 0px #000000 !important;
   }
 
-  .glass-effect {
-    background: rgba(16, 16, 22, 0.5) !important;
-    backdrop-filter: blur(24px) saturate(190%) !important;
-    -webkit-backdrop-filter: blur(24px) saturate(190%) !important;
-    border: 1px solid rgba(255, 255, 255, 0.12) !important;
-    box-shadow: 
-      0 8px 32px 0 rgba(0, 0, 0, 0.35),
-      inset 0 1px 0 0 rgba(255, 255, 255, 0.1) !important;
-    transition: border-color 200ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 200ms cubic-bezier(0.16, 1, 0.3, 1), transform 200ms cubic-bezier(0.16, 1, 0.3, 1), background-color 200ms ease;
-  }
-
-  .glass-effect:hover {
-    background: rgba(24, 24, 32, 0.65) !important;
-    border-color: rgba(255, 255, 255, 0.24) !important;
-    box-shadow: 
-      0 16px 44px -4px rgba(0, 0, 0, 0.5),
-      inset 0 1px 0 0 rgba(255, 255, 255, 0.2) !important;
+  .glass-panel:active,
+  .glass-effect:active,
+  .neobrutal-card:active {
+    transform: translate(2px, 2px);
+    box-shadow: 1px 1px 0px 0px #000000 !important;
   }
 
   .dark .glass-effect {
-    background: rgba(16, 16, 22, 0.5) !important;
-    backdrop-filter: blur(24px) saturate(190%) !important;
-    -webkit-backdrop-filter: blur(24px) saturate(190%) !important;
-    border: 1px solid rgba(255, 255, 255, 0.12) !important;
-    box-shadow: 
-      0 8px 32px 0 rgba(0, 0, 0, 0.35),
-      inset 0 1px 0 0 rgba(255, 255, 255, 0.1) !important;
+    background: #FFFFFF !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    border: 2.5px solid #000000 !important;
+    box-shadow: 4px 4px 0px 0px #000000 !important;
   }
 
   .dark .glass-effect:hover {
-    background: rgba(24, 24, 32, 0.65) !important;
-    border-color: rgba(255, 255, 255, 0.24) !important;
-    box-shadow: 
-      0 16px 44px -4px rgba(0, 0, 0, 0.5),
-      inset 0 1px 0 0 rgba(255, 255, 255, 0.2) !important;
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0px 0px #000000 !important;
   }
 
-  /* Universal Frosted Glass Cards */
+  /* Universal Opaque Cards */
   .bg-card,
   [class*="bg-card/"] {
-    backdrop-filter: blur(20px) saturate(180%) !important;
-    -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
   }
 
   .bg-card {
-    background-color: rgba(16, 16, 22, 0.55) !important;
-    border-color: rgba(255, 255, 255, 0.12) !important;
+    background-color: #FFFFFF !important;
+    border-color: #000000 !important;
   }
 
   [class*="bg-card/90"],
   [class*="bg-card/95"],
   [class*="bg-card/85"] {
-    background-color: rgba(16, 16, 22, 0.58) !important;
+    background-color: #FFFFFF !important;
   }
 
   .neon-border {
-    border: 1px solid hsl(var(--primary) / 0.5);
-    box-shadow: 0 0 15px -3px rgba(255, 255, 255, 0.15);
-    transition: border-color 200ms ease, box-shadow 200ms ease;
+    border: 2.5px solid #000000;
+    box-shadow: 4px 4px 0px 0px #000000;
+    transition: transform 150ms ease, box-shadow 150ms ease;
   }
 
   .neon-border:hover {
-    border-color: hsl(var(--primary));
-    box-shadow: 0 0 25px -3px rgba(255, 255, 255, 0.3);
+    border-color: #000000;
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0px 0px #000000;
   }
 
   .hover-lift {
-    transition: transform 200ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 200ms cubic-bezier(0.16, 1, 0.3, 1), border-color 200ms cubic-bezier(0.16, 1, 0.3, 1);
+    transition: transform 150ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 150ms cubic-bezier(0.16, 1, 0.3, 1);
   }
 
   .hover-lift:hover {
-    transform: translateY(-2.5px);
-    box-shadow: 0 14px 34px -10px rgba(0, 0, 0, 0.5);
+    transform: translate(-2.5px, -2.5px);
+    box-shadow: 6px 6px 0px 0px #000000 !important;
   }
 
   .badge-pill {
@@ -302,20 +287,27 @@
     padding: 0.35rem 0.875rem;
     border-radius: 9999px;
     font-size: 0.75rem;
-    font-weight: 600;
+    font-weight: 700;
     letter-spacing: 0.04em;
-    background: rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.16);
-    color: hsl(var(--foreground));
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    background: #FFE600;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    border: 2px solid #000000;
+    color: #000000;
+    box-shadow: 2px 2px 0px 0px #000000;
   }
 
+  /* Neobrutalism Text Highlight (No gradients) */
   .text-gradient-primary {
-    background: linear-gradient(135deg, #ffffff 0%, #a3a3a3 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    background: #FFE600;
+    color: #000000 !important;
+    -webkit-text-fill-color: #000000 !important;
+    padding: 0.05rem 0.4rem;
+    border: 2px solid #000000;
+    box-shadow: 3px 3px 0px #000000;
+    display: inline-block;
+    border-radius: 6px;
+    transform: rotate(-1deg);
   }
 
   .animation-delay-2000 {
@@ -358,16 +350,49 @@
     }
   }
 
-  /* Pulse glow animation */
-  @keyframes pulseGlow {
+  /* Neobrutalism Marquee Ticker Animation */
+  @keyframes neoMarquee {
+    0% {
+      transform: translateX(0%);
+    }
+    100% {
+      transform: translateX(-50%);
+    }
+  }
 
+  .neo-marquee-content {
+    display: flex;
+    width: max-content;
+    animation: neoMarquee 28s linear infinite;
+  }
+
+  .neo-marquee-content:hover {
+    animation-play-state: paused;
+  }
+
+  .neo-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 0.25rem 0.65rem;
+    border: 2px solid #000000;
+    box-shadow: 2px 2px 0px 0px #000000;
+    border-radius: 9999px;
+  }
+
+  /* Pulse animation */
+  @keyframes pulseGlow {
     0%,
     100% {
-      box-shadow: 0 0 5px rgba(255, 255, 255, 0.2);
+      transform: scale(1);
     }
 
     50% {
-      box-shadow: 0 0 20px rgba(255, 255, 255, 0.4), 0 0 30px rgba(255, 255, 255, 0.15);
+      transform: scale(1.03);
     }
   }
 

@@ -46,13 +46,13 @@ export default function BlogsPage({ blogs }: BlogsPageProps) {
           {/* Left-Aligned Header */}
           <div className="text-left mb-12">
             <div className="badge-pill mb-4">
-              <BookOpen className="w-3.5 h-3.5 text-primary" />
+              <BookOpen className="w-3.5 h-3.5 text-black" />
               <span>DevNest Knowledge Base</span>
-              <span className="text-muted-foreground/60">•</span>
-              <span className="text-foreground/80 font-medium">Technical Publications</span>
+              <span className="text-black/40">•</span>
+              <span className="text-black font-bold">Technical Publications</span>
             </div>
 
-            <h1 className="text-4xl sm:text-5xl md:text-6xl font-poppins font-bold tracking-tight mb-4 text-foreground">
+            <h1 className="text-4xl sm:text-5xl md:text-6xl font-space font-bold tracking-tight mb-4 text-foreground">
               Blogs & <span className="text-gradient-primary">Insights</span>
             </h1>
 
@@ -66,13 +66,13 @@ export default function BlogsPage({ blogs }: BlogsPageProps) {
           <div className="mb-12 space-y-4">
             {/* Search Bar */}
             <div className="relative max-w-xl">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-black" />
               <Input
                 type="text"
                 placeholder="Search articles by title or keyword..."
                 value={searchTerm}
                 onChange={(event) => setSearchTerm(event.target.value)}
-                className="pl-11 pr-4 h-12 rounded-2xl border border-border/80 bg-card/90 shadow-subtle focus:border-primary/50 text-sm transition-all duration-200"
+                className="pl-11 pr-4 h-12 rounded-2xl border-2 border-black bg-white text-black placeholder:text-zinc-400 shadow-[2px_2px_0px_#000] focus:shadow-[4px_4px_0px_#000] focus:outline-none text-sm transition-all font-medium"
               />
             </div>
 
@@ -81,10 +81,10 @@ export default function BlogsPage({ blogs }: BlogsPageProps) {
               <button
                 type="button"
                 onClick={() => setSelectedCategory(null)}
-                className={`px-4 py-2 rounded-xl text-xs font-semibold transition-all duration-200 ${
+                className={`px-4 py-2 rounded-xl text-xs font-space font-bold border-2 border-black transition-all duration-150 ${
                   selectedCategory === null
-                    ? "bg-primary text-primary-foreground shadow-subtle hover:shadow-glow-primary"
-                    : "bg-secondary/70 hover:bg-secondary text-muted-foreground hover:text-foreground border border-border/60"
+                    ? "bg-[#FFE600] text-black shadow-[2px_2px_0px_#000]"
+                    : "bg-white text-black/80 hover:bg-zinc-100"
                 }`}
               >
                 All Categories ({blogs.length})
@@ -95,10 +95,10 @@ export default function BlogsPage({ blogs }: BlogsPageProps) {
                   type="button"
                   key={category}
                   onClick={() => setSelectedCategory(category)}
-                  className={`px-4 py-2 rounded-xl text-xs font-semibold transition-all duration-200 ${
+                  className={`px-4 py-2 rounded-xl text-xs font-space font-bold border-2 border-black transition-all duration-150 ${
                     selectedCategory === category
-                      ? "bg-primary text-primary-foreground shadow-subtle hover:shadow-glow-primary"
-                      : "bg-secondary/70 hover:bg-secondary text-muted-foreground hover:text-foreground border border-border/60"
+                      ? "bg-[#FFE600] text-black shadow-[2px_2px_0px_#000]"
+                      : "bg-white text-black/80 hover:bg-zinc-100"
                   }`}
                 >
                   {category}
@@ -116,10 +116,10 @@ export default function BlogsPage({ blogs }: BlogsPageProps) {
                   href={`/blog/${blog.slug}`}
                   className="group block h-full"
                 >
-                  <article className="glass-panel rounded-3xl overflow-hidden border border-border/80 group-hover:border-primary/40 shadow-subtle group-hover:shadow-premium-hover transition-all duration-300 flex flex-col justify-between h-full">
+                  <article className="rounded-3xl overflow-hidden border-2 border-black bg-white shadow-[4px_4px_0px_#000] group-hover:shadow-[6px_6px_0px_#000] group-hover:-translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-200 flex flex-col justify-between h-full">
                     {/* Thumbnail */}
-                    <div className="relative h-44 bg-gradient-to-br from-primary/10 via-secondary/40 to-primary/5 overflow-hidden flex items-center justify-center border-b border-border/50">
-                      <span className="text-6xl select-none group-hover:scale-110 transition-transform duration-300" aria-hidden="true">
+                    <div className="relative h-44 bg-[#FAF7EE] border-b-2 border-black overflow-hidden flex items-center justify-center">
+                      <span className="text-6xl select-none group-hover:scale-110 transition-transform duration-200" aria-hidden="true">
                         {blog.thumbnail}
                       </span>
                     </div>
@@ -129,40 +129,40 @@ export default function BlogsPage({ blogs }: BlogsPageProps) {
                       <div>
                         {/* Category Badge */}
                         <div className="mb-2.5">
-                          <span className="inline-block px-2.5 py-0.5 rounded-md bg-primary/10 text-primary border border-primary/20 text-[11px] font-semibold">
+                          <span className="inline-block px-2.5 py-0.5 rounded-md bg-[#FFE600] text-black border border-black text-[11px] font-space font-bold uppercase shadow-[1px_1px_0px_#000]">
                             {blog.category}
                           </span>
                         </div>
 
                         {/* Title */}
-                        <h3 className="text-lg font-bold font-poppins text-foreground group-hover:text-primary transition-colors line-clamp-2 mb-2 leading-snug">
+                        <h3 className="text-lg font-bold font-space text-foreground group-hover:text-black transition-colors line-clamp-2 mb-2 leading-snug">
                           {blog.title}
                         </h3>
 
                         {/* Excerpt */}
-                        <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed line-clamp-3 mb-4">
+                        <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed line-clamp-3 mb-4 font-medium">
                           {blog.excerpt}
                         </p>
                       </div>
 
                       <div>
                         {/* Meta Info */}
-                        <div className="flex items-center justify-between text-xs text-muted-foreground border-t border-border/60 pt-3.5 mb-3.5">
-                          <div className="flex items-center gap-1.5 font-medium truncate max-w-[140px]">
-                            <User className="w-3.5 h-3.5 text-primary shrink-0" />
+                        <div className="flex items-center justify-between text-xs text-muted-foreground border-t-2 border-black/10 pt-3.5 mb-3.5">
+                          <div className="flex items-center gap-1.5 font-bold text-foreground truncate max-w-[140px] font-space">
+                            <User className="w-3.5 h-3.5 text-black shrink-0" />
                             <span className="truncate">{blog.author}</span>
                           </div>
 
-                          <div className="flex items-center gap-1.5">
-                            <Clock className="w-3.5 h-3.5 text-primary shrink-0" />
+                          <div className="flex items-center gap-1.5 font-medium">
+                            <Clock className="w-3.5 h-3.5 text-black shrink-0" />
                             <span>{blog.readTime}</span>
                           </div>
                         </div>
 
                         {/* Read Link */}
-                        <div className="inline-flex items-center justify-between w-full text-xs font-semibold text-primary pt-1">
+                        <div className="inline-flex items-center justify-between w-full text-xs font-bold text-black font-space pt-1">
                           <span>Read Full Story</span>
-                          <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+                          <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform stroke-[2.5]" />
                         </div>
                       </div>
                     </div>
@@ -193,22 +193,22 @@ export default function BlogsPage({ blogs }: BlogsPageProps) {
 
           {/* CTA Section */}
           <div className="mt-16 text-center">
-            <div className="glass-panel rounded-3xl p-8 sm:p-12 border border-border/80 shadow-premium max-w-2xl mx-auto">
-              <div className="w-12 h-12 rounded-2xl bg-primary/10 border border-primary/20 flex items-center justify-center text-primary mx-auto mb-4">
-                <Sparkles className="w-6 h-6" />
+            <div className="rounded-3xl p-8 sm:p-12 border-3 border-black bg-[#FAF7EE] shadow-[6px_6px_0px_#000] max-w-2xl mx-auto">
+              <div className="w-12 h-12 rounded-2xl bg-[#FFE600] border-2 border-black flex items-center justify-center text-black mx-auto mb-4 shadow-[2px_2px_0px_#000]">
+                <Sparkles className="w-6 h-6 stroke-[2.2]" />
               </div>
 
-              <h3 className="text-2xl sm:text-3xl font-poppins font-bold text-foreground mb-3">
+              <h3 className="text-2xl sm:text-3xl font-space font-bold text-foreground mb-3">
                 Want to Share Your Knowledge?
               </h3>
 
-              <p className="text-sm text-muted-foreground max-w-md mx-auto mb-6 leading-relaxed">
+              <p className="text-sm text-muted-foreground max-w-md mx-auto mb-6 leading-relaxed font-medium">
                 We welcome technical write-ups, project breakdowns, and beginner-friendly guides from DevNest students and alumni.
               </p>
 
               <a
                 href="mailto:devnest.techclub@gmail.com?subject=DevNest%20Blog%20Submission"
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-primary text-primary-foreground font-semibold text-xs sm:text-sm shadow-subtle hover:shadow-glow-primary transition-all duration-200 active:scale-95"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[#FFE600] text-black font-space font-extrabold text-xs sm:text-sm border-2 border-black shadow-[3px_3px_0px_#000] hover:bg-[#FFE600]/90 active:translate-x-0.5 active:translate-y-0.5 active:shadow-none transition-all duration-150"
               >
                 <Send className="w-4 h-4" />
                 <span>Submit an Article</span>

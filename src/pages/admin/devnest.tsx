@@ -1154,12 +1154,15 @@ export default function AdminDevnestPage() {
                             </Button>
                           )}
                           <Button
-                            variant="ghost"
+                            variant="destructive"
                             size="sm"
+                            disabled={prarambhActionLoadingId === reg.id}
                             onClick={() => setDeletePrarambhConfirmId(reg.id)}
-                            className="h-7 px-1.5 text-xs text-destructive hover:bg-destructive/10 rounded-lg cursor-pointer"
+                            className="h-7 px-2 text-xs font-space font-bold border-2 border-black bg-[#FF5F56] text-white hover:bg-[#FA4D44] shadow-[1.5px_1.5px_0px_#000] rounded-lg cursor-pointer gap-1"
+                            title="Delete Registration"
                           >
                             <Trash2 className="w-3.5 h-3.5" />
+                            <span>Delete</span>
                           </Button>
                         </div>
                       </div>
@@ -1323,14 +1326,15 @@ export default function AdminDevnestPage() {
                               )}
 
                               <Button
-                                variant="ghost"
+                                variant="destructive"
                                 size="sm"
                                 disabled={prarambhActionLoadingId === reg.id}
                                 onClick={() => setDeletePrarambhConfirmId(reg.id)}
-                                className="h-8 px-2 text-xs text-destructive hover:bg-destructive/10 rounded-xl cursor-pointer"
+                                className="h-8 px-2.5 text-xs font-space font-bold border-2 border-black bg-[#FF5F56] text-white hover:bg-[#FA4D44] shadow-[2px_2px_0px_#000] rounded-xl cursor-pointer gap-1"
                                 title="Delete Registration"
                               >
                                 <Trash2 className="w-3.5 h-3.5" />
+                                <span>Delete</span>
                               </Button>
                             </div>
                           </td>
@@ -1638,12 +1642,14 @@ export default function AdminDevnestPage() {
 
                     <Button
                       size="sm"
-                      variant="ghost"
+                      variant="destructive"
                       disabled={actionLoadingId === member.id}
                       onClick={() => setDeleteConfirmId(member.id)}
-                      className="rounded-xl h-9 px-2.5 text-destructive hover:bg-destructive/10"
+                      className="rounded-xl h-9 px-3 text-xs font-space font-bold border-2 border-black bg-[#FF5F56] text-white hover:bg-[#FA4D44] shadow-[2px_2px_0px_#000] gap-1"
+                      title="Delete Member"
                     >
-                      <Trash2 className="w-4 h-4" />
+                      <Trash2 className="w-3.5 h-3.5" />
+                      <span>Delete</span>
                     </Button>
                   </div>
                 </div>
@@ -1794,14 +1800,15 @@ export default function AdminDevnestPage() {
                             )}
 
                             <Button
-                              variant="ghost"
+                              variant="destructive"
                               size="sm"
                               disabled={actionLoadingId === member.id}
                               onClick={() => setDeleteConfirmId(member.id)}
-                              className="rounded-xl h-8 px-2 text-destructive hover:bg-destructive/10"
+                              className="rounded-xl h-8 px-2.5 text-xs font-space font-bold border-2 border-black bg-[#FF5F56] text-white hover:bg-[#FA4D44] shadow-[2px_2px_0px_#000] gap-1 cursor-pointer"
                               title="Delete Submission"
                             >
                               <Trash2 className="w-3.5 h-3.5" />
+                              <span>Delete</span>
                             </Button>
                           </div>
                         </td>
@@ -2049,10 +2056,10 @@ export default function AdminDevnestPage() {
                     setDeleteConfirmId(selectedMember.id);
                     setSelectedMember(null);
                   }}
-                  className="rounded-xl text-xs font-semibold"
+                  className="rounded-xl text-xs font-space font-bold border-2 border-black bg-[#FF5F56] text-white hover:bg-[#FA4D44] shadow-[3px_3px_0px_#000] gap-1.5 cursor-pointer"
                 >
-                  <Trash2 className="w-3.5 h-3.5 mr-1" />
-                  Delete
+                  <Trash2 className="w-4 h-4" />
+                  <span>Delete Member</span>
                 </Button>
               </div>
             </>
@@ -2328,10 +2335,10 @@ export default function AdminDevnestPage() {
                   onClick={() => {
                     setDeletePrarambhConfirmId(selectedPrarambh.id);
                   }}
-                  className="rounded-xl text-xs font-semibold cursor-pointer"
+                  className="rounded-xl text-xs font-space font-bold border-2 border-black bg-[#FF5F56] text-white hover:bg-[#FA4D44] shadow-[3px_3px_0px_#000] gap-1.5 cursor-pointer"
                 >
-                  <Trash2 className="w-3.5 h-3.5 mr-1" />
-                  Delete
+                  <Trash2 className="w-4 h-4" />
+                  <span>Delete Registration</span>
                 </Button>
               </div>
             </>

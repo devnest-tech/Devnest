@@ -231,30 +231,30 @@ export default function EventsPage() {
               </div>
 
               {/* Segmented Tabs Control */}
-              <div className="inline-flex p-1.5 rounded-2xl bg-secondary/80 border border-border/80 shadow-subtle shrink-0 self-start lg:self-end">
+              <div className="inline-flex p-1.5 rounded-2xl bg-white border-2 border-black shadow-[3px_3px_0px_#000] shrink-0 self-start lg:self-end">
                 <button
                   type="button"
                   onClick={() => setActiveTab("upcoming")}
-                  className={`inline-flex items-center gap-2 px-5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all duration-200 ${
+                  className={`inline-flex items-center gap-2 px-5 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all duration-150 ${
                     activeTab === "upcoming"
-                      ? "bg-background text-foreground shadow-subtle border border-border/60"
-                      : "text-muted-foreground hover:text-foreground"
+                      ? "bg-[#FFE600] text-black shadow-[2px_2px_0px_#000] border-2 border-black"
+                      : "text-black hover:bg-[#FAF7EE] border-2 border-transparent"
                   }`}
                 >
-                  <Calendar className="w-4 h-4 text-primary" />
+                  <Calendar className="w-4 h-4 text-black" />
                   <span>Upcoming ({upcomingEvents.length})</span>
                 </button>
 
                 <button
                   type="button"
                   onClick={() => setActiveTab("past")}
-                  className={`inline-flex items-center gap-2 px-5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all duration-200 ${
+                  className={`inline-flex items-center gap-2 px-5 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all duration-150 ${
                     activeTab === "past"
-                      ? "bg-background text-foreground shadow-subtle border border-border/60"
-                      : "text-muted-foreground hover:text-foreground"
+                      ? "bg-[#FFE600] text-black shadow-[2px_2px_0px_#000] border-2 border-black"
+                      : "text-black hover:bg-[#FAF7EE] border-2 border-transparent"
                   }`}
                 >
-                  <Award className="w-4 h-4 text-primary" />
+                  <Award className="w-4 h-4 text-black" />
                   <span>Past ({pastEvents.length})</span>
                 </button>
               </div>

@@ -104,7 +104,7 @@ const events = [
 		id: 6,
 		title: "Prarambh 2026: Tech Quiz & Capture The Flag (CTF)",
 		subtitle: "Venue: IBM Lab in Lamrin Tech Skills University Punjab — Tech Quiz (1st Year) & CTF (2nd/3rd Year Seniors)",
-		month: "August 18, 2026",
+		month: "To be determined",
 		duration: "Full Day (09:30 - 17:30)",
 		teamSize: "Tech Quiz: Individual | CTF: 1-2 Members",
 		icon: "🏆",

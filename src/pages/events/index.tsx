@@ -43,7 +43,7 @@ const upcomingEvents: Array<{
   {
     id: 1,
     title: "Prarambh: Tech Quiz & Capture The Flag (CTF)",
-    date: "18 August 2026",
+    date: "To be determined",
     time: "09:30 AM – 05:30 PM",
     location: "IBM Lab in Lamrin Tech Skills University Punjab",
     description:
@@ -324,7 +324,7 @@ export default function EventsPage() {
 
                         <div className="flex items-center gap-2 text-xs font-bold text-primary">
                           <Calendar className="w-4 h-4" />
-                          <span>18 August 2026</span>
+                          <span>To be determined</span>
                         </div>
                       </div>
 
@@ -426,7 +426,7 @@ export default function EventsPage() {
                                 <span>Date</span>
                               </div>
                               <span className="text-xs text-foreground font-bold truncate block">
-                                18 August 2026
+                                To be determined
                               </span>
                             </div>
 

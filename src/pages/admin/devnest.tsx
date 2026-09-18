@@ -608,6 +608,9 @@ export default function AdminDevnestPage() {
       "Phone",
       "Roll Number",
       "College",
+      "Course",
+      "Specialization",
+      "Section",
       "Branch",
       "Year",
       "Competition Track",
@@ -624,10 +627,13 @@ export default function AdminDevnestPage() {
       `"${r.phone}"`,
       `"${r.rollNumber}"`,
       `"${r.college.replace(/"/g, '""')}"`,
+      `"${(r.course || "").replace(/"/g, '""')}"`,
+      `"${(r.specialization || "").replace(/"/g, '""')}"`,
+      `"${(r.section || "").replace(/"/g, '""')}"`,
       `"${r.branch.replace(/"/g, '""')}"`,
       `"${r.year}"`,
       `"${r.competition === "tech-quiz" ? "Tech Quiz (1st Year Freshers)" : r.competition === "ctf-2nd-year" ? "CTF (2nd Year Section)" : "CTF (3rd Year Section)"}"`,
-      `"${(r.teamName || "").replace(/"/g, '""')}"`,
+      `"${(r.competition === "tech-quiz" || r.year === "1st Year" ? "Individual" : r.teamName || "").replace(/"/g, '""')}"`,
       `"${(r.handleOrGithub || "").replace(/"/g, '""')}"`,
       `"${r.status}"`,
       `"${new Date(r.createdAt).toLocaleString()}"`,
@@ -2308,12 +2314,17 @@ export default function AdminDevnestPage() {
                       </div>
                     )}
 
-                    {selectedPrarambh.teamName && (
+                    {selectedPrarambh.year === "1st Year" || selectedPrarambh.competition === "tech-quiz" ? (
+                      <div className="pt-1 text-xs">
+                        <span className="text-muted-foreground">Participation: </span>
+                        <strong className="text-foreground">Individual (Solo Fresher)</strong>
+                      </div>
+                    ) : selectedPrarambh.teamName ? (
                       <div className="pt-1 text-xs">
                         <span className="text-muted-foreground">Team Name: </span>
                         <strong className="text-foreground">{selectedPrarambh.teamName}</strong>
                       </div>
-                    )}
+                    ) : null}
                     {selectedPrarambh.handleOrGithub && (
                       <div className="text-xs">
                         <span className="text-muted-foreground">Handle / Profile: </span>
@@ -2369,9 +2380,14 @@ export default function AdminDevnestPage() {
                     <div className="flex items-center gap-2 text-muted-foreground">
                       <GraduationCap className="w-4 h-4 shrink-0" />
                       <span>
-                        {selectedPrarambh.branch} • <strong className="text-foreground">{selectedPrarambh.year}</strong>
+                        {selectedPrarambh.course ? `${selectedPrarambh.course} - ${selectedPrarambh.specialization}` : selectedPrarambh.branch} • <strong className="text-foreground">{selectedPrarambh.year}</strong>
                       </span>
                     </div>
+                    {selectedPrarambh.section && (
+                      <div className="text-muted-foreground">
+                        Class Section: <strong className="text-foreground font-mono">{selectedPrarambh.section}</strong>
+                      </div>
+                    )}
                     <div className="text-muted-foreground">
                       University Roll Number: <strong className="text-foreground font-mono">{selectedPrarambh.rollNumber}</strong>
                     </div>

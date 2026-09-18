@@ -50,7 +50,9 @@ export function PrarambhApplyDialog({
   const [phone, setPhone] = useState("");
   const [rollNumber, setRollNumber] = useState("");
   const [college, setCollege] = useState("Lamrin Tech Skills University Punjab");
-  const [branch, setBranch] = useState("Computer Science & Engineering");
+  const [course, setCourse] = useState("");
+  const [specialization, setSpecialization] = useState("");
+  const [section, setSection] = useState("");
   const [teamName, setTeamName] = useState("");
   const [handleOrGithub, setHandleOrGithub] = useState("");
 
@@ -76,6 +78,7 @@ export function PrarambhApplyDialog({
   };
 
   const currentCompetition = getCompetitionForYear(year);
+  const isFresher = year === "1st Year" || currentCompetition === "tech-quiz";
 
   // When year is 1st Year, force teamSize to 1 (individual only)
   const handleYearChange = (newYear: AcademicYear) => {
@@ -125,17 +128,27 @@ export function PrarambhApplyDialog({
     e.preventDefault();
     setError("");
 
-    if (!fullName || !email || !phone || !rollNumber || !college || !branch) {
-      setError("Please fill in all mandatory applicant fields.");
+    if (!fullName.trim() || !email.trim() || !phone.trim() || !rollNumber.trim() || !college.trim()) {
+      setError("Please fill in all mandatory personal details.");
       return;
     }
 
-    if (!teamName.trim()) {
+    if (!course.trim() || !specialization.trim()) {
+      setError("Course Name and Specialization are compulsory. Please type both manually.");
+      return;
+    }
+
+    if (!section.trim()) {
+      setError("Section is compulsory. Please type your section manually.");
+      return;
+    }
+
+    if (!isFresher && !teamName.trim()) {
       setError("Please enter your Team / Squad Name.");
       return;
     }
 
-    const effectiveTeamSize: 1 | 2 = currentCompetition === "tech-quiz" ? 1 : teamSize;
+    const effectiveTeamSize: 1 | 2 = isFresher ? 1 : teamSize;
 
     if (effectiveTeamSize === 2) {
       if (!teammateName.trim() || !teammatePhone.trim() || !teammateRollNumber.trim()) {
@@ -147,16 +160,24 @@ export function PrarambhApplyDialog({
     setLoading(true);
 
     try {
+      const formattedBranch = `${course.trim()} - ${specialization.trim()} (${section.trim()})`;
+      const resolvedTeamName = isFresher
+        ? (teamName.trim() || "Individual")
+        : teamName.trim();
+
       const res = await fetch("/api/events/prarambh-register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          fullName,
-          email,
-          phone,
-          rollNumber,
-          college,
-          branch,
+          fullName: fullName.trim(),
+          email: email.trim().toLowerCase(),
+          phone: phone.trim(),
+          rollNumber: rollNumber.trim().toUpperCase(),
+          college: college.trim(),
+          branch: formattedBranch,
+          course: course.trim(),
+          specialization: specialization.trim(),
+          section: section.trim(),
           year,
           competition: currentCompetition,
           teamSize: effectiveTeamSize,
@@ -164,7 +185,7 @@ export function PrarambhApplyDialog({
           teammatePhone: effectiveTeamSize === 2 ? teammatePhone.trim() : undefined,
           teammateRollNumber: effectiveTeamSize === 2 ? teammateRollNumber.trim() : undefined,
           venue: "IBM Lab in Lamrin Tech Skills University Punjab",
-          teamName: teamName.trim(),
+          teamName: resolvedTeamName,
           handleOrGithub: handleOrGithub ? handleOrGithub.trim() : undefined,
         }),
       });
@@ -195,6 +216,9 @@ export function PrarambhApplyDialog({
     setEmail("");
     setPhone("");
     setRollNumber("");
+    setCourse("");
+    setSpecialization("");
+    setSection("");
     setTeamName("");
     setHandleOrGithub("");
     setTeammateName("");
@@ -263,6 +287,14 @@ export function PrarambhApplyDialog({
               <div className="flex justify-between py-1 border-b border-border/40">
                 <span className="text-muted-foreground">Academic Year:</span>
                 <span className="font-semibold text-foreground">{year}</span>
+              </div>
+              <div className="flex justify-between py-1 border-b border-border/40">
+                <span className="text-muted-foreground">Course &amp; Spec:</span>
+                <span className="font-semibold text-foreground">{course} - {specialization}</span>
+              </div>
+              <div className="flex justify-between py-1 border-b border-border/40">
+                <span className="text-muted-foreground">Class Section:</span>
+                <span className="font-mono font-semibold text-foreground">{section}</span>
               </div>
               <div className="flex justify-between py-1 border-b border-border/40">
                 <span className="text-muted-foreground">Allocated Competition:</span>
@@ -515,7 +547,7 @@ export function PrarambhApplyDialog({
                   />
                 </div>
 
-                <div className="space-y-1 text-left">
+                <div className="space-y-1 text-left sm:col-span-2">
                   <label className="text-xs font-medium text-muted-foreground flex items-center gap-1.5">
                     <Building2 className="w-3.5 h-3.5 text-primary" />
                     College / Institution <span className="text-destructive">*</span>
@@ -530,15 +562,46 @@ export function PrarambhApplyDialog({
                 </div>
 
                 <div className="space-y-1 text-left">
-                  <label className="text-xs font-medium text-muted-foreground flex items-center gap-1.5">
+                  <label className="text-xs font-semibold text-foreground flex items-center gap-1.5">
                     <GraduationCap className="w-3.5 h-3.5 text-primary" />
-                    Branch / Department <span className="text-destructive">*</span>
+                    <span>Course Name</span>
+                    <span className="text-destructive">*</span>
                   </label>
                   <Input
                     required
-                    placeholder="CSE / AI & ML / Cyber Security"
-                    value={branch}
-                    onChange={(e) => setBranch(e.target.value)}
+                    placeholder="e.g. B.Tech / BCA / MCA"
+                    value={course}
+                    onChange={(e) => setCourse(e.target.value)}
+                    className="rounded-xl bg-secondary/50 border-border/70 text-xs sm:text-sm h-10"
+                  />
+                </div>
+
+                <div className="space-y-1 text-left">
+                  <label className="text-xs font-semibold text-foreground flex items-center gap-1.5">
+                    <GraduationCap className="w-3.5 h-3.5 text-primary" />
+                    <span>Specialization</span>
+                    <span className="text-destructive">*</span>
+                  </label>
+                  <Input
+                    required
+                    placeholder="e.g. CSE / AI & ML / Cyber Security"
+                    value={specialization}
+                    onChange={(e) => setSpecialization(e.target.value)}
+                    className="rounded-xl bg-secondary/50 border-border/70 text-xs sm:text-sm h-10"
+                  />
+                </div>
+
+                <div className="space-y-1 text-left sm:col-span-2">
+                  <label className="text-xs font-semibold text-foreground flex items-center gap-1.5">
+                    <Terminal className="w-3.5 h-3.5 text-primary" />
+                    <span>Section (Type your section manually)</span>
+                    <span className="text-destructive">*</span>
+                  </label>
+                  <Input
+                    required
+                    placeholder="e.g. Section A / Section B / Group 1"
+                    value={section}
+                    onChange={(e) => setSection(e.target.value)}
                     className="rounded-xl bg-secondary/50 border-border/70 text-xs sm:text-sm h-10"
                   />
                 </div>
@@ -601,22 +664,24 @@ export function PrarambhApplyDialog({
               </div>
             )}
 
-            {/* Team / Squad Name (Mandatory) & Profile Handle (Optional) */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
-              <div className="space-y-1 text-left">
-                <label className="text-xs font-semibold text-foreground flex items-center gap-1.5">
-                  <Users className="w-3.5 h-3.5 text-primary" />
-                  <span>{currentCompetition === "tech-quiz" ? "Team / Alias Name" : "Team / Squad Name"}</span>
-                  <span className="text-destructive">*</span>
-                </label>
-                <Input
-                  required
-                  placeholder={year === "1st Year" ? "e.g. CodeWarriors or Solo Alias" : "e.g. CyberKnights"}
-                  value={teamName}
-                  onChange={(e) => setTeamName(e.target.value)}
-                  className="rounded-xl bg-secondary/50 border-border/70 text-xs sm:text-sm h-10"
-                />
-              </div>
+            {/* Team / Squad Name (Mandatory only for CTF seniors, removed for Freshers) & Profile Handle (Optional) */}
+            <div className={`grid grid-cols-1 ${!isFresher ? "sm:grid-cols-2" : ""} gap-3 pt-1`}>
+              {!isFresher && (
+                <div className="space-y-1 text-left">
+                  <label className="text-xs font-semibold text-foreground flex items-center gap-1.5">
+                    <Users className="w-3.5 h-3.5 text-primary" />
+                    <span>Team / Squad Name</span>
+                    <span className="text-destructive">*</span>
+                  </label>
+                  <Input
+                    required
+                    placeholder="e.g. CyberKnights"
+                    value={teamName}
+                    onChange={(e) => setTeamName(e.target.value)}
+                    className="rounded-xl bg-secondary/50 border-border/70 text-xs sm:text-sm h-10"
+                  />
+                </div>
+              )}
 
               <div className="space-y-1 text-left">
                 <label className="text-xs font-medium text-muted-foreground flex items-center gap-1.5">

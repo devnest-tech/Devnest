@@ -38,84 +38,262 @@ export interface MemberStats {
 
 let inMemoryCache: MemberRecord[] | null = null;
 
-function getStorageFilePath(): string {
+/**
+ * Remove undefined properties so Firestore never rejects documents
+ */
+function cleanRecord<T extends Record<string, any>>(record: T): T {
+  const result: Record<string, any> = {};
+  for (const [key, value] of Object.entries(record)) {
+    if (value !== undefined) {
+      result[key] = value;
+    }
+  }
+  return result as T;
+}
+
+function getStoragePaths() {
   const localDir = path.join(process.cwd(), "server", "data");
   const localFile = path.join(localDir, "members.json");
+  const tempFile = path.join(os.tmpdir(), "devnest_members.json");
+  return { localDir, localFile, tempFile };
+}
+
+function loadFromFile(): MemberRecord[] {
+  const { localFile, tempFile } = getStoragePaths();
+  const recordsMap = new Map<string, MemberRecord>();
+
+  const readPath = (fp: string) => {
+    try {
+      if (fs.existsSync(fp)) {
+        const data = fs.readFileSync(fp, "utf-8");
+        const parsed = JSON.parse(data);
+        if (Array.isArray(parsed)) {
+          for (const item of parsed) {
+            if (item && item.id) {
+              recordsMap.set(item.id, item);
+            }
+          }
+        }
+      }
+    } catch (e) {
+      console.warn(`Could not read members from ${fp}:`, e);
+    }
+  };
+
+  readPath(localFile);
+  readPath(tempFile);
+
+  return Array.from(recordsMap.values()).sort(
+    (a, b) => new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime()
+  );
+}
+
+function saveToFile(records: MemberRecord[]): void {
+  const { localDir, localFile, tempFile } = getStoragePaths();
+  const jsonContent = JSON.stringify(records, null, 2);
+
+  try {
+    fs.writeFileSync(tempFile, jsonContent, "utf-8");
+  } catch (err) {
+    console.warn("Could not write members to tempPath:", err);
+  }
 
   try {
     if (!fs.existsSync(localDir)) {
       fs.mkdirSync(localDir, { recursive: true });
     }
-    return localFile;
+    fs.writeFileSync(localFile, jsonContent, "utf-8");
   } catch {
-    return path.join(os.tmpdir(), "devnest_members.json");
+    // Read-only filesystem in serverless
   }
 }
 
-function loadFromFile(): MemberRecord[] {
-  try {
-    const filePath = getStorageFilePath();
-    if (fs.existsSync(filePath)) {
-      const data = fs.readFileSync(filePath, "utf-8");
-      const parsed = JSON.parse(data);
-      if (Array.isArray(parsed)) {
-        return parsed;
-      }
-    }
-  } catch (error) {
-    console.warn("Could not read members file:", error);
-  }
-  return [];
-}
-
-function saveToFile(records: MemberRecord[]): void {
-  try {
-    const filePath = getStorageFilePath();
-    fs.writeFileSync(filePath, JSON.stringify(records, null, 2), "utf-8");
-  } catch (error) {
-    try {
-      const tempPath = path.join(os.tmpdir(), "devnest_members.json");
-      fs.writeFileSync(tempPath, JSON.stringify(records, null, 2), "utf-8");
-    } catch (fallbackError) {
-      console.error("Critical: Could not persist members to disk:", fallbackError);
-    }
-  }
-}
-
-function isFirebaseConfigured(): boolean {
+function isFirebaseAdminConfigured(): boolean {
   return !!process.env.FIREBASE_SERVICE_ACCOUNT;
 }
 
-/**
- * Fetch all members from persistent storage
- */
-export async function getAllMemberRecords(): Promise<MemberRecord[]> {
-  if (isFirebaseConfigured()) {
+function isClientFirestoreConfigured(): boolean {
+  return !!process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID;
+}
+
+async function saveMemberToFirestore(record: MemberRecord): Promise<boolean> {
+  const cleaned = cleanRecord(record);
+  if (isFirebaseAdminConfigured()) {
     try {
       const { adminDb } = initializeFirebaseAdmin();
-      const snapshot = await adminDb
-        .collection("members")
-        .orderBy("createdAt", "desc")
-        .get();
-
-      if (!snapshot.empty) {
-        return snapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...(doc.data() as Omit<MemberRecord, "id">),
-        }));
-      }
-    } catch (error) {
-      console.warn("Firebase Admin read failed, falling back to local store:", error);
+      await adminDb.collection("members").doc(cleaned.id).set(cleaned);
+      return true;
+    } catch (fbAdminErr) {
+      console.warn("Firebase Admin member save failed, falling back to client Firestore:", fbAdminErr);
     }
   }
 
-  if (!inMemoryCache) {
-    inMemoryCache = loadFromFile();
+  if (isClientFirestoreConfigured()) {
+    try {
+      const { doc, setDoc } = await import("firebase/firestore");
+      const { db } = await import("../src/lib/firebase");
+      if (db) {
+        await setDoc(doc(db, "members", cleaned.id), cleaned);
+        return true;
+      }
+    } catch (clientFbErr) {
+      console.warn("Client Firestore member save failed:", clientFbErr);
+    }
   }
 
-  return [...inMemoryCache].sort(
-    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+  return false;
+}
+
+async function fetchMembersFromFirestore(): Promise<MemberRecord[] | null> {
+  if (isFirebaseAdminConfigured()) {
+    try {
+      const { adminDb } = initializeFirebaseAdmin();
+      let snapshot;
+      try {
+        snapshot = await adminDb
+          .collection("members")
+          .orderBy("createdAt", "desc")
+          .get();
+      } catch {
+        snapshot = await adminDb.collection("members").get();
+      }
+
+      const records: MemberRecord[] = [];
+      snapshot.forEach((doc) => {
+        records.push({ id: doc.id, ...doc.data() } as MemberRecord);
+      });
+      return records;
+    } catch (fbAdminErr) {
+      console.warn("Firebase Admin members fetch failed, attempting client Firestore:", fbAdminErr);
+    }
+  }
+
+  if (isClientFirestoreConfigured()) {
+    try {
+      const { collection, getDocs, query, orderBy } = await import("firebase/firestore");
+      const { db } = await import("../src/lib/firebase");
+      if (db) {
+        let snapshot;
+        try {
+          const q = query(collection(db, "members"), orderBy("createdAt", "desc"));
+          snapshot = await getDocs(q);
+        } catch {
+          snapshot = await getDocs(collection(db, "members"));
+        }
+        const records: MemberRecord[] = [];
+        snapshot.forEach((doc) => {
+          records.push({ id: doc.id, ...doc.data() } as MemberRecord);
+        });
+        return records;
+      }
+    } catch (clientFbErr) {
+      console.warn("Client Firestore members fetch failed:", clientFbErr);
+    }
+  }
+
+  return null;
+}
+
+async function updateMemberInFirestore(id: string, updates: Partial<MemberRecord>): Promise<boolean> {
+  const cleaned = cleanRecord(updates);
+  if (isFirebaseAdminConfigured()) {
+    try {
+      const { adminDb } = initializeFirebaseAdmin();
+      await adminDb.collection("members").doc(id).update(cleaned);
+      return true;
+    } catch (fbAdminErr) {
+      console.warn("Firebase Admin member update failed:", fbAdminErr);
+    }
+  }
+
+  if (isClientFirestoreConfigured()) {
+    try {
+      const { doc, updateDoc } = await import("firebase/firestore");
+      const { db } = await import("../src/lib/firebase");
+      if (db) {
+        await updateDoc(doc(db, "members", id), cleaned);
+        return true;
+      }
+    } catch (clientFbErr) {
+      console.warn("Client Firestore member update failed:", clientFbErr);
+    }
+  }
+
+  return false;
+}
+
+async function deleteMemberFromFirestore(id: string): Promise<boolean> {
+  if (isFirebaseAdminConfigured()) {
+    try {
+      const { adminDb } = initializeFirebaseAdmin();
+      await adminDb.collection("members").doc(id).delete();
+      return true;
+    } catch (fbAdminErr) {
+      console.warn("Firebase Admin member delete failed:", fbAdminErr);
+    }
+  }
+
+  if (isClientFirestoreConfigured()) {
+    try {
+      const { doc, deleteDoc } = await import("firebase/firestore");
+      const { db } = await import("../src/lib/firebase");
+      if (db) {
+        await deleteDoc(doc(db, "members", id));
+        return true;
+      }
+    } catch (clientFbErr) {
+      console.warn("Client Firestore member delete failed:", clientFbErr);
+    }
+  }
+
+  return false;
+}
+
+/**
+ * Fetch all members from persistent storage with non-destructive merge
+ */
+export async function getAllMemberRecords(): Promise<MemberRecord[]> {
+  const remoteRecords = await fetchMembersFromFirestore();
+  const mergedMap = new Map<string, MemberRecord>();
+
+  const upsert = (r: MemberRecord) => {
+    if (!r || !r.id) return;
+    const existing = mergedMap.get(r.id);
+    if (!existing) {
+      mergedMap.set(r.id, r);
+    } else {
+      const existingTime = new Date(existing.updatedAt || existing.createdAt || 0).getTime();
+      const newTime = new Date(r.updatedAt || r.createdAt || 0).getTime();
+      if (newTime >= existingTime) {
+        mergedMap.set(r.id, r);
+      }
+    }
+  };
+
+  const fileRecords = loadFromFile();
+  for (const r of fileRecords) {
+    upsert(r);
+  }
+
+  if (remoteRecords && remoteRecords.length > 0) {
+    for (const r of remoteRecords) {
+      upsert(r);
+    }
+  }
+
+  if (inMemoryCache && inMemoryCache.length > 0) {
+    for (const r of inMemoryCache) {
+      upsert(r);
+    }
+  }
+
+  const combined = Array.from(mergedMap.values()).sort(
+    (a, b) => new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime()
   );
+
+  inMemoryCache = combined;
+  saveToFile(combined);
+  return combined;
 }
 
 /**
@@ -164,23 +342,16 @@ export async function addMemberRecord(
     updatedAt: now,
   };
 
-  if (isFirebaseConfigured()) {
-    try {
-      const { adminDb } = initializeFirebaseAdmin();
-      const docRef = await adminDb.collection("members").add(newRecord);
-      newRecord.id = docRef.id;
-    } catch (error) {
-      console.warn("Firebase Admin insert failed, saving to local store:", error);
-    }
-  }
+  const cleanedRecord = cleanRecord(newRecord);
+  await saveMemberToFirestore(cleanedRecord);
 
-  if (!inMemoryCache) {
-    inMemoryCache = loadFromFile();
-  }
-  inMemoryCache.unshift(newRecord);
-  saveToFile(inMemoryCache);
+  const existing = inMemoryCache || loadFromFile();
+  const filtered = existing.filter((m) => m.id !== cleanedRecord.id);
+  const updatedRecords = [cleanedRecord, ...filtered];
+  inMemoryCache = updatedRecords;
+  saveToFile(updatedRecords);
 
-  return newRecord;
+  return cleanedRecord;
 }
 
 /**
@@ -190,64 +361,46 @@ export async function updateMemberRecord(
   id: string,
   updates: Partial<Pick<MemberRecord, "status" | "membershipType" | "statement">>
 ): Promise<MemberRecord | null> {
-  const now = new Date().toISOString();
+  const records = await getAllMemberRecords();
+  const targetIndex = records.findIndex((m) => m.id === id);
 
-  if (isFirebaseConfigured()) {
-    try {
-      const { adminDb } = initializeFirebaseAdmin();
-      const docRef = adminDb.collection("members").doc(id);
-      await docRef.update({
-        ...updates,
-        updatedAt: now,
-      });
-    } catch (error) {
-      console.warn("Firebase Admin update failed:", error);
-    }
-  }
-
-  if (!inMemoryCache) {
-    inMemoryCache = loadFromFile();
-  }
-
-  const index = inMemoryCache.findIndex((m) => m.id === id);
-  if (index === -1) {
+  if (targetIndex === -1) {
     return null;
   }
 
-  inMemoryCache[index] = {
-    ...inMemoryCache[index],
+  const now = new Date().toISOString();
+  const updatedRecord: MemberRecord = {
+    ...records[targetIndex],
     ...updates,
     updatedAt: now,
   };
 
+  await updateMemberInFirestore(id, { ...updates, updatedAt: now });
+
+  records[targetIndex] = updatedRecord;
+  inMemoryCache = [...records];
   saveToFile(inMemoryCache);
-  return inMemoryCache[index];
+
+  return updatedRecord;
 }
 
 /**
  * Delete a member record by ID
  */
 export async function deleteMemberRecord(id: string): Promise<boolean> {
-  if (isFirebaseConfigured()) {
-    try {
-      const { adminDb } = initializeFirebaseAdmin();
-      await adminDb.collection("members").doc(id).delete();
-    } catch (error) {
-      console.warn("Firebase Admin delete failed:", error);
-    }
-  }
+  const records = await getAllMemberRecords();
+  const targetIndex = records.findIndex((m) => m.id === id);
 
-  if (!inMemoryCache) {
-    inMemoryCache = loadFromFile();
-  }
-
-  const index = inMemoryCache.findIndex((m) => m.id === id);
-  if (index === -1) {
+  if (targetIndex === -1) {
     return false;
   }
 
-  inMemoryCache.splice(index, 1);
-  saveToFile(inMemoryCache);
+  await deleteMemberFromFirestore(id);
+
+  const updatedRecords = records.filter((m) => m.id !== id);
+  inMemoryCache = updatedRecords;
+  saveToFile(updatedRecords);
+
   return true;
 }
 

@@ -15,6 +15,9 @@ export interface PrarambhRegistration {
   rollNumber: string;
   college: string;
   branch: string;
+  course?: string;
+  specialization?: string;
+  section?: string;
   year: AcademicYear;
   competition: CompetitionTrack;
   teamSize: 1 | 2;

@@ -17,6 +17,9 @@ import {
   MessageCircle,
   ExternalLink,
   AlertCircle,
+  Flag,
+  Copy,
+  Check,
 } from "lucide-react";
 import { WHATSAPP_GROUP_LINK, WHATSAPP_GROUP_NAME } from "@/config/whatsapp";
 import Link from "next/link";
@@ -61,6 +64,15 @@ export function JoinCommunityStepper({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState("");
   const [isCompleted, setIsCompleted] = useState(false);
+  const [flagCopied, setFlagCopied] = useState(false);
+
+  const handleCopyFlag = () => {
+    if (typeof navigator !== "undefined" && navigator.clipboard) {
+      navigator.clipboard.writeText("CTF{Dev-Nest_Technical_Club-USET-2025}");
+      setFlagCopied(true);
+      setTimeout(() => setFlagCopied(false), 2000);
+    }
+  };
 
   const toggleInterest = (domain: string) => {
     setSelectedInterests((prev) =>
@@ -542,9 +554,38 @@ export function JoinCommunityStepper({
               </div>
             </div>
 
-            <div className="p-2.5 rounded-xl bg-[#88EA73] border-2 border-black shadow-[2px_2px_0px_#000] text-[11px] text-black font-semibold flex items-center gap-2">
-              <MessageCircle className="w-4 h-4 shrink-0 text-black stroke-[2.5]" />
-              <span>Click Activate to unlock instant access to the DevNest WhatsApp community.</span>
+            <div className="p-3 rounded-xl bg-[#88EA73] border-2 border-black shadow-[2px_2px_0px_#000] text-[11px] text-black font-semibold space-y-2">
+              <div className="flex items-center gap-2">
+                <MessageCircle className="w-4 h-4 shrink-0 text-black stroke-[2.5]" />
+                <span>Click Activate to unlock instant access to the DevNest WhatsApp community.</span>
+              </div>
+              <div className="pt-2 border-t-2 border-black/20 flex flex-wrap items-center justify-between gap-1.5">
+                <div className="flex items-center gap-1.5 font-mono text-[11px]">
+                  <Flag className="w-3.5 h-3.5 text-black shrink-0" />
+                  <span className="font-bold">Flag:</span>
+                  <code className="bg-black text-[#88EA73] px-2 py-0.5 rounded-md font-mono text-[11px] font-bold select-all tracking-wide shadow-[1px_1px_0px_#000]">
+                    CTF&#123;Dev-Nest_Technical_Club-USET-2025&#125;
+                  </code>
+                </div>
+                <button
+                  type="button"
+                  onClick={handleCopyFlag}
+                  className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-white hover:bg-zinc-100 border border-black text-[10px] font-space font-bold text-black transition-all active:scale-95 cursor-pointer shadow-[1px_1px_0px_#000]"
+                  title="Copy CTF Flag"
+                >
+                  {flagCopied ? (
+                    <>
+                      <Check className="w-3 h-3 text-emerald-600 stroke-[2.5]" />
+                      <span>Copied!</span>
+                    </>
+                  ) : (
+                    <>
+                      <Copy className="w-3 h-3 text-black" />
+                      <span>Copy Flag</span>
+                    </>
+                  )}
+                </button>
+              </div>
             </div>
           </div>
         </Step>

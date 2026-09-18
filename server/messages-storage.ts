@@ -24,80 +24,256 @@ export interface MessageStats {
 
 let inMemoryCache: MessageRecord[] | null = null;
 
-function getStorageFilePath(): string {
+function cleanRecord<T extends Record<string, any>>(record: T): T {
+  const result: Record<string, any> = {};
+  for (const [key, value] of Object.entries(record)) {
+    if (value !== undefined) {
+      result[key] = value;
+    }
+  }
+  return result as T;
+}
+
+function getStoragePaths() {
   const localDir = path.join(process.cwd(), "server", "data");
   const localFile = path.join(localDir, "messages.json");
+  const tempFile = path.join(os.tmpdir(), "devnest_messages.json");
+  return { localDir, localFile, tempFile };
+}
+
+function loadFromFile(): MessageRecord[] {
+  const { localFile, tempFile } = getStoragePaths();
+  const recordsMap = new Map<string, MessageRecord>();
+
+  const readPath = (fp: string) => {
+    try {
+      if (fs.existsSync(fp)) {
+        const data = fs.readFileSync(fp, "utf-8");
+        const parsed = JSON.parse(data);
+        if (Array.isArray(parsed)) {
+          for (const item of parsed) {
+            if (item && item.id) {
+              recordsMap.set(item.id, item);
+            }
+          }
+        }
+      }
+    } catch (e) {
+      console.warn(`Could not read messages from ${fp}:`, e);
+    }
+  };
+
+  readPath(localFile);
+  readPath(tempFile);
+
+  return Array.from(recordsMap.values()).sort(
+    (a, b) => new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime()
+  );
+}
+
+function saveToFile(records: MessageRecord[]): void {
+  const { localDir, localFile, tempFile } = getStoragePaths();
+  const jsonContent = JSON.stringify(records, null, 2);
+
+  try {
+    fs.writeFileSync(tempFile, jsonContent, "utf-8");
+  } catch (err) {
+    console.warn("Could not write messages to tempPath:", err);
+  }
 
   try {
     if (!fs.existsSync(localDir)) {
       fs.mkdirSync(localDir, { recursive: true });
     }
-    return localFile;
+    fs.writeFileSync(localFile, jsonContent, "utf-8");
   } catch {
-    return path.join(os.tmpdir(), "devnest_messages.json");
+    // Read-only filesystem in serverless
   }
 }
 
-function loadFromFile(): MessageRecord[] {
-  try {
-    const filePath = getStorageFilePath();
-    if (fs.existsSync(filePath)) {
-      const data = fs.readFileSync(filePath, "utf-8");
-      const parsed = JSON.parse(data);
-      if (Array.isArray(parsed)) {
-        return parsed;
-      }
-    }
-  } catch (error) {
-    console.warn("Could not read messages file:", error);
-  }
-  return [];
-}
-
-function saveToFile(records: MessageRecord[]): void {
-  try {
-    const filePath = getStorageFilePath();
-    fs.writeFileSync(filePath, JSON.stringify(records, null, 2), "utf-8");
-  } catch (error) {
-    console.error("Failed to write messages file:", error);
-  }
-}
-
-function isFirebaseConfigured(): boolean {
+function isFirebaseAdminConfigured(): boolean {
   return !!process.env.FIREBASE_SERVICE_ACCOUNT;
 }
 
-export async function getAllMessageRecords(): Promise<MessageRecord[]> {
-  if (isFirebaseConfigured()) {
+function isClientFirestoreConfigured(): boolean {
+  return !!process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID;
+}
+
+async function saveMessageToFirestore(record: MessageRecord): Promise<boolean> {
+  const cleaned = cleanRecord(record);
+  if (isFirebaseAdminConfigured()) {
     try {
       const { adminDb } = initializeFirebaseAdmin();
-      const snapshot = await adminDb
-        .collection("contact_messages")
-        .orderBy("createdAt", "desc")
-        .get();
-
-      if (!snapshot.empty) {
-        const firestoreRecords: MessageRecord[] = snapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...(doc.data() as Omit<MessageRecord, "id">),
-        }));
-
-        inMemoryCache = firestoreRecords;
-        saveToFile(firestoreRecords);
-        return firestoreRecords;
-      }
-    } catch (error) {
-      console.warn("Firestore error for messages, falling back to local file:", error);
+      await adminDb.collection("contact_messages").doc(cleaned.id).set(cleaned);
+      return true;
+    } catch (fbAdminErr) {
+      console.warn("Firebase Admin message save failed, falling back to client Firestore:", fbAdminErr);
     }
   }
 
-  if (inMemoryCache) {
-    return inMemoryCache;
+  if (isClientFirestoreConfigured()) {
+    try {
+      const { doc, setDoc } = await import("firebase/firestore");
+      const { db } = await import("../src/lib/firebase");
+      if (db) {
+        await setDoc(doc(db, "contact_messages", cleaned.id), cleaned);
+        return true;
+      }
+    } catch (clientFbErr) {
+      console.warn("Client Firestore message save failed:", clientFbErr);
+    }
   }
 
-  const records = loadFromFile();
-  inMemoryCache = records;
-  return records;
+  return false;
+}
+
+async function fetchMessagesFromFirestore(): Promise<MessageRecord[] | null> {
+  if (isFirebaseAdminConfigured()) {
+    try {
+      const { adminDb } = initializeFirebaseAdmin();
+      let snapshot;
+      try {
+        snapshot = await adminDb
+          .collection("contact_messages")
+          .orderBy("createdAt", "desc")
+          .get();
+      } catch {
+        snapshot = await adminDb.collection("contact_messages").get();
+      }
+
+      const records: MessageRecord[] = [];
+      snapshot.forEach((doc) => {
+        records.push({ id: doc.id, ...doc.data() } as MessageRecord);
+      });
+      return records;
+    } catch (fbAdminErr) {
+      console.warn("Firebase Admin messages fetch failed, attempting client Firestore:", fbAdminErr);
+    }
+  }
+
+  if (isClientFirestoreConfigured()) {
+    try {
+      const { collection, getDocs, query, orderBy } = await import("firebase/firestore");
+      const { db } = await import("../src/lib/firebase");
+      if (db) {
+        let snapshot;
+        try {
+          const q = query(collection(db, "contact_messages"), orderBy("createdAt", "desc"));
+          snapshot = await getDocs(q);
+        } catch {
+          snapshot = await getDocs(collection(db, "contact_messages"));
+        }
+        const records: MessageRecord[] = [];
+        snapshot.forEach((doc) => {
+          records.push({ id: doc.id, ...doc.data() } as MessageRecord);
+        });
+        return records;
+      }
+    } catch (clientFbErr) {
+      console.warn("Client Firestore messages fetch failed:", clientFbErr);
+    }
+  }
+
+  return null;
+}
+
+async function updateMessageInFirestore(id: string, updates: Partial<MessageRecord>): Promise<boolean> {
+  const cleaned = cleanRecord(updates);
+  if (isFirebaseAdminConfigured()) {
+    try {
+      const { adminDb } = initializeFirebaseAdmin();
+      await adminDb.collection("contact_messages").doc(id).update(cleaned);
+      return true;
+    } catch (fbAdminErr) {
+      console.warn("Firebase Admin message update failed:", fbAdminErr);
+    }
+  }
+
+  if (isClientFirestoreConfigured()) {
+    try {
+      const { doc, updateDoc } = await import("firebase/firestore");
+      const { db } = await import("../src/lib/firebase");
+      if (db) {
+        await updateDoc(doc(db, "contact_messages", id), cleaned);
+        return true;
+      }
+    } catch (clientFbErr) {
+      console.warn("Client Firestore message update failed:", clientFbErr);
+    }
+  }
+
+  return false;
+}
+
+async function deleteMessageFromFirestore(id: string): Promise<boolean> {
+  if (isFirebaseAdminConfigured()) {
+    try {
+      const { adminDb } = initializeFirebaseAdmin();
+      await adminDb.collection("contact_messages").doc(id).delete();
+      return true;
+    } catch (fbAdminErr) {
+      console.warn("Firebase Admin message delete failed:", fbAdminErr);
+    }
+  }
+
+  if (isClientFirestoreConfigured()) {
+    try {
+      const { doc, deleteDoc } = await import("firebase/firestore");
+      const { db } = await import("../src/lib/firebase");
+      if (db) {
+        await deleteDoc(doc(db, "contact_messages", id));
+        return true;
+      }
+    } catch (clientFbErr) {
+      console.warn("Client Firestore message delete failed:", clientFbErr);
+    }
+  }
+
+  return false;
+}
+
+export async function getAllMessageRecords(): Promise<MessageRecord[]> {
+  const remoteRecords = await fetchMessagesFromFirestore();
+  const mergedMap = new Map<string, MessageRecord>();
+
+  const upsert = (r: MessageRecord) => {
+    if (!r || !r.id) return;
+    const existing = mergedMap.get(r.id);
+    if (!existing) {
+      mergedMap.set(r.id, r);
+    } else {
+      const existingTime = new Date(existing.updatedAt || existing.createdAt || 0).getTime();
+      const newTime = new Date(r.updatedAt || r.createdAt || 0).getTime();
+      if (newTime >= existingTime) {
+        mergedMap.set(r.id, r);
+      }
+    }
+  };
+
+  const fileRecords = loadFromFile();
+  for (const r of fileRecords) {
+    upsert(r);
+  }
+
+  if (remoteRecords && remoteRecords.length > 0) {
+    for (const r of remoteRecords) {
+      upsert(r);
+    }
+  }
+
+  if (inMemoryCache && inMemoryCache.length > 0) {
+    for (const r of inMemoryCache) {
+      upsert(r);
+    }
+  }
+
+  const combined = Array.from(mergedMap.values()).sort(
+    (a, b) => new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime()
+  );
+
+  inMemoryCache = combined;
+  saveToFile(combined);
+  return combined;
 }
 
 export async function getMessageStatistics(): Promise<MessageStats> {
@@ -132,21 +308,16 @@ export async function saveMessageRecord(
     updatedAt: now,
   };
 
-  if (isFirebaseConfigured()) {
-    try {
-      const { adminDb } = initializeFirebaseAdmin();
-      await adminDb.collection("contact_messages").doc(id).set(newRecord);
-    } catch (error) {
-      console.warn("Firestore save error for message, continuing with local storage:", error);
-    }
-  }
+  const cleanedRecord = cleanRecord(newRecord);
+  await saveMessageToFirestore(cleanedRecord);
 
-  const existing = await getAllMessageRecords();
-  const updated = [newRecord, ...existing];
+  const existing = inMemoryCache || loadFromFile();
+  const filtered = existing.filter((m) => m.id !== cleanedRecord.id);
+  const updated = [cleanedRecord, ...filtered];
   inMemoryCache = updated;
   saveToFile(updated);
 
-  return newRecord;
+  return cleanedRecord;
 }
 
 export async function updateMessageStatus(
@@ -160,23 +331,14 @@ export async function updateMessageStatus(
     return null;
   }
 
+  const now = new Date().toISOString();
   const updatedRecord: MessageRecord = {
     ...existing[index],
     status,
-    updatedAt: new Date().toISOString(),
+    updatedAt: now,
   };
 
-  if (isFirebaseConfigured()) {
-    try {
-      const { adminDb } = initializeFirebaseAdmin();
-      await adminDb
-        .collection("contact_messages")
-        .doc(id)
-        .update({ status, updatedAt: updatedRecord.updatedAt });
-    } catch (error) {
-      console.warn("Firestore update error for message:", error);
-    }
-  }
+  await updateMessageInFirestore(id, { status, updatedAt: now });
 
   existing[index] = updatedRecord;
   inMemoryCache = [...existing];
@@ -193,14 +355,7 @@ export async function deleteMessageRecord(id: string): Promise<boolean> {
     return false;
   }
 
-  if (isFirebaseConfigured()) {
-    try {
-      const { adminDb } = initializeFirebaseAdmin();
-      await adminDb.collection("contact_messages").doc(id).delete();
-    } catch (error) {
-      console.warn("Firestore delete error for message:", error);
-    }
-  }
+  await deleteMessageFromFirestore(id);
 
   inMemoryCache = filtered;
   saveToFile(filtered);

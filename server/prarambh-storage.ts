@@ -1,14 +1,11 @@
-import fs from "fs";
-import path from "path";
-import os from "os";
 import { initializeFirebaseAdmin } from "../src/lib/firebase-admin";
 
 export type AcademicYear = "1st Year" | "2nd Year" | "3rd Year";
 
-export type CompetitionTrack = 
-  | "tech-quiz"          // Strictly 1st year (freshers)
-  | "ctf-2nd-year"       // Seniors - 2nd year section
-  | "ctf-3rd-year";      // Seniors - 3rd year section
+export type CompetitionTrack =
+  | "tech-quiz" // Strictly 1st year (freshers)
+  | "ctf-2nd-year" // Seniors - 2nd year section
+  | "ctf-3rd-year"; // Seniors - 3rd year section
 
 export interface PrarambhRegistration {
   id: string;
@@ -42,94 +39,25 @@ export interface PrarambhStats {
   rejected: number;
 }
 
-let inMemoryCache: PrarambhRegistration[] | null = null;
+const COLLECTION_NAME = "prarambh_registrations";
 
-function getStorageFilePath(): string {
-  const localDir = path.join(process.cwd(), "server", "data");
-  const localFile = path.join(localDir, "prarambh_registrations.json");
-
-  try {
-    if (!fs.existsSync(localDir)) {
-      fs.mkdirSync(localDir, { recursive: true });
-    }
-    return localFile;
-  } catch {
-    return path.join(os.tmpdir(), "devnest_prarambh_registrations.json");
-  }
-}
-
-function loadFromFile(): PrarambhRegistration[] {
-  try {
-    const filePath = getStorageFilePath();
-    if (fs.existsSync(filePath)) {
-      const data = fs.readFileSync(filePath, "utf-8");
-      const parsed = JSON.parse(data);
-      if (Array.isArray(parsed)) {
-        return parsed;
-      }
-    }
-  } catch (error) {
-    console.warn("Could not read prarambh registrations file:", error);
-  }
-  return [];
-}
-
-function saveToFile(records: PrarambhRegistration[]): void {
-  try {
-    const filePath = getStorageFilePath();
-    fs.writeFileSync(filePath, JSON.stringify(records, null, 2), "utf-8");
-  } catch (error) {
-    try {
-      const tempPath = path.join(os.tmpdir(), "devnest_prarambh_registrations.json");
-      fs.writeFileSync(tempPath, JSON.stringify(records, null, 2), "utf-8");
-    } catch (fallbackError) {
-      console.error("Critical: Could not persist prarambh registrations to disk:", fallbackError);
+/**
+ * Strips undefined properties so Firestore never rejects documents
+ */
+function cleanRecord<T extends Record<string, any>>(record: T): T {
+  const result: Record<string, any> = {};
+  for (const [key, value] of Object.entries(record)) {
+    if (value !== undefined) {
+      result[key] = value;
     }
   }
-}
-
-function isFirebaseConfigured(): boolean {
-  return !!process.env.FIREBASE_SERVICE_ACCOUNT;
+  return result as T;
 }
 
 /**
- * Fetch all registrations from persistent storage
+ * Computes statistics from a list of registrations in memory
  */
-export async function getAllPrarambhRegistrations(): Promise<PrarambhRegistration[]> {
-  if (isFirebaseConfigured()) {
-    try {
-      const { adminDb } = initializeFirebaseAdmin();
-      const snapshot = await adminDb
-        .collection("prarambh_registrations")
-        .orderBy("createdAt", "desc")
-        .get();
-
-      const records: PrarambhRegistration[] = [];
-      snapshot.forEach((doc) => {
-        records.push({ id: doc.id, ...doc.data() } as PrarambhRegistration);
-      });
-      inMemoryCache = records;
-      return records;
-    } catch (firebaseErr) {
-      console.warn("Firebase fetch failed, using local storage:", firebaseErr);
-    }
-  }
-
-  if (inMemoryCache !== null) {
-    return inMemoryCache;
-  }
-
-  const fileRecords = loadFromFile();
-  inMemoryCache = fileRecords;
-  return fileRecords;
-}
-
-/**
- * Compute summary statistics for Prarambh registrations
- */
-export async function getPrarambhStats(): Promise<PrarambhStats> {
-  const records = await getAllPrarambhRegistrations();
-
+export function computePrarambhStats(records: PrarambhRegistration[]): PrarambhStats {
   return {
     total: records.length,
     techQuizFreshers: records.filter((r) => r.competition === "tech-quiz").length,
@@ -142,7 +70,59 @@ export async function getPrarambhStats(): Promise<PrarambhStats> {
 }
 
 /**
- * Add a new registration for Prarambh (Tech Quiz or CTF)
+ * Fetch all registrations from Firestore (authoritative single source of truth)
+ */
+export async function getAllPrarambhRegistrations(): Promise<PrarambhRegistration[]> {
+  try {
+    const { adminDb } = initializeFirebaseAdmin();
+    const colRef = adminDb.collection(COLLECTION_NAME);
+
+    let snapshot;
+    try {
+      snapshot = await colRef.orderBy("createdAt", "desc").get();
+    } catch (orderErr) {
+      console.warn("[Prarambh Storage] Unordered fetch fallback (index may be pending):", orderErr);
+      snapshot = await colRef.get();
+    }
+
+    const records: PrarambhRegistration[] = [];
+    snapshot.forEach((doc) => {
+      records.push({ id: doc.id, ...doc.data() } as PrarambhRegistration);
+    });
+
+    // In-memory sort fallback to ensure strictly descending order by createdAt
+    return records.sort(
+      (a, b) => new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime()
+    );
+  } catch (err: unknown) {
+    const msg = err instanceof Error ? err.message : String(err);
+    console.error("[Prarambh Storage] Critical error querying Firestore:", msg);
+    throw new Error(`Failed to retrieve Prarambh registrations from Firestore: ${msg}`);
+  }
+}
+
+/**
+ * Retrieve both registrations and computed stats in a single Firestore read
+ */
+export async function getPrarambhRegistrationsAndStats(): Promise<{
+  registrations: PrarambhRegistration[];
+  stats: PrarambhStats;
+}> {
+  const registrations = await getAllPrarambhRegistrations();
+  const stats = computePrarambhStats(registrations);
+  return { registrations, stats };
+}
+
+/**
+ * Compute summary statistics for Prarambh registrations
+ */
+export async function getPrarambhStats(): Promise<PrarambhStats> {
+  const { stats } = await getPrarambhRegistrationsAndStats();
+  return stats;
+}
+
+/**
+ * Add a new registration for Prarambh (Tech Quiz or CTF) strictly to Firestore
  */
 export async function createPrarambhRegistration(
   data: Omit<PrarambhRegistration, "id" | "status" | "createdAt" | "updatedAt">
@@ -168,7 +148,7 @@ export async function createPrarambhRegistration(
 
   // Validate Team Size and Teammate Details:
   // Tech Quiz: strictly individual (teamSize = 1)
-  // CTF: 1 to 2 members. If 2 members, teammateName, teammatePhone, and teammateRollNumber are required.
+  // CTF: 1 to 2 members. If 2 members, teammate details are required.
   let finalTeamSize: 1 | 2 = data.teamSize === 2 ? 2 : 1;
   if (data.competition === "tech-quiz") {
     finalTeamSize = 1;
@@ -197,86 +177,68 @@ export async function createPrarambhRegistration(
     updatedAt: now,
   };
 
-  if (isFirebaseConfigured()) {
-    try {
-      const { adminDb } = initializeFirebaseAdmin();
-      await adminDb.collection("prarambh_registrations").doc(id).set(newRecord);
-    } catch (fbErr) {
-      console.warn("Could not save to Firebase, continuing with disk storage:", fbErr);
-    }
+  const cleanedRecord = cleanRecord(newRecord);
+
+  try {
+    const { adminDb } = initializeFirebaseAdmin();
+    await adminDb.collection(COLLECTION_NAME).doc(cleanedRecord.id).set(cleanedRecord);
+    return cleanedRecord;
+  } catch (err: unknown) {
+    const msg = err instanceof Error ? err.message : String(err);
+    console.error("[Prarambh Storage] Critical: Failed to save registration to Firestore:", msg);
+    throw new Error(`Failed to persist registration to Firestore: ${msg}`);
   }
-
-  const currentRecords = await getAllPrarambhRegistrations();
-  const updatedRecords = [newRecord, ...currentRecords];
-  inMemoryCache = updatedRecords;
-  saveToFile(updatedRecords);
-
-  return newRecord;
 }
 
 /**
- * Update registration status (approved / rejected / pending)
+ * Update registration status (approved / rejected / pending) in Firestore
  */
 export async function updatePrarambhStatus(
   id: string,
   status: "pending" | "approved" | "rejected"
 ): Promise<PrarambhRegistration | null> {
-  const records = await getAllPrarambhRegistrations();
-  const targetIndex = records.findIndex((r) => r.id === id);
+  try {
+    const { adminDb } = initializeFirebaseAdmin();
+    const docRef = adminDb.collection(COLLECTION_NAME).doc(id);
+    const docSnap = await docRef.get();
 
-  if (targetIndex === -1) {
-    return null;
-  }
-
-  const now = new Date().toISOString();
-  const updatedRecord: PrarambhRegistration = {
-    ...records[targetIndex],
-    status,
-    updatedAt: now,
-  };
-
-  if (isFirebaseConfigured()) {
-    try {
-      const { adminDb } = initializeFirebaseAdmin();
-      await adminDb.collection("prarambh_registrations").doc(id).update({
-        status,
-        updatedAt: now,
-      });
-    } catch (fbErr) {
-      console.warn("Could not update in Firebase:", fbErr);
+    if (!docSnap.exists) {
+      return null;
     }
+
+    const now = new Date().toISOString();
+    await docRef.update({
+      status,
+      updatedAt: now,
+    });
+
+    const updatedData = (await docRef.get()).data() as PrarambhRegistration;
+    return { id, ...updatedData, status, updatedAt: now };
+  } catch (err: unknown) {
+    const msg = err instanceof Error ? err.message : String(err);
+    console.error(`[Prarambh Storage] Failed to update registration ${id} in Firestore:`, msg);
+    throw new Error(`Failed to update registration status in Firestore: ${msg}`);
   }
-
-  records[targetIndex] = updatedRecord;
-  inMemoryCache = [...records];
-  saveToFile(inMemoryCache);
-
-  return updatedRecord;
 }
 
 /**
- * Delete a registration
+ * Delete a registration strictly from Firestore
  */
 export async function deletePrarambhRegistration(id: string): Promise<boolean> {
-  const records = await getAllPrarambhRegistrations();
-  const targetIndex = records.findIndex((r) => r.id === id);
+  try {
+    const { adminDb } = initializeFirebaseAdmin();
+    const docRef = adminDb.collection(COLLECTION_NAME).doc(id);
+    const docSnap = await docRef.get();
 
-  if (targetIndex === -1) {
-    return false;
-  }
-
-  if (isFirebaseConfigured()) {
-    try {
-      const { adminDb } = initializeFirebaseAdmin();
-      await adminDb.collection("prarambh_registrations").doc(id).delete();
-    } catch (fbErr) {
-      console.warn("Could not delete from Firebase:", fbErr);
+    if (!docSnap.exists) {
+      return false;
     }
+
+    await docRef.delete();
+    return true;
+  } catch (err: unknown) {
+    const msg = err instanceof Error ? err.message : String(err);
+    console.error(`[Prarambh Storage] Failed to delete registration ${id} from Firestore:`, msg);
+    throw new Error(`Failed to delete registration from Firestore: ${msg}`);
   }
-
-  const updatedRecords = records.filter((r) => r.id !== id);
-  inMemoryCache = updatedRecords;
-  saveToFile(updatedRecords);
-
-  return true;
 }

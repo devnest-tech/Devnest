@@ -110,6 +110,23 @@ export default function AdminDevnestPage() {
 
   // Check initial session
   useEffect(() => {
+    // Clear legacy registration caches to avoid stale records like "Manish"
+    try {
+      if (typeof window !== "undefined") {
+        localStorage.removeItem("devnest_admin_prarambh_cache");
+        localStorage.removeItem("devnest_registered_prarambh");
+
+        const cachedMembers = JSON.parse(localStorage.getItem("devnest_admin_members_cache") || "[]");
+        if (Array.isArray(cachedMembers) && cachedMembers.length > 0) {
+          setMembers(cachedMembers);
+        }
+        const cachedMessages = JSON.parse(localStorage.getItem("devnest_admin_messages_cache") || "[]");
+        if (Array.isArray(cachedMessages) && cachedMessages.length > 0) {
+          setMessages(cachedMessages);
+        }
+      }
+    } catch {}
+
     async function checkSession() {
       try {
         const res = await fetch("/api/admin/session");
@@ -141,8 +158,14 @@ export default function AdminDevnestPage() {
         throw new Error("Failed to load membership data");
       }
       const data = await res.json();
-      setMembers(data.members || []);
+      const list = data.members || [];
+      setMembers(list);
       setStats(data.stats || null);
+      try {
+        if (typeof window !== "undefined") {
+          localStorage.setItem("devnest_admin_members_cache", JSON.stringify(list));
+        }
+      } catch {}
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : "Error loading data";
       setDataError(message);
@@ -151,7 +174,19 @@ export default function AdminDevnestPage() {
     }
   };
 
-  // Fetch protected Prarambh registrations data
+  const computePrarambhStats = (list: PrarambhRegistration[]): PrarambhStats => {
+    return {
+      total: list.length,
+      techQuizFreshers: list.filter((r) => r.competition === "tech-quiz").length,
+      ctf2ndYear: list.filter((r) => r.competition === "ctf-2nd-year").length,
+      ctf3rdYear: list.filter((r) => r.competition === "ctf-3rd-year").length,
+      approved: list.filter((r) => r.status === "approved").length,
+      pending: list.filter((r) => r.status === "pending").length,
+      rejected: list.filter((r) => r.status === "rejected").length,
+    };
+  };
+
+  // Fetch protected Prarambh registrations data strictly from backend API
   const fetchPrarambhRegistrations = async () => {
     setPrarambhLoading(true);
     setPrarambhError("");
@@ -162,13 +197,20 @@ export default function AdminDevnestPage() {
         return;
       }
       if (!res.ok) {
-        throw new Error("Failed to load Prarambh registrations");
+        const data = await res.json().catch(() => ({}));
+        throw new Error(data.error || "Failed to load Prarambh registrations");
       }
       const data = await res.json();
-      setPrarambhRegistrations(data.registrations || []);
-      setPrarambhStats(data.stats || null);
+      const list = Array.isArray(data.registrations) ? data.registrations : [];
+      setPrarambhRegistrations(list);
+      if (data.stats) {
+        setPrarambhStats(data.stats);
+      } else {
+        setPrarambhStats(computePrarambhStats(list));
+      }
     } catch (err: unknown) {
-      const message = err instanceof Error ? err.message : "Error loading registrations";
+      const message =
+        err instanceof Error ? err.message : "Error loading registrations";
       setPrarambhError(message);
     } finally {
       setPrarambhLoading(false);
@@ -187,7 +229,10 @@ export default function AdminDevnestPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ id, status }),
       });
-      if (!res.ok) throw new Error("Failed to update status");
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error(data.error || "Failed to update status");
+      }
       const data = await res.json();
       setPrarambhRegistrations((prev) =>
         prev.map((r) => (r.id === id ? data.registration : r))
@@ -196,8 +241,9 @@ export default function AdminDevnestPage() {
       if (selectedPrarambh?.id === id) {
         setSelectedPrarambh(data.registration);
       }
-    } catch (err) {
+    } catch (err: unknown) {
       console.error("Error updating Prarambh registration status:", err);
+      setPrarambhError(err instanceof Error ? err.message : "Failed to update status");
     } finally {
       setPrarambhActionLoadingId(null);
     }
@@ -210,7 +256,10 @@ export default function AdminDevnestPage() {
       const res = await fetch(`/api/admin/prarambh-registrations?id=${id}`, {
         method: "DELETE",
       });
-      if (!res.ok) throw new Error("Failed to delete record");
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error(data.error || "Failed to delete record");
+      }
       const data = await res.json();
       setPrarambhRegistrations((prev) => prev.filter((r) => r.id !== id));
       if (data.stats) setPrarambhStats(data.stats);
@@ -218,8 +267,9 @@ export default function AdminDevnestPage() {
       if (selectedPrarambh?.id === id) {
         setSelectedPrarambh(null);
       }
-    } catch (err) {
+    } catch (err: unknown) {
       console.error("Error deleting Prarambh registration:", err);
+      setPrarambhError(err instanceof Error ? err.message : "Failed to delete record");
     } finally {
       setPrarambhActionLoadingId(null);
     }
@@ -338,8 +388,14 @@ export default function AdminDevnestPage() {
         throw new Error("Failed to load contact messages");
       }
       const data = await res.json();
-      setMessages(data.messages || []);
+      const list = data.messages || [];
+      setMessages(list);
       setMessagesStats(data.stats || null);
+      try {
+        if (typeof window !== "undefined") {
+          localStorage.setItem("devnest_admin_messages_cache", JSON.stringify(list));
+        }
+      } catch {}
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : "Error loading messages";
       setMessagesError(message);
@@ -362,9 +418,15 @@ export default function AdminDevnestPage() {
       });
       if (res.ok) {
         const data = await res.json();
-        setMessages((prev) =>
-          prev.map((m) => (m.id === id ? { ...m, status } : m))
-        );
+        setMessages((prev) => {
+          const updated = prev.map((m) => (m.id === id ? { ...m, status } : m));
+          try {
+            if (typeof window !== "undefined") {
+              localStorage.setItem("devnest_admin_messages_cache", JSON.stringify(updated));
+            }
+          } catch {}
+          return updated;
+        });
         if (data.stats) setMessagesStats(data.stats);
       }
     } catch (error) {
@@ -378,18 +440,25 @@ export default function AdminDevnestPage() {
   const handleDeleteMessage = async (id: string) => {
     setMessageActionLoadingId(id);
     try {
-      const res = await fetch("/api/admin/messages", {
+      const res = await fetch(`/api/admin/messages?id=${id}`, {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ id }),
       });
       if (res.ok) {
         const data = await res.json();
-        setMessages((prev) => prev.filter((m) => m.id !== id));
+        setMessages((prev) => {
+          const updated = prev.filter((m) => m.id !== id);
+          try {
+            if (typeof window !== "undefined") {
+              localStorage.setItem("devnest_admin_messages_cache", JSON.stringify(updated));
+            }
+          } catch {}
+          return updated;
+        });
         if (data.stats) setMessagesStats(data.stats);
       }
     } catch (error) {
-      console.error("Failed to delete contact message:", error);
+      console.error("Failed to delete message:", error);
     } finally {
       setMessageActionLoadingId(null);
     }
@@ -453,14 +522,21 @@ export default function AdminDevnestPage() {
     return members
       .filter((m) => {
         const query = searchQuery.toLowerCase().trim();
+        const fullName = (m.fullName || "").toLowerCase();
+        const email = (m.email || "").toLowerCase();
+        const phone = m.phone || "";
+        const enrollmentNumber = (m.enrollmentNumber || "").toLowerCase();
+        const college = (m.college || "").toLowerCase();
+        const branch = (m.branch || "").toLowerCase();
+
         const matchesQuery =
           !query ||
-          m.fullName.toLowerCase().includes(query) ||
-          m.email.toLowerCase().includes(query) ||
-          m.phone.includes(query) ||
-          (m.enrollmentNumber && m.enrollmentNumber.toLowerCase().includes(query)) ||
-          (m.college && m.college.toLowerCase().includes(query)) ||
-          m.branch.toLowerCase().includes(query);
+          fullName.includes(query) ||
+          email.includes(query) ||
+          phone.includes(query) ||
+          enrollmentNumber.includes(query) ||
+          college.includes(query) ||
+          branch.includes(query);
 
         const matchesStatus = statusFilter === "all" || m.status === statusFilter;
         const matchesBranch = branchFilter === "all" || m.branch === branchFilter;
@@ -469,13 +545,13 @@ export default function AdminDevnestPage() {
       })
       .sort((a, b) => {
         if (sortBy === "newest") {
-          return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+          return new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime();
         }
         if (sortBy === "oldest") {
-          return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
+          return new Date(a.createdAt || 0).getTime() - new Date(b.createdAt || 0).getTime();
         }
         if (sortBy === "name") {
-          return a.fullName.localeCompare(b.fullName);
+          return (a.fullName || "").localeCompare(b.fullName || "");
         }
         return 0;
       });
@@ -495,14 +571,21 @@ export default function AdminDevnestPage() {
     return prarambhRegistrations
       .filter((r) => {
         const query = prarambhSearchQuery.toLowerCase().trim();
+        const fullName = (r.fullName || "").toLowerCase();
+        const email = (r.email || "").toLowerCase();
+        const phone = r.phone || "";
+        const rollNumber = (r.rollNumber || "").toLowerCase();
+        const teamName = (r.teamName || "").toLowerCase();
+        const branch = (r.branch || "").toLowerCase();
+
         const matchesQuery =
           !query ||
-          r.fullName.toLowerCase().includes(query) ||
-          r.email.toLowerCase().includes(query) ||
-          r.phone.includes(query) ||
-          r.rollNumber.toLowerCase().includes(query) ||
-          (r.teamName && r.teamName.toLowerCase().includes(query)) ||
-          r.branch.toLowerCase().includes(query);
+          fullName.includes(query) ||
+          email.includes(query) ||
+          phone.includes(query) ||
+          rollNumber.includes(query) ||
+          teamName.includes(query) ||
+          branch.includes(query);
 
         const matchesTrack =
           prarambhTrackFilter === "all" || r.competition === prarambhTrackFilter;
@@ -511,7 +594,7 @@ export default function AdminDevnestPage() {
 
         return matchesQuery && matchesTrack && matchesStatus;
       })
-      .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+      .sort((a, b) => new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime());
   }, [prarambhRegistrations, prarambhSearchQuery, prarambhTrackFilter, prarambhStatusFilter]);
 
   // Export Prarambh registrations to CSV

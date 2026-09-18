@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { isAuthenticatedAdmin } from "../../../lib/admin-auth";
 import {
-  getAllPrarambhRegistrations,
+  getPrarambhRegistrationsAndStats,
   getPrarambhStats,
   updatePrarambhStatus,
   deletePrarambhRegistration,
@@ -18,14 +18,14 @@ export default async function handler(
     });
   }
 
-  // GET: Retrieve all Prarambh registrations and stats
+  // GET: Retrieve all Prarambh registrations and stats in a single pass
   if (req.method === "GET") {
     try {
-      const registrations = await getAllPrarambhRegistrations();
-      const stats = await getPrarambhStats();
+      const { registrations, stats } = await getPrarambhRegistrationsAndStats();
       return res.status(200).json({ registrations, stats });
     } catch (error: unknown) {
       const message = error instanceof Error ? error.message : "Error fetching registrations";
+      console.error("[API admin/prarambh-registrations] Fetch error:", error);
       return res.status(500).json({ error: message });
     }
   }

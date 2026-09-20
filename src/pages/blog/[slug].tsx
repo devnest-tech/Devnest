@@ -1,6 +1,7 @@
 import Head from "next/head";
 import { Layout } from "@/components/Layout";
 import { Button } from "@/components/ui/button";
+import { TechIcon } from "@/components/TechIcon";
 import {
   getAllBlogs,
   getAllBlogSlugs,
@@ -55,9 +56,9 @@ export default function BlogDetailPage({
           <article className="glass-panel rounded-3xl overflow-hidden border border-border/80 shadow-premium">
             {/* Header Banner */}
             <div className="h-64 sm:h-80 bg-gradient-to-br from-primary/15 via-secondary/40 to-primary/5 flex items-center justify-center border-b border-border/50">
-              <span className="text-8xl select-none" aria-hidden="true">
-                {blog.thumbnail}
-              </span>
+              <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-3xl bg-white border-3 border-black shadow-[6px_6px_0px_#000] flex items-center justify-center">
+                <TechIcon name={blog.thumbnail} className="w-12 h-12 sm:w-14 sm:h-14 text-black stroke-[2.2]" />
+              </div>
             </div>
 
             <div className="p-6 sm:p-12">
@@ -181,9 +182,9 @@ export default function BlogDetailPage({
                   >
                     <article className="glass-panel rounded-2xl overflow-hidden border border-border/80 group-hover:border-primary/40 shadow-subtle group-hover:shadow-premium-hover transition-all duration-300 flex flex-col justify-between h-full">
                       <div className="h-36 bg-gradient-to-br from-primary/10 to-secondary/30 flex items-center justify-center border-b border-border/50">
-                        <span className="text-5xl group-hover:scale-110 transition-transform duration-300">
-                          {relatedBlog.thumbnail}
-                        </span>
+                        <div className="w-16 h-16 rounded-2xl bg-white border-2 border-black shadow-[3px_3px_0px_#000] flex items-center justify-center group-hover:scale-105 transition-transform duration-300">
+                          <TechIcon name={relatedBlog.thumbnail} className="w-8 h-8 text-black stroke-[2.2]" />
+                        </div>
                       </div>
 
                       <div className="p-5 flex-1 flex flex-col justify-between">

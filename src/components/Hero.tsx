@@ -1,4 +1,5 @@
 import { useEffect, useState, useRef } from "react";
+import Image from "next/image";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
@@ -14,6 +15,7 @@ import {
 } from "lucide-react";
 import TextType from "@/components/TextType";
 import { useJoinModal } from "@/context/JoinModalContext";
+import { GoogleCampusBadge } from "@/components/GoogleCampusBadge";
 
 const HERO_QUOTES = [
   '"Build something that makes a difference."',
@@ -150,13 +152,9 @@ export function Hero() {
                 willChange: "transform, opacity",
               }}
             >
-              {/* Top Brand Pill with Live Beacon */}
-              <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-[#FFE600] border-2 border-black text-xs font-bold tracking-wide shadow-[2px_2px_0px_#000] text-black mb-4 sm:mb-5">
-                <span className="relative flex h-2.5 w-2.5">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-black opacity-75" />
-                  <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-black" />
-                </span>
-                <span>Google Campus Ambassador Initiative</span>
+              {/* Top Brand Badge with Animated Circular Moving Color Lights Border */}
+              <div className="mb-4 sm:mb-5">
+                <GoogleCampusBadge size="md" />
               </div>
 
               {/* Display Headline */}

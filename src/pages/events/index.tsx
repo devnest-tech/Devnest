@@ -22,6 +22,7 @@ import Head from "next/head";
 import { Layout } from "@/components/Layout";
 import { Button } from "@/components/ui/button";
 import { PrarambhApplyDialog } from "@/components/PrarambhApplyDialog";
+import { TechIcon } from "@/components/TechIcon";
 import type { AcademicYear } from "../../../server/prarambh-storage";
 
 const upcomingEvents: Array<{
@@ -332,8 +333,10 @@ export default function EventsPage() {
                         {/* Main Left Details */}
                         <div className="lg:col-span-2 space-y-6">
                           <div>
-                            <div className="flex items-center gap-3 mb-2">
-                              <span className="text-4xl select-none" aria-hidden="true">🏆</span>
+                            <div className="flex items-center gap-3.5 mb-2">
+                              <div className="w-12 h-12 rounded-2xl bg-[#FFE600] border-2 border-black shadow-[2px_2px_0px_#000] flex items-center justify-center shrink-0">
+                                <Trophy className="w-6 h-6 text-black stroke-[2.5]" />
+                              </div>
                               <div>
                                 <h2 className="text-2xl sm:text-3xl md:text-4xl font-poppins font-bold tracking-tight text-foreground">
                                   Prarambh <span className="text-gradient-primary">2026</span>
@@ -531,10 +534,10 @@ export default function EventsPage() {
                           </div>
 
                           {/* Title with icon */}
-                          <div className="flex items-start gap-3.5 mb-3">
-                            <span className="text-3xl sm:text-4xl select-none" aria-hidden="true">
-                              {event.icon}
-                            </span>
+                          <div className="flex items-center gap-3.5 mb-3">
+                            <div className="w-12 h-12 rounded-2xl bg-[#FFE600] border-2 border-black shadow-[2px_2px_0px_#000] flex items-center justify-center shrink-0">
+                              <TechIcon name={event.icon} className="w-6 h-6 text-black stroke-[2.3]" />
+                            </div>
                             <h2 className="text-2xl sm:text-3xl font-poppins font-bold tracking-tight text-foreground">
                               {event.title}
                             </h2>
@@ -660,9 +663,9 @@ export default function EventsPage() {
                     <article className="glass-panel rounded-2xl p-6 border border-border/80 group-hover:border-primary/40 shadow-subtle group-hover:shadow-premium-hover transition-all duration-300 flex flex-col justify-between h-full">
                       <div>
                         <div className="flex items-start justify-between gap-3 mb-4">
-                          <span className="text-3xl" aria-hidden="true">
-                            {event.icon}
-                          </span>
+                          <div className="w-10 h-10 rounded-xl bg-[#70D6FF] border-2 border-black shadow-[2px_2px_0px_#000] flex items-center justify-center shrink-0">
+                            <TechIcon name={event.icon} className="w-5 h-5 text-black stroke-[2.3]" />
+                          </div>
                           <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-primary/10 text-primary text-[11px] font-semibold">
                             <Users className="w-3 h-3" />
                             {event.attendees} participants

@@ -7,6 +7,9 @@ import {
   Zap,
   CheckCircle2,
   Sparkles,
+  Target,
+  Globe,
+  Trophy,
 } from "lucide-react";
 
 export function About() {
@@ -16,28 +19,32 @@ export function About() {
       title: "DevNest Established",
       description:
         "The official Technical Club of Lamrin Tech Skills University (LTSU) Punjab, inspiring students to explore the limitless world of technology.",
-      icon: "🚀",
+      icon: Rocket,
+      color: "bg-[#FFE600]",
     },
     {
       year: "Initiative",
       title: "Google Campus Ambassador Led",
       description:
         "Led by Google Campus Ambassadors, DevNest stands as a student-driven initiative dedicated to hands-on learning and innovation.",
-      icon: "🎯",
+      icon: Target,
+      color: "bg-[#FF70A6]",
     },
     {
       year: "Domains",
       title: "Multi-Domain Excellence",
       description:
         "Bringing together passionate minds in AI, Cybersecurity, Cloud Computing, Data Science, and Web Development.",
-      icon: "🌐",
+      icon: Globe,
+      color: "bg-[#70D6FF]",
     },
     {
       year: "Vision",
       title: "Preparing Digital Leaders",
       description:
         "Empowering every student to lead in the digital era through collaboration, creativity, and technical excellence.",
-      icon: "🏆",
+      icon: Trophy,
+      color: "bg-[#88EA73]",
     },
   ];
 
@@ -121,8 +128,8 @@ export function About() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 mb-20 sm:mb-24">
           {/* Mission */}
           <div className="glass-panel rounded-3xl p-7 sm:p-8 hover-lift group border-2 border-black shadow-[5px_5px_0px_#000] hover:shadow-[7px_7px_0px_#000] transition-all duration-200 text-left bg-white">
-            <div className="w-12 h-12 rounded-2xl bg-[#FFE600] border-2 border-black flex items-center justify-center text-2xl mb-6 shadow-[2px_2px_0px_#000]">
-              <span>🎯</span>
+            <div className="w-12 h-12 rounded-2xl bg-[#FFE600] border-2 border-black flex items-center justify-center mb-6 shadow-[2px_2px_0px_#000]">
+              <Target className="w-6 h-6 text-black stroke-[2.5]" />
             </div>
 
             <h3 className="text-xl sm:text-2xl font-space font-bold mb-3 text-black">
@@ -137,8 +144,8 @@ export function About() {
 
           {/* Vision */}
           <div className="glass-panel rounded-3xl p-7 sm:p-8 hover-lift group border-2 border-black shadow-[5px_5px_0px_#000] hover:shadow-[7px_7px_0px_#000] transition-all duration-200 text-left bg-white">
-            <div className="w-12 h-12 rounded-2xl bg-[#70D6FF] border-2 border-black flex items-center justify-center text-2xl mb-6 shadow-[2px_2px_0px_#000]">
-              <span>🚀</span>
+            <div className="w-12 h-12 rounded-2xl bg-[#70D6FF] border-2 border-black flex items-center justify-center mb-6 shadow-[2px_2px_0px_#000]">
+              <Rocket className="w-6 h-6 text-black stroke-[2.5]" />
             </div>
 
             <h3 className="text-xl sm:text-2xl font-space font-bold mb-3 text-black">
@@ -153,8 +160,8 @@ export function About() {
 
           {/* Student-Driven */}
           <div className="glass-panel rounded-3xl p-7 sm:p-8 hover-lift group border-2 border-black shadow-[5px_5px_0px_#000] hover:shadow-[7px_7px_0px_#000] transition-all duration-200 text-left bg-white">
-            <div className="w-12 h-12 rounded-2xl bg-[#C4B5FD] border-2 border-black flex items-center justify-center text-2xl mb-6 shadow-[2px_2px_0px_#000]">
-              <span>🌟</span>
+            <div className="w-12 h-12 rounded-2xl bg-[#C4B5FD] border-2 border-black flex items-center justify-center mb-6 shadow-[2px_2px_0px_#000]">
+              <Sparkles className="w-6 h-6 text-black stroke-[2.5]" />
             </div>
 
             <h3 className="text-xl sm:text-2xl font-space font-bold mb-3 text-black">
@@ -270,29 +277,34 @@ export function About() {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {timeline.map((event, index) => (
-              <div
-                key={index}
-                className="glass-panel rounded-2xl p-6 border-2 border-black shadow-[4px_4px_0px_#000] hover-lift hover:shadow-[6px_6px_0px_#000] transition-all text-left flex flex-col justify-between bg-white"
-              >
-                <div>
-                  <div className="flex items-center justify-between mb-4">
-                    <span className="text-2xl">{event.icon}</span>
-                    <span className="px-2.5 py-0.5 rounded-full bg-[#FFE600] text-black text-[11px] font-bold uppercase tracking-wider border-2 border-black shadow-[1.5px_1.5px_0px_#000]">
-                      {event.year}
-                    </span>
+            {timeline.map((event, index) => {
+              const EventIcon = event.icon;
+              return (
+                <div
+                  key={index}
+                  className="glass-panel rounded-2xl p-6 border-2 border-black shadow-[4px_4px_0px_#000] hover-lift hover:shadow-[6px_6px_0px_#000] transition-all text-left flex flex-col justify-between bg-white"
+                >
+                  <div>
+                    <div className="flex items-center justify-between mb-4">
+                      <div className={`w-10 h-10 rounded-xl ${event.color} border-2 border-black flex items-center justify-center shadow-[2px_2px_0px_#000]`}>
+                        <EventIcon className="w-5 h-5 text-black stroke-[2.5]" />
+                      </div>
+                      <span className="px-2.5 py-0.5 rounded-full bg-[#FFE600] text-black text-[11px] font-bold uppercase tracking-wider border-2 border-black shadow-[1.5px_1.5px_0px_#000]">
+                        {event.year}
+                      </span>
+                    </div>
+
+                    <h4 className="text-base sm:text-lg font-space font-bold mb-2 text-black">
+                      {event.title}
+                    </h4>
+
+                    <p className="text-neutral-700 text-xs sm:text-sm leading-relaxed font-medium">
+                      {event.description}
+                    </p>
                   </div>
-
-                  <h4 className="text-base sm:text-lg font-space font-bold mb-2 text-black">
-                    {event.title}
-                  </h4>
-
-                  <p className="text-neutral-700 text-xs sm:text-sm leading-relaxed font-medium">
-                    {event.description}
-                  </p>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </div>

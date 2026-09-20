@@ -3,6 +3,7 @@ import Link from "next/link";
 import Head from "next/head";
 import { Layout } from "@/components/Layout";
 import { Button } from "@/components/ui/button";
+import { TechIcon } from "@/components/TechIcon";
 import {
 	Accordion,
 	AccordionContent,
@@ -175,7 +176,9 @@ export default function SchedulePage() {
 								<AccordionTrigger className="hover:no-underline p-5 sm:p-7 [&[data-state=open]>div>div>div>svg]:rotate-180">
 									<div className="flex flex-col sm:flex-row items-start justify-between gap-4 w-full text-left">
 										<div className="flex items-start gap-3.5 sm:gap-4 flex-1">
-											<span className="text-3xl sm:text-4xl shrink-0" aria-hidden="true">{event.icon}</span>
+											<div className="w-11 h-11 sm:w-12 sm:h-12 rounded-2xl bg-white border-2 border-black shadow-[2px_2px_0px_#000] flex items-center justify-center shrink-0">
+												<TechIcon name={event.icon} className="w-6 h-6 text-black stroke-[2.3]" />
+											</div>
 
 											<div className="flex-1">
 												<div className="flex items-center gap-2 mb-1 flex-wrap">

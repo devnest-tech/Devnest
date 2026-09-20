@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Zap, CheckCircle, Instagram } from "lucide-react";
+import { Zap, CheckCircle, Instagram, Rocket, Sparkles, Smartphone, Palette, BarChart3, KeyRound } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import ShinyText from "@/components/ShinyText";
 import { openJoinCommunityModal } from "@/components/JoinCommunityDialog";
@@ -9,18 +9,10 @@ export function InterviewsOpen() {
   const isOpen = true; // Toggle this to change status
 
   const applicantPositions = [
-    <>
-      <span className="emoji-white">📱</span> Mobile App Developer
-    </>,
-    <>
-      <span className="emoji-white">🎨</span> UI/UX Designer
-    </>,
-    <>
-      <span className="emoji-white">📊</span> Data Analyst
-    </>,
-    <>
-      <span className="emoji-white">🔐</span> Security Engineer
-    </>,
+    { title: "Mobile App Developer", icon: Smartphone },
+    { title: "UI/UX Designer", icon: Palette },
+    { title: "Data Analyst", icon: BarChart3 },
+    { title: "Security Engineer", icon: KeyRound },
   ];
 
   return (
@@ -59,8 +51,8 @@ export function InterviewsOpen() {
             />
           </div>
 
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-poppins font-bold mb-3 sm:mb-4 px-2">
-            <span className="emoji-white">🚀</span>{" "}
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-poppins font-bold mb-3 sm:mb-4 px-2 flex items-center justify-center gap-3">
+            <Rocket className="w-8 h-8 sm:w-10 sm:h-10 text-primary shrink-0" />
             <ShinyText
               text="Join Our Core Team!"
               className="glow-text"
@@ -84,17 +76,22 @@ export function InterviewsOpen() {
 
         {/* Positions Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 mb-8 sm:mb-12">
-          {applicantPositions.map((position, index) => (
-            <div
-              key={index}
-              className="flex items-center gap-2 sm:gap-3 p-3 sm:p-4 rounded-lg bg-background/50 border border-primary/20 hover:border-primary/50 active:scale-95 transition-colors duration-150"
-            >
-              <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 text-primary flex-shrink-0" />
-              <span className="text-sm sm:text-base text-foreground">
-                {position}
-              </span>
-            </div>
-          ))}
+          {applicantPositions.map((position, index) => {
+            const Icon = position.icon;
+            return (
+              <div
+                key={index}
+                className="flex items-center gap-2 sm:gap-3 p-3 sm:p-4 rounded-lg bg-background/50 border border-primary/20 hover:border-primary/50 active:scale-95 transition-colors duration-150"
+              >
+                <div className="w-7 h-7 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center text-primary shrink-0">
+                  <Icon className="w-4 h-4" />
+                </div>
+                <span className="text-sm sm:text-base font-medium text-foreground">
+                  {position.title}
+                </span>
+              </div>
+            );
+          })}
         </div>
 
         {/* CTA Buttons */}
@@ -126,10 +123,11 @@ export function InterviewsOpen() {
 
         {/* Info Text */}
         <div className="text-center mt-6 sm:mt-8 text-xs sm:text-sm text-muted-foreground px-2">
-          <p className="leading-relaxed">
-            <span className="emoji-white">✨</span> Core Members Get:
-            Leadership Training • Industry Networking • DevNest Certificate •
-            Public Recognition
+          <p className="leading-relaxed flex items-center justify-center gap-1.5 flex-wrap">
+            <Sparkles className="w-4 h-4 text-primary shrink-0" />
+            <span>
+              Core Members Get: Leadership Training • Industry Networking • DevNest Certificate • Public Recognition
+            </span>
           </p>
         </div>
       </div>

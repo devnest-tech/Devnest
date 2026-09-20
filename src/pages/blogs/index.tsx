@@ -3,6 +3,7 @@ import { Layout } from "@/components/Layout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Search, ArrowRight, Clock, User, BookOpen, Sparkles, Send } from "lucide-react";
+import { TechIcon } from "@/components/TechIcon";
 import Link from "next/link";
 import { useState } from "react";
 import type { GetStaticProps } from "next";
@@ -119,9 +120,9 @@ export default function BlogsPage({ blogs }: BlogsPageProps) {
                   <article className="rounded-3xl overflow-hidden border-2 border-black bg-white shadow-[4px_4px_0px_#000] group-hover:shadow-[6px_6px_0px_#000] group-hover:-translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-200 flex flex-col justify-between h-full">
                     {/* Thumbnail */}
                     <div className="relative h-44 bg-[#FAF7EE] border-b-2 border-black overflow-hidden flex items-center justify-center">
-                      <span className="text-6xl select-none group-hover:scale-110 transition-transform duration-200" aria-hidden="true">
-                        {blog.thumbnail}
-                      </span>
+                      <div className="w-20 h-20 rounded-3xl bg-white border-2 border-black shadow-[4px_4px_0px_#000] flex items-center justify-center group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
+                        <TechIcon name={blog.thumbnail} className="w-10 h-10 text-black stroke-[2.2]" />
+                      </div>
                     </div>
 
                     {/* Content */}

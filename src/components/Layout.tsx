@@ -19,6 +19,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useJoinModal } from "@/context/JoinModalContext";
+import { GoogleCampusBadge } from "@/components/GoogleCampusBadge";
 interface LayoutProps {
   children: ReactNode;
   pauseTerminal?: boolean;
@@ -185,44 +186,6 @@ export function Layout({
             </div>
           )}
         </div>
-
-        {/* Signature Neobrutalism Scrolling Ticker Banner */}
-        <div className="w-full bg-[#FFE600] border-t-2 border-black py-2 overflow-hidden text-black font-mono font-bold text-xs uppercase tracking-widest select-none">
-          <div className="neo-marquee-content flex gap-8 whitespace-nowrap">
-            <span>✦ DEVNEST TECH CLUB</span>
-            <span>•</span>
-            <span>LTSU PUNJAB</span>
-            <span>•</span>
-            <span>BUILD • CODE • INNOVATE</span>
-            <span>•</span>
-            <span>HACKATHONS &amp; CTF</span>
-            <span>•</span>
-            <span>AI &amp; CLOUD ARCHITECTURE</span>
-            <span>•</span>
-            <span>CYBERSECURITY</span>
-            <span>•</span>
-            <span>GOOGLE CAMPUS AMBASSADOR INITIATIVE</span>
-            <span>•</span>
-            <span>150+ ACTIVE STUDENT DEVELOPERS</span>
-            <span>✦</span>
-            <span>✦ DEVNEST TECH CLUB</span>
-            <span>•</span>
-            <span>LTSU PUNJAB</span>
-            <span>•</span>
-            <span>BUILD • CODE • INNOVATE</span>
-            <span>•</span>
-            <span>HACKATHONS &amp; CTF</span>
-            <span>•</span>
-            <span>AI &amp; CLOUD ARCHITECTURE</span>
-            <span>•</span>
-            <span>CYBERSECURITY</span>
-            <span>•</span>
-            <span>GOOGLE CAMPUS AMBASSADOR INITIATIVE</span>
-            <span>•</span>
-            <span>150+ ACTIVE STUDENT DEVELOPERS</span>
-            <span>✦</span>
-          </div>
-        </div>
       </header>
 
       {/* Main Content Area with clearance for mobile bottom bar */}
@@ -234,28 +197,25 @@ export function Layout({
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 lg:gap-8 mb-16">
             {/* Column 1: Brand Bio */}
             <div className="lg:col-span-2 space-y-4">
-              <Link href="/" className="inline-flex items-center gap-3 group">
-                <div className="w-10 h-10 rounded-xl p-1 bg-[#FFE600] border-2 border-black shadow-[2px_2px_0px_#000] flex items-center justify-center">
-                  <Image
-                    src="/logo.svg"
-                    alt="DevNest Logo"
-                    width={36}
-                    height={36}
-                    className="w-full h-full object-contain"
-                  />
-                </div>
-                <span className="font-poppins font-black text-xl tracking-tight text-black">
-                  Dev<span className="bg-[#FFE600] px-1.5 py-0.5 ml-0.5 rounded-md border-2 border-black shadow-[1.5px_1.5px_0px_#000]">Nest</span>
-                </span>
+              <Link
+                href="/"
+                className="inline-flex items-center group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black rounded-xl"
+              >
+                <Image
+                  src="/devnest-logo.png"
+                  alt="Devnest — BUILD. LEARN. INNOVATE —"
+                  width={175}
+                  height={49}
+                  className="h-10 sm:h-12 w-auto object-contain transition-transform duration-200 group-hover:scale-105"
+                />
               </Link>
 
               <p className="text-sm text-neutral-700 leading-relaxed max-w-sm font-medium">
                 The premier technical club of Lamrin Tech Skills University Punjab. Fostering hands-on innovation, curiosity, and leadership across software, AI, cloud, and cybersecurity.
               </p>
 
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#FFE600] border-2 border-black shadow-[2px_2px_0px_#000] text-xs text-black font-bold">
-                <span className="w-2 h-2 rounded-full bg-black animate-pulse" />
-                Google Campus Ambassador Initiative
+              <div className="pt-1">
+                <GoogleCampusBadge size="sm" />
               </div>
             </div>
 

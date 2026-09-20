@@ -370,6 +370,31 @@
     animation-play-state: paused;
   }
 
+  /* Rotating Circular Moving Light Beam Animation */
+  @keyframes spinBeam {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  .animate-spin-beam {
+    animation: spinBeam 3.5s linear infinite;
+  }
+
+  /* Linear Path Perimeter Travel (Constant speed along border) */
+  @keyframes travelBorder {
+    from {
+      stroke-dashoffset: 0;
+    }
+    to {
+      stroke-dashoffset: -100;
+    }
+  }
+
+
   .neo-tag {
     display: inline-flex;
     align-items: center;

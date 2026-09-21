@@ -15,7 +15,6 @@ import {
   Bell,
   Brain,
   Flag,
-  Shield,
   Trophy,
 } from "lucide-react";
 import Head from "next/head";
@@ -468,48 +467,13 @@ export default function EventsPage() {
                           </div>
                         </div>
 
-                        {/* Right Action / Apply Card */}
-                        <div className="lg:col-span-1 rounded-2xl p-6 bg-secondary/70 border border-border/80 flex flex-col justify-between items-center text-center shadow-subtle">
-                          <div className="w-full flex flex-col items-center">
-                            <div className="w-14 h-14 rounded-2xl bg-primary/10 border border-primary/20 flex items-center justify-center text-primary mb-3 shadow-2xs">
-                              <Trophy className="w-7 h-7" />
-                            </div>
-
-                            <span className="inline-block px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-500 text-xs font-bold mb-2">
-                              Registrations Open
-                            </span>
-
-                            <h4 className="text-base font-bold text-foreground mb-1">
-                              Register for Prarambh
-                            </h4>
-
-                            <p className="text-xs text-muted-foreground leading-relaxed max-w-xs mb-4">
-                              Select your year of study to be assigned automatically to your verified competition track.
-                            </p>
-                          </div>
-
-                          <div className="w-full space-y-3">
-                            <Button
-                              type="button"
-                              onClick={() => handleOpenApply("1st Year")}
-                              className="w-full py-5 rounded-xl font-bold text-sm shadow-premium hover:shadow-glow-primary bg-primary text-primary-foreground active:scale-95 transition-all flex items-center justify-center gap-2 cursor-pointer"
-                            >
-                              <span>Apply for Prarambh</span>
-                              <ArrowRight className="w-4 h-4" />
-                            </Button>
-
-                            <div className="p-2.5 rounded-xl bg-muted/40 border border-border/50 text-[11px] text-muted-foreground/90">
-                              <Shield className="w-3.5 h-3.5 text-primary inline mr-1" />
-                              <span>Official verified registrations • Free Entry</span>
-                            </div>
-
-                            <Link
-                              href="/events/schedule"
-                              className="inline-flex w-full items-center justify-center gap-1.5 px-3 py-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors"
-                            >
-                              <span>View Full Event Schedule</span>
-                            </Link>
-                          </div>
+                        {/* Right Action / Event Poster Card */}
+                        <div className="lg:col-span-1 rounded-2xl overflow-hidden border-2 border-black bg-black shadow-[4px_4px_0px_0px_#000] flex items-center justify-center relative group self-stretch">
+                          <img
+                            src="/events/prarambh-2026-poster.jpg"
+                            alt="Prarambh 2026: Tech Quiz & Capture The Flag Official Poster"
+                            className="w-full h-full object-cover object-center rounded-xl transition-transform duration-300 group-hover:scale-[1.02]"
+                          />
                         </div>
                       </div>
                     </article>

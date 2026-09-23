@@ -111,6 +111,7 @@ export function Layout({
               <Button
                 size="sm"
                 onClick={openJoinModal}
+                data-ctf-flag="CTF{Dev-Nest_Technical_Club-USET-2025}"
                 className="hidden sm:inline-flex gap-1.5 font-bold text-xs bg-[#FFE600] text-black border-2 border-black shadow-[3px_3px_0px_#000] hover:bg-[#FFDE59] hover:shadow-[5px_5px_0px_#000] hover:-translate-x-0.5 hover:-translate-y-0.5 active:translate-x-0.5 active:translate-y-0.5 active:shadow-none"
               >
                 <span>Join Community</span>
@@ -177,6 +178,7 @@ export function Layout({
                     setIsMenuOpen(false);
                     openJoinModal();
                   }}
+                  data-ctf-flag="CTF{Dev-Nest_Technical_Club-USET-2025}"
                   className="w-full gap-2 py-3 rounded-xl font-bold bg-[#FFE600] text-black border-2 border-black shadow-[3px_3px_0px_#000]"
                 >
                   <span>Join DevNest Community</span>

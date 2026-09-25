@@ -30,6 +30,7 @@ import {
   DialogDescription,
 } from "@/components/ui/dialog";
 import type { MessageRecord, MessageStats } from "../../../server/messages-storage";
+import { exportToExcel } from "@/lib/excel-export";
 
 interface AdminMessagesViewProps {
   messages: MessageRecord[];
@@ -79,31 +80,25 @@ export function AdminMessagesView({
       });
   }, [messages, searchQuery, statusFilter, sortBy]);
 
-  // Handle Export CSV
-  const handleExportCSV = () => {
+  // Handle Export Excel (.xlsx)
+  const handleExportExcel = () => {
     if (filteredMessages.length === 0) return;
 
-    const headers = ["ID", "Sender Name", "Email", "Subject", "Message Content", "Status", "Received At", "Updated At"];
-    const rows = filteredMessages.map((m) => [
-      `"${m.id}"`,
-      `"${m.name.replace(/"/g, '""')}"`,
-      `"${m.email.replace(/"/g, '""')}"`,
-      `"${m.subject.replace(/"/g, '""')}"`,
-      `"${m.message.replace(/"/g, '""').replace(/\n/g, ' ')}"`,
-      `"${m.status}"`,
-      `"${new Date(m.createdAt).toLocaleString()}"`,
-      `"${new Date(m.updatedAt).toLocaleString()}"`,
-    ]);
-
-    const csvContent = [headers.join(","), ...rows.map((r) => r.join(","))].join("\n");
-    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement("a");
-    link.setAttribute("href", url);
-    link.setAttribute("download", `devnest_contact_messages_${new Date().toISOString().split("T")[0]}.csv`);
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    exportToExcel({
+      filename: `devnest_contact_messages_${new Date().toISOString().split("T")[0]}.xlsx`,
+      sheetName: "Contact Messages",
+      data: filteredMessages,
+      columns: [
+        { header: "ID", accessor: (m) => m.id, width: 22 },
+        { header: "Sender Name", accessor: (m) => m.name, width: 22 },
+        { header: "Email", accessor: (m) => m.email, width: 28 },
+        { header: "Subject", accessor: (m) => m.subject, width: 26 },
+        { header: "Message Content", accessor: (m) => m.message, width: 45 },
+        { header: "Status", accessor: (m) => m.status, width: 14 },
+        { header: "Received At", accessor: (m) => new Date(m.createdAt).toLocaleString(), width: 22 },
+        { header: "Updated At", accessor: (m) => new Date(m.updatedAt).toLocaleString(), width: 22 },
+      ],
+    });
   };
 
   const getStatusBadge = (status: MessageRecord["status"]) => {
@@ -271,16 +266,17 @@ export function AdminMessagesView({
               </select>
             </div>
 
-            {/* Export CSV */}
+            {/* Export Excel */}
             <Button
               variant="outline"
               size="sm"
-              onClick={handleExportCSV}
+              onClick={handleExportExcel}
               disabled={filteredMessages.length === 0}
               className="h-11 rounded-xl border-border/80 text-xs font-medium gap-1.5 cursor-pointer"
+              title="Export Messages to Excel (.xlsx)"
             >
               <Download className="w-3.5 h-3.5" />
-              <span>Export CSV</span>
+              <span>Export Excel</span>
             </Button>
           </div>
         </div>

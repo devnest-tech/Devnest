@@ -43,6 +43,7 @@ export function Layout({
     { label: "Events", href: "/events" },
     { label: "Blogs", href: "/blogs" },
     { label: "Team", href: "/team" },
+    { label: "Hall of Fame", href: "/hall-of-fame" },
     { label: "Contact", href: "/contact" },
   ];
 
@@ -94,7 +95,7 @@ export function Layout({
                   <Link
                     key={item.href}
                     href={item.href}
-                    className={`relative px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all duration-150 ${
+                    className={`relative px-2.5 lg:px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all duration-150 whitespace-nowrap ${
                       active
                         ? "bg-[#FFE600] text-black border-2 border-black shadow-[2px_2px_0px_#000]"
                         : "text-black hover:bg-[#FAF7EE] hover:border-2 hover:border-black hover:shadow-[2px_2px_0px_#000] border-2 border-transparent"
@@ -111,7 +112,6 @@ export function Layout({
               <Button
                 size="sm"
                 onClick={openJoinModal}
-                data-ctf-flag="CTF{Dev-Nest_Technical_Club-USET-2025}"
                 className="hidden sm:inline-flex gap-1.5 font-bold text-xs bg-[#FFE600] text-black border-2 border-black shadow-[3px_3px_0px_#000] hover:bg-[#FFDE59] hover:shadow-[5px_5px_0px_#000] hover:-translate-x-0.5 hover:-translate-y-0.5 active:translate-x-0.5 active:translate-y-0.5 active:shadow-none"
               >
                 <span>Join Community</span>
@@ -178,7 +178,6 @@ export function Layout({
                     setIsMenuOpen(false);
                     openJoinModal();
                   }}
-                  data-ctf-flag="CTF{Dev-Nest_Technical_Club-USET-2025}"
                   className="w-full gap-2 py-3 rounded-xl font-bold bg-[#FFE600] text-black border-2 border-black shadow-[3px_3px_0px_#000]"
                 >
                   <span>Join DevNest Community</span>

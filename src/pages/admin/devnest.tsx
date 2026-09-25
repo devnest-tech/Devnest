@@ -45,6 +45,7 @@ import {
   Check,
   MapPin,
   X,
+  FileSpreadsheet,
 } from "lucide-react";
 import type { MemberRecord, MemberStats } from "../../../server/members-storage";
 import type {
@@ -53,9 +54,14 @@ import type {
   AcademicYear,
   CompetitionTrack,
 } from "../../../server/prarambh-storage";
-import { PrarambhApplyDialog } from "@/components/PrarambhApplyDialog";
 import { AdminMessagesView } from "@/components/admin/AdminMessagesView";
 import type { MessageRecord, MessageStats } from "../../../server/messages-storage";
+import {
+  exportToExcel,
+  exportMultiSheetExcel,
+  exportOfficialAttendanceExcel,
+  OfficialAttendanceParticipant,
+} from "@/lib/excel-export";
 
 export default function AdminDevnestPage() {
   // Navigation tabs: 'prarambh', 'members', or 'messages'
@@ -100,6 +106,27 @@ export default function AdminDevnestPage() {
   const [prarambhActionLoadingId, setPrarambhActionLoadingId] = useState<string | null>(null);
   const [deletePrarambhConfirmId, setDeletePrarambhConfirmId] = useState<string | null>(null);
   const [adminApplyModalOpen, setAdminApplyModalOpen] = useState(false);
+  // Active Event Name & Date (Automatically reflected on the official Attendance Excel top header)
+  const [currentEventName, setCurrentEventName] = useState<string>("Prarambh");
+  const [currentEventDate, setCurrentEventDate] = useState<string>("23rd September 2026");
+
+  const handleEventNameChange = (val: string) => {
+    setCurrentEventName(val);
+    try {
+      if (typeof window !== "undefined") {
+        localStorage.setItem("devnest_admin_event_name", val);
+      }
+    } catch {}
+  };
+
+  const handleEventDateChange = (val: string) => {
+    setCurrentEventDate(val);
+    try {
+      if (typeof window !== "undefined") {
+        localStorage.setItem("devnest_admin_event_date", val);
+      }
+    } catch {}
+  };
 
   // Contact Messages Data states
   const [messages, setMessages] = useState<MessageRecord[]>([]);
@@ -123,6 +150,14 @@ export default function AdminDevnestPage() {
         const cachedMessages = JSON.parse(localStorage.getItem("devnest_admin_messages_cache") || "[]");
         if (Array.isArray(cachedMessages) && cachedMessages.length > 0) {
           setMessages(cachedMessages);
+        }
+        const savedEventName = localStorage.getItem("devnest_admin_event_name");
+        if (savedEventName) {
+          setCurrentEventName(savedEventName);
+        }
+        const savedEventDate = localStorage.getItem("devnest_admin_event_date");
+        if (savedEventDate) {
+          setCurrentEventDate(savedEventDate);
         }
       }
     } catch {}
@@ -464,57 +499,33 @@ export default function AdminDevnestPage() {
     }
   };
 
-  // Export to CSV
-  const handleExportCSV = () => {
+  // Export to Excel (.xlsx)
+  const handleExportMembersExcel = () => {
     if (filteredMembers.length === 0) return;
 
-    const headers = [
-      "ID",
-      "Full Name",
-      "Email",
-      "Phone",
-      "Enrollment ID",
-      "College",
-      "Branch",
-      "Year",
-      "Semester",
-      "Status",
-      "Interests",
-      "Skills",
-      "GitHub",
-      "LinkedIn",
-      "Portfolio",
-      "Submitted At",
-    ];
-
-    const rows = filteredMembers.map((m) => [
-      `"${m.id}"`,
-      `"${m.fullName.replace(/"/g, '""')}"`,
-      `"${m.email}"`,
-      `"${m.phone}"`,
-      `"${m.enrollmentNumber || "N/A"}"`,
-      `"${(m.college || "").replace(/"/g, '""')}"`,
-      `"${m.branch}"`,
-      `"${m.year}"`,
-      `"${m.semester}"`,
-      `"${m.status}"`,
-      `"${(m.interests || []).join(", ")}"`,
-      `"${(m.skills || []).join(", ")}"`,
-      `"${m.github || ""}"`,
-      `"${m.linkedin || ""}"`,
-      `"${m.portfolio || ""}"`,
-      `"${new Date(m.createdAt).toLocaleString()}"`,
-    ]);
-
-    const csvContent = [headers.join(","), ...rows.map((r) => r.join(","))].join("\n");
-    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement("a");
-    link.setAttribute("href", url);
-    link.setAttribute("download", `devnest_members_${new Date().toISOString().split("T")[0]}.csv`);
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    exportToExcel({
+      filename: `devnest_members_${new Date().toISOString().split("T")[0]}.xlsx`,
+      sheetName: "DevNest Members",
+      data: filteredMembers,
+      columns: [
+        { header: "ID", accessor: (m) => m.id, width: 22 },
+        { header: "Full Name", accessor: (m) => m.fullName, width: 22 },
+        { header: "Email", accessor: (m) => m.email, width: 28 },
+        { header: "Phone", accessor: (m) => m.phone, width: 16 },
+        { header: "Enrollment ID", accessor: (m) => m.enrollmentNumber || "N/A", width: 18 },
+        { header: "College", accessor: (m) => m.college || "", width: 32 },
+        { header: "Branch", accessor: (m) => m.branch, width: 24 },
+        { header: "Year", accessor: (m) => m.year, width: 14 },
+        { header: "Semester", accessor: (m) => m.semester, width: 12 },
+        { header: "Status", accessor: (m) => m.status, width: 14 },
+        { header: "Interests", accessor: (m) => (m.interests || []).join(", "), width: 30 },
+        { header: "Skills", accessor: (m) => (m.skills || []).join(", "), width: 25 },
+        { header: "GitHub", accessor: (m) => m.github || "", width: 25 },
+        { header: "LinkedIn", accessor: (m) => m.linkedin || "", width: 25 },
+        { header: "Portfolio", accessor: (m) => m.portfolio || "", width: 25 },
+        { header: "Submitted At", accessor: (m) => new Date(m.createdAt).toLocaleString(), width: 22 },
+      ],
+    });
   };
 
   // Filter & sort members
@@ -597,57 +608,162 @@ export default function AdminDevnestPage() {
       .sort((a, b) => new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime());
   }, [prarambhRegistrations, prarambhSearchQuery, prarambhTrackFilter, prarambhStatusFilter]);
 
-  // Export Prarambh registrations to CSV
-  const handleExportPrarambhCSV = () => {
+  // Export event registrations in official University attendance format matching C:\Users\itz_Ansh\Downloads\format.xlsx
+  const handleExportPrarambhExcel = () => {
     if (filteredPrarambh.length === 0) return;
 
-    const headers = [
-      "ID",
-      "Full Name",
-      "Email",
-      "Phone",
-      "Roll Number",
-      "College",
-      "Course",
-      "Specialization",
-      "Section",
-      "Branch",
-      "Year",
-      "Competition Track",
-      "Team Name",
-      "Handle/GitHub",
-      "Status",
-      "Registered At",
-    ];
+    // Filter registrations by competition track
+    const ctf3rdYearRegistrations = filteredPrarambh.filter(
+      (r) => r.competition === "ctf-3rd-year" || (r.competition.includes("ctf") && r.year === "3rd Year")
+    );
+    const ctf2ndYearRegistrations = filteredPrarambh.filter(
+      (r) => r.competition === "ctf-2nd-year" || (r.competition.includes("ctf") && r.year === "2nd Year")
+    );
+    const techQuizRegistrations = filteredPrarambh.filter(
+      (r) => r.competition === "tech-quiz" || r.year === "1st Year"
+    );
 
-    const rows = filteredPrarambh.map((r) => [
-      `"${r.id}"`,
-      `"${r.fullName.replace(/"/g, '""')}"`,
-      `"${r.email}"`,
-      `"${r.phone}"`,
-      `"${r.rollNumber}"`,
-      `"${r.college.replace(/"/g, '""')}"`,
-      `"${(r.course || "").replace(/"/g, '""')}"`,
-      `"${(r.specialization || "").replace(/"/g, '""')}"`,
-      `"${(r.section || "").replace(/"/g, '""')}"`,
-      `"${r.branch.replace(/"/g, '""')}"`,
-      `"${r.year}"`,
-      `"${r.competition === "tech-quiz" ? "Tech Quiz (1st Year Freshers)" : r.competition === "ctf-2nd-year" ? "CTF (2nd Year Section)" : "CTF (3rd Year Section)"}"`,
-      `"${(r.competition === "tech-quiz" || r.year === "1st Year" ? "Individual" : r.teamName || "").replace(/"/g, '""')}"`,
-      `"${(r.handleOrGithub || "").replace(/"/g, '""')}"`,
-      `"${r.status}"`,
-      `"${new Date(r.createdAt).toLocaleString()}"`,
-    ]);
+    // Build participants for Tech Quiz (Individual Contenders)
+    const techQuizParticipants: OfficialAttendanceParticipant[] = [];
+    techQuizRegistrations.forEach((r, idx) => {
+      techQuizParticipants.push({
+        srNo: idx + 1,
+        teamCode: r.teamName || "",
+        participantName: r.fullName,
+        school: r.college && r.college.toLowerCase().includes("uset") ? "USET" : r.college || "USET",
+        rollNumber: r.rollNumber || "N/A",
+        branch: r.branch || "CSE",
+        sem: "1st",
+        contactNo: r.phone || "N/A",
+        email: r.email || "N/A",
+        signature: "",
+      });
+    });
 
-    const csvContent = [headers.join(","), ...rows.map((row) => row.join(","))].join("\n");
-    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement("a");
-    link.setAttribute("href", url);
-    link.setAttribute("download", `devnest_prarambh_registrations_${new Date().toISOString().split("T")[0]}.csv`);
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    // Helper to map CTF registrations (Both Leader and Teammate included)
+    const mapCtfParticipants = (list: typeof filteredPrarambh, defaultSem: string) => {
+      const participants: OfficialAttendanceParticipant[] = [];
+      let sr = 1;
+      list.forEach((r, teamIdx) => {
+        const isDuo = r.teamSize === 2 && Boolean(r.teammateName);
+        const teamCode = r.teamName || `Team G${teamIdx + 1}`;
+
+        // Leader / Member 1
+        participants.push({
+          srNo: sr++,
+          teamCode: teamCode,
+          participantName: isDuo ? `${r.fullName} (Leader)` : r.fullName,
+          school: r.college && r.college.toLowerCase().includes("uset") ? "USET" : r.college || "USET",
+          rollNumber: r.rollNumber || "N/A",
+          branch: r.branch || "CSE",
+          sem: defaultSem,
+          contactNo: r.phone || "N/A",
+          email: r.email || "N/A",
+          signature: "",
+        });
+
+        // Teammate / Member 2 (if Duo)
+        if (isDuo && r.teammateName) {
+          participants.push({
+            srNo: sr++,
+            teamCode: teamCode,
+            participantName: `${r.teammateName} (Member)`,
+            school: r.college && r.college.toLowerCase().includes("uset") ? "USET" : r.college || "USET",
+            rollNumber: r.teammateRollNumber || "N/A",
+            branch: r.branch || "CSE",
+            sem: defaultSem,
+            contactNo: r.teammatePhone || "N/A",
+            email: r.email ? `Team: ${r.email}` : "N/A",
+            signature: "",
+          });
+        }
+      });
+      return participants;
+    };
+
+    const ctf2ndYearParticipants = mapCtfParticipants(ctf2ndYearRegistrations, "3rd");
+    const ctf3rdYearParticipants = mapCtfParticipants(ctf3rdYearRegistrations, "5th");
+
+    // Master List of All Registered Participants
+    const allParticipants: OfficialAttendanceParticipant[] = [];
+    let allSr = 1;
+    filteredPrarambh.forEach((r, teamIdx) => {
+      const isDuo = r.teamSize === 2 && Boolean(r.teammateName);
+      const teamCode = r.teamName || (r.competition === "tech-quiz" ? "" : `Team G${teamIdx + 1}`);
+      const sem = r.year === "3rd Year" ? "5th" : r.year === "2nd Year" ? "3rd" : "1st";
+
+      allParticipants.push({
+        srNo: allSr++,
+        teamCode: teamCode,
+        participantName: isDuo ? `${r.fullName} (Leader)` : r.fullName,
+        school: r.college && r.college.toLowerCase().includes("uset") ? "USET" : r.college || "USET",
+        rollNumber: r.rollNumber || "N/A",
+        branch: r.branch || "CSE",
+        sem: sem,
+        contactNo: r.phone || "N/A",
+        email: r.email || "N/A",
+        signature: "",
+      });
+
+      if (isDuo && r.teammateName) {
+        allParticipants.push({
+          srNo: allSr++,
+          teamCode: teamCode,
+          participantName: `${r.teammateName} (Member)`,
+          school: r.college && r.college.toLowerCase().includes("uset") ? "USET" : r.college || "USET",
+          rollNumber: r.teammateRollNumber || "N/A",
+          branch: r.branch || "CSE",
+          sem: sem,
+          contactNo: r.teammatePhone || "N/A",
+          email: r.email ? `Team: ${r.email}` : "N/A",
+          signature: "",
+        });
+      }
+    });
+
+    const activeEvent = (currentEventName || "Prarambh").trim();
+    const dateFormatted = (currentEventDate || "23rd September 2026").trim();
+
+    // Export Excel exactly matching C:\Users\itz_Ansh\Downloads\format.xlsx:
+    // 1. "CTF 3rd Year" sheet
+    // 2. "CTF 2nd Year " sheet
+    // 3. "Tech Quiz" sheet
+    // 4. "All Participants" sheet
+    exportOfficialAttendanceExcel({
+      filename: `devnest_${activeEvent.toLowerCase().replace(/[^a-z0-9_-]+/g, "_")}_attendance_${new Date().toISOString().split("T")[0]}.xlsx`,
+      eventName: activeEvent,
+      defaultDate: dateFormatted,
+      sheets: [
+        {
+          sheetName: "CTF 3rd Year",
+          trackTitle: "CTF 3rd Year",
+          date: dateFormatted,
+          participants: ctf3rdYearParticipants,
+          minRows: 20,
+        },
+        {
+          sheetName: "CTF 2nd Year ",
+          trackTitle: "CTF 2nd Year",
+          date: dateFormatted,
+          participants: ctf2ndYearParticipants,
+          minRows: 20,
+        },
+        {
+          sheetName: "Tech Quiz",
+          trackTitle: "Tech Quiz",
+          date: dateFormatted,
+          participants: techQuizParticipants,
+          minRows: Math.max(20, techQuizParticipants.length + 2),
+        },
+        {
+          sheetName: "All Participants",
+          trackTitle: "All Participants Attendance",
+          date: dateFormatted,
+          participants: allParticipants,
+          minRows: Math.max(20, allParticipants.length + 2),
+        },
+      ],
+    });
   };
 
   // Loading state while verifying session
@@ -843,8 +959,8 @@ export default function AdminDevnestPage() {
                 variant="outline"
                 size="sm"
                 onClick={() => {
-                  if (adminTab === "prarambh") handleExportPrarambhCSV();
-                  else if (adminTab === "members") handleExportCSV();
+                  if (adminTab === "prarambh") handleExportPrarambhExcel();
+                  else if (adminTab === "members") handleExportMembersExcel();
                 }}
                 disabled={
                   adminTab === "prarambh"
@@ -854,10 +970,10 @@ export default function AdminDevnestPage() {
                     : messages.length === 0
                 }
                 className="rounded-xl h-10 px-3 sm:px-4 border-border/80 gap-1.5 text-xs font-medium cursor-pointer"
-                title="Export Filtered Applications to CSV"
+                title="Export Filtered Records to Excel (.xlsx)"
               >
                 <Download className="w-3.5 h-3.5" />
-                <span className="hidden sm:inline">Export CSV</span>
+                <span className="hidden sm:inline">Export Excel</span>
               </Button>
 
               <Button
@@ -888,7 +1004,7 @@ export default function AdminDevnestPage() {
               }`}
             >
               <Trophy className="w-4 h-4" />
-              <span>Prarambh Applications</span>
+              <span>Prarambh (Concluded)</span>
               <span
                 className={`px-2 py-0.5 rounded-full text-[11px] font-bold ${
                   adminTab === "prarambh"
@@ -1068,6 +1184,67 @@ export default function AdminDevnestPage() {
                   </span>
                   <p className="text-[11px] text-muted-foreground mt-0.5">Verified Participants</p>
                 </div>
+              </div>
+            </div>
+
+            {/* Official University Attendance Sheet (format.xlsx) Export Panel */}
+            <div className="glass-panel rounded-2xl p-4 sm:p-5 border border-emerald-500/30 bg-gradient-to-r from-emerald-500/[0.04] via-background/40 to-primary/[0.04] shadow-subtle flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-4">
+              <div className="flex items-start sm:items-center gap-3.5">
+                <div className="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-500 shrink-0 shadow-sm">
+                  <FileSpreadsheet className="w-5 h-5" />
+                </div>
+                <div>
+                  <div className="flex flex-wrap items-center gap-2">
+                    <span className="text-sm font-poppins font-bold text-foreground">
+                      Official University Attendance Sheet
+                    </span>
+                    <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 font-semibold border border-emerald-500/20">
+                      format.xlsx standard
+                    </span>
+                  </div>
+                  <p className="text-xs text-muted-foreground mt-0.5">
+                    Generates LTSU-compliant sheets with University Header (Row 1), dynamic Event Heading (Row 2), Date (Row 3), and Faculty Coordinator signatures.
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex flex-wrap items-center gap-2.5">
+                {/* Event Name Configuration */}
+                <div className="flex items-center gap-2 bg-background/80 border border-border/80 rounded-xl px-3 h-10 text-xs shadow-sm">
+                  <span className="text-muted-foreground font-semibold uppercase tracking-wider text-[10px]">
+                    Event:
+                  </span>
+                  <Input
+                    value={currentEventName}
+                    onChange={(e) => handleEventNameChange(e.target.value)}
+                    placeholder="Event Name (e.g. Prarambh)"
+                    className="h-7 w-28 sm:w-36 px-2 py-0 border-none bg-transparent text-xs font-bold text-foreground focus-visible:ring-0 focus-visible:ring-offset-0"
+                    title="Change this to any event name; it automatically updates Row 2 'Devnest Technical  Event <EventName>' across all sheets in the Excel download"
+                  />
+                </div>
+
+                {/* Event Date Configuration */}
+                <div className="flex items-center gap-1.5 bg-background/80 border border-border/80 rounded-xl px-3 h-10 text-xs shadow-sm">
+                  <Calendar className="w-3.5 h-3.5 text-muted-foreground" />
+                  <Input
+                    value={currentEventDate}
+                    onChange={(e) => handleEventDateChange(e.target.value)}
+                    placeholder="Date (e.g. 23rd September 2026)"
+                    className="h-7 w-36 sm:w-44 px-2 py-0 border-none bg-transparent text-xs font-medium text-foreground focus-visible:ring-0 focus-visible:ring-offset-0"
+                    title="Printed in Row 3 of the attendance sheet"
+                  />
+                </div>
+
+                {/* Download Button */}
+                <Button
+                  onClick={handleExportPrarambhExcel}
+                  disabled={filteredPrarambh.length === 0}
+                  className="rounded-xl h-10 px-4 text-xs font-semibold gap-2 bg-emerald-600 hover:bg-emerald-700 text-white cursor-pointer shadow-subtle shrink-0"
+                  title={`Download Excel attendance file with top heading: Devnest Technical  Event ${currentEventName}`}
+                >
+                  <Download className="w-4 h-4" />
+                  <span>Download Excel (.xlsx)</span>
+                </Button>
               </div>
             </div>
 
@@ -2491,15 +2668,6 @@ export default function AdminDevnestPage() {
           </div>
         </DialogContent>
       </Dialog>
-
-      {/* Prarambh Registration Dialog for Admin */}
-      <PrarambhApplyDialog
-        open={adminApplyModalOpen}
-        onOpenChange={setAdminApplyModalOpen}
-        onSuccess={() => {
-          fetchPrarambhRegistrations();
-        }}
-      />
     </div>
   );
 }

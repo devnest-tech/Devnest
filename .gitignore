@@ -1,7 +1,7 @@
 node_modules
 .next
 uploads
-data/
+/data/
 .DS_store
 
 # pnpm
@@ -16,6 +16,8 @@ pnpm-lock.yaml
 !tsconfig.json
 !components.json
 !src/data/*.json
+# Always track TypeScript source data files
+!src/data/*.ts
 scripts
 .vercel
 .env*

@@ -259,6 +259,11 @@ export function PrarambhApplyDialog({
           <DialogDescription className="text-xs sm:text-sm text-muted-foreground mt-1">
             Apply for DevNest&apos;s premier dual-track competition. Tech Quiz (Individual) for 1st years &amp; Capture The Flag (1-2 Members) for 2nd/3rd year seniors.
           </DialogDescription>
+
+          <div className="p-3.5 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-amber-600 dark:text-amber-400 text-xs font-semibold flex items-center gap-2.5 mt-2">
+            <AlertCircle className="w-4 h-4 shrink-0 text-amber-500" />
+            <span>Registrations for Prarambh 2026 are officially closed. The event has concluded.</span>
+          </div>
         </DialogHeader>
 
         {submitted ? (
@@ -714,18 +719,11 @@ export function PrarambhApplyDialog({
                   Cancel
                 </Button>
                 <Button
-                  type="submit"
-                  disabled={loading}
-                  className="rounded-xl text-xs sm:text-sm font-semibold shadow-subtle hover:shadow-glow-primary min-w-[140px] flex-1 sm:flex-initial"
+                  type="button"
+                  disabled={true}
+                  className="rounded-xl text-xs sm:text-sm font-semibold opacity-60 cursor-not-allowed min-w-[140px] flex-1 sm:flex-initial"
                 >
-                  {loading ? (
-                    <>
-                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                      Submitting...
-                    </>
-                  ) : (
-                    <span>Apply for Prarambh</span>
-                  )}
+                  Registrations Closed
                 </Button>
               </div>
             </div>

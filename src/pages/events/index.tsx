@@ -13,16 +13,12 @@ import {
   CheckCircle2,
   Instagram,
   Bell,
-  Brain,
-  Flag,
   Trophy,
 } from "lucide-react";
 import Head from "next/head";
 import { Layout } from "@/components/Layout";
 import { Button } from "@/components/ui/button";
-import { PrarambhApplyDialog } from "@/components/PrarambhApplyDialog";
 import { TechIcon } from "@/components/TechIcon";
-import type { AcademicYear } from "../../../server/prarambh-storage";
 
 const upcomingEvents: Array<{
   id: number;
@@ -38,38 +34,7 @@ const upcomingEvents: Array<{
   icon: string;
   registrationUrl: string;
   learnMoreUrl: string;
-  isPrarambh?: boolean;
 }> = [
-  {
-    id: 1,
-    title: "Prarambh: Tech Quiz & Capture The Flag (CTF)",
-    date: "To be determined",
-    time: "09:30 AM – 05:30 PM",
-    location: "IBM Lab in Lamrin Tech Skills University Punjab",
-    description:
-      "DevNest's signature flagship event for 2026! Featuring two parallel high-octane competitions: an exclusive Tech Quiz strictly limited to 1st Year (Freshers), and an elite Capture The Flag (CTF) tournament strictly limited to Seniors (with independent competitive sections for 2nd Year and 3rd Year).",
-    domains: [
-      "Tech Quiz (Freshers)",
-      "CTF (2nd Year)",
-      "CTF (3rd Year)",
-      "Cybersecurity",
-      "Competitive Logic",
-      "Programming",
-    ],
-    capacity: "250+",
-    highlights: [
-      "Competition 1: Tech Quiz strictly limited to 1st Year (Freshers)",
-      "Competition 2: Capture The Flag (CTF) strictly for Seniors",
-      "Separate sections: 2nd Year Section & 3rd Year Section",
-      "Individual and team rankings with live leaderboard",
-      "Cash prizes, trophies & verified merit certificates",
-    ],
-    status: "open",
-    icon: "🏆",
-    registrationUrl: "/events#prarambh",
-    learnMoreUrl: "/events#prarambh",
-    isPrarambh: true,
-  },
   {
     id: 3,
     title: "Designathon & Ideathon",
@@ -154,48 +119,129 @@ const upcomingEvents: Array<{
   },
 ];
 
-const pastEvents = [
+const pastEvents: Array<{
+  id: number;
+  title: string;
+  date: string;
+  attendees: string;
+  location: string;
+  description: string;
+  domains: string[];
+  highlights: string[];
+  icon: string;
+  link: string;
+  certificateLink: string;
+  statusBadge: string;
+  poster?: string;
+}> = [
+  {
+    id: 4,
+    title: "Prarambh: Tech Quiz & Capture The Flag (CTF)",
+    date: "23 Sept 2026 • Concluded",
+    attendees: "90+",
+    location: "Laptop Lab, LTSU Punjab",
+    description:
+      "DevNest's signature flagship event featuring two parallel high-octane competitions: an exclusive Tech Quiz strictly for 1st Year Freshers, and an elite Capture The Flag (CTF) tournament for Seniors across 2nd & 3rd Year divisions.",
+    domains: [
+      "Tech Quiz (Freshers)",
+      "CTF (Seniors)",
+      "Cybersecurity",
+      "Competitive Logic",
+      "Algorithms",
+    ],
+    highlights: [
+      "TryHackMe Cyber Arena: Dedicated custom competition rooms deployed with hands-on vulnerable targets",
+      "CTF Technical Challenges: Specialized tracks covering Web Exploitation, Cryptography & Digital Forensics",
+      "Dynamic Live Scoring: Real-time leaderboard featuring strategic scoreboard freeze & expert jury adjudication",
+      "Championship Recognition: Top achievers awarded official trophies, cash awards & verified merit certificates",
+    ],
+    icon: "🏆",
+    link: "/events/prarambh",
+    certificateLink: "/certificate-download",
+    statusBadge: "Event Completed • Certificates Issued",
+    poster: "/events/prarambh-2026-poster.jpg",
+  },
   {
     id: 1,
     title: "DataDash",
     date: "April 10, 2026",
-    attendees: "100+",
-    highlight:
-      "A data-focused innovation challenge where students transformed insights into impact through analytics, creativity, and practical problem-solving.",
+    attendees: "153",
+    location: "IBM Lab, LTSU Punjab",
+    description:
+      "Where Data Meets Innovation! A data-focused innovation challenge where students transformed insights into impact through analytics, visualization, and practical problem-solving.",
+    domains: [
+      "Data Analytics",
+      "Problem Solving",
+      "Visualization",
+      "Data Storytelling",
+    ],
+    highlights: [
+      "153 participants registered across 46 teams",
+      "Hands-on datasets and real-world problem statements",
+      "Jury reviews and data visualization showcases",
+      "Verified participation credentials issued",
+    ],
     icon: "📊",
     link: "/events/datadash",
+    certificateLink: "/certificates/datadash",
+    statusBadge: "Event Concluded • Results Under Review",
   },
   {
     id: 2,
     title: "Promptathon in Yuva Kaushal",
     date: "February 25, 2026",
     attendees: "68",
-    highlight:
-      "A grand success! Students showcased exceptional AI prompt engineering skills, pushing the boundaries of AI communication and critical thinking.",
+    location: "IBM Lab, LTSU Punjab",
+    description:
+      "A grand success! Students showcased exceptional AI prompt engineering skills, pushing the boundaries of AI communication, multi-modal generation, and critical algorithmic thinking.",
+    domains: [
+      "AI & Prompt Engineering",
+      "LLM Reasoning",
+      "Critical Thinking",
+      "Multi-modal AI",
+    ],
+    highlights: [
+      "68 participants across multiple competitive squads",
+      "Phase I & Phase II multi-round prompt challenges",
+      "Practical evaluations with zero hallucination criteria",
+      "Official certificates available across team galleries",
+    ],
     icon: "⚡",
     link: "/events/promptathon-2026",
+    certificateLink: "/certificates/promptathon",
+    statusBadge: "Grand Success • Certificates Available",
+    poster: "/events/promptathon/poster.png",
   },
   {
     id: 3,
     title: "Guest Speaker Event",
     date: "February 5, 2026",
     attendees: "150+",
-    highlight:
-      "Inspiring session with Amit Kumar Jaiswal, IIM Bangalore graduate and founder of aptitude360online",
+    location: "Auditorium, LTSU Punjab",
+    description:
+      "Inspiring expert career lecture with Amit Kumar Jaiswal, IIM Bangalore graduate and founder of Aptitude360online, covering competitive exams, career roadmap, and industry aptitude skills.",
+    domains: [
+      "Career Pathways",
+      "Aptitude Skills",
+      "Competitive Exams",
+      "Industry Connect",
+    ],
+    highlights: [
+      "150+ student attendees from all departments",
+      "Keynote on CAT, UPSC, SSC & Placement aptitude",
+      "Live interactive Q&A session with students",
+      "Official participation certificates generated",
+    ],
     icon: "🎤",
     link: "/events/guest-speaker-feb",
+    certificateLink: "/certificate-download",
+    statusBadge: "Completed • Verified Credentials",
+    poster: "/events/guest-speaker-feb/image.png",
   },
 ];
 
 export default function EventsPage() {
   const [activeTab, setActiveTab] = useState<"upcoming" | "past">("upcoming");
-  const [applyDialogOpen, setApplyDialogOpen] = useState(false);
-  const [applyDefaultYear, setApplyDefaultYear] = useState<AcademicYear>("1st Year");
-
-  const handleOpenApply = (year: AcademicYear = "1st Year") => {
-    setApplyDefaultYear(year);
-    setApplyDialogOpen(true);
-  };
 
   return (
     <Layout>
@@ -303,186 +349,12 @@ export default function EventsPage() {
                   </Button>
                 </div>
               ) : (
-                upcomingEvents.map((event) =>
-                  event.isPrarambh ? (
-                    <article
-                      key={event.id}
-                      id="prarambh"
-                      className="glass-panel rounded-3xl p-6 sm:p-8 border-2 border-primary/40 bg-gradient-to-br from-background via-background to-primary/5 shadow-premium hover:shadow-glow-primary transition-all duration-300 relative overflow-hidden"
-                    >
-                      {/* Decorative Top Banner */}
-                      <div className="flex flex-wrap items-center justify-between gap-3 mb-6 pb-4 border-b border-border/60">
-                        <div className="flex flex-wrap items-center gap-2">
-                          <span className="px-3 py-1 rounded-lg bg-primary text-primary-foreground text-xs font-bold uppercase tracking-wider shadow-subtle flex items-center gap-1.5">
-                            <Trophy className="w-3.5 h-3.5" />
-                            DevNest Flagship Event 2026
-                          </span>
-                          <span className="px-2.5 py-1 rounded-lg bg-amber-500/10 text-amber-500 border border-amber-500/20 text-xs font-bold">
-                            Dual Competition
-                          </span>
-                        </div>
-
-                        <div className="flex items-center gap-2 text-xs font-bold text-primary">
-                          <Calendar className="w-4 h-4" />
-                          <span>To be determined</span>
-                        </div>
-                      </div>
-
-                      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                        {/* Main Left Details */}
-                        <div className="lg:col-span-2 space-y-6">
-                          <div>
-                            <div className="flex items-center gap-3.5 mb-2">
-                              <div className="w-12 h-12 rounded-2xl bg-[#FFE600] border-2 border-black shadow-[2px_2px_0px_#000] flex items-center justify-center shrink-0">
-                                <Trophy className="w-6 h-6 text-black stroke-[2.5]" />
-                              </div>
-                              <div>
-                                <h2 className="text-2xl sm:text-3xl md:text-4xl font-poppins font-bold tracking-tight text-foreground">
-                                  Prarambh <span className="text-gradient-primary">2026</span>
-                                </h2>
-                                <p className="text-xs sm:text-sm font-semibold text-primary">
-                                  Tech Quiz (Freshers) &amp; Capture The Flag (Seniors)
-                                </p>
-                              </div>
-                            </div>
-
-                            <p className="text-sm sm:text-base text-muted-foreground leading-relaxed mt-3">
-                              The definitive annual tech showdown of DevNest! Two distinct competition tracks tailored by academic tier to challenge, showcase, and elevate student developers.
-                            </p>
-                          </div>
-
-                          {/* Two Competition Highlights Cards */}
-                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            {/* Competition 1: Tech Quiz */}
-                            <div className="p-4 rounded-2xl bg-secondary/50 border border-border/80 hover:border-blue-500/40 transition-all flex flex-col justify-between gap-3">
-                              <div className="space-y-2">
-                                <div className="flex items-center justify-between">
-                                  <div className="flex items-center gap-2">
-                                    <div className="p-1.5 rounded-lg bg-blue-500/10 text-blue-500">
-                                      <Brain className="w-4 h-4" />
-                                    </div>
-                                    <h3 className="text-base font-bold text-foreground">Tech Quiz</h3>
-                                  </div>
-                                  <div className="flex items-center gap-1.5">
-                                    <span className="px-2 py-0.5 rounded-full bg-blue-500/15 text-blue-500 text-[10px] font-bold border border-blue-500/30">
-                                      1st Year Only
-                                    </span>
-                                    <span className="px-2 py-0.5 rounded-full bg-secondary text-muted-foreground text-[10px] font-semibold border border-border/70">
-                                      Individual (Solo)
-                                    </span>
-                                  </div>
-                                </div>
-                                <p className="text-xs text-muted-foreground leading-relaxed">
-                                  Exclusively limited to <strong className="text-foreground">1st Year (Freshers)</strong>. Multi-round contest on programming logic, algorithms, CS fundamentals, and rapid-fire questions.
-                                </p>
-                              </div>
-                              <Button
-                                type="button"
-                                onClick={() => handleOpenApply("1st Year")}
-                                variant="outline"
-                                className="w-full text-xs font-semibold rounded-xl border-blue-500/30 hover:bg-blue-500/10 hover:text-blue-500 cursor-pointer"
-                              >
-                                Apply for Tech Quiz (Freshers)
-                              </Button>
-                            </div>
-
-                            {/* Competition 2: CTF */}
-                            <div className="p-4 rounded-2xl bg-secondary/50 border border-border/80 hover:border-emerald-500/40 transition-all flex flex-col justify-between gap-3">
-                              <div className="space-y-2">
-                                <div className="flex items-center justify-between">
-                                  <div className="flex items-center gap-2">
-                                    <div className="p-1.5 rounded-lg bg-emerald-500/10 text-emerald-500">
-                                      <Flag className="w-4 h-4" />
-                                    </div>
-                                    <h3 className="text-base font-bold text-foreground">Capture The Flag (CTF)</h3>
-                                  </div>
-                                  <div className="flex items-center gap-1.5">
-                                    <span className="px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-500 text-[10px] font-bold border border-emerald-500/30">
-                                      Seniors Only
-                                    </span>
-                                    <span className="px-2 py-0.5 rounded-full bg-secondary text-muted-foreground text-[10px] font-semibold border border-border/70">
-                                      Team: 1 - 2
-                                    </span>
-                                  </div>
-                                </div>
-                                <p className="text-xs text-muted-foreground leading-relaxed">
-                                  Strictly for <strong className="text-foreground">2nd Year &amp; 3rd Year Seniors</strong>. Distinct competitive sections: <span className="text-emerald-500 font-medium">2nd Year Section</span> and <span className="text-purple-500 font-medium">3rd Year Section</span>. Team size 1 to 2 members.
-                                </p>
-                              </div>
-                              <Button
-                                type="button"
-                                onClick={() => handleOpenApply("2nd Year")}
-                                variant="outline"
-                                className="w-full text-xs font-semibold rounded-xl border-emerald-500/30 hover:bg-emerald-500/10 hover:text-emerald-500 cursor-pointer"
-                              >
-                                Apply for CTF (Seniors)
-                              </Button>
-                            </div>
-                          </div>
-
-                          {/* Metadata Grid */}
-                          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                            <div className="p-3 rounded-xl bg-secondary/60 border border-border/60">
-                              <div className="flex items-center gap-1.5 text-primary text-xs font-semibold mb-0.5">
-                                <Clock className="w-3.5 h-3.5" />
-                                <span>Date</span>
-                              </div>
-                              <span className="text-xs text-foreground font-bold truncate block">
-                                To be determined
-                              </span>
-                            </div>
-
-                            <div className="p-3 rounded-xl bg-secondary/60 border border-border/60">
-                              <div className="flex items-center gap-1.5 text-primary text-xs font-semibold mb-0.5">
-                                <MapPin className="w-3.5 h-3.5" />
-                                <span>Venue</span>
-                              </div>
-                              <span
-                                className="text-xs text-foreground font-medium truncate block"
-                                title="IBM Lab in Lamrin Tech Skills University Punjab"
-                              >
-                                IBM Lab, LTSU Punjab
-                              </span>
-                            </div>
-
-                            <div className="p-3 rounded-xl bg-secondary/60 border border-border/60">
-                              <div className="flex items-center gap-1.5 text-primary text-xs font-semibold mb-0.5">
-                                <Users className="w-3.5 h-3.5" />
-                                <span>Eligibility</span>
-                              </div>
-                              <span className="text-xs text-foreground font-medium truncate block">
-                                1st, 2nd &amp; 3rd Years
-                              </span>
-                            </div>
-
-                            <div className="p-3 rounded-xl bg-secondary/60 border border-border/60">
-                              <div className="flex items-center gap-1.5 text-primary text-xs font-semibold mb-0.5">
-                                <Zap className="w-3.5 h-3.5" />
-                                <span>Perks</span>
-                              </div>
-                              <span className="text-xs text-foreground font-medium truncate block">
-                                Trophies &amp; Medals
-                              </span>
-                            </div>
-                          </div>
-                        </div>
-
-                        {/* Right Action / Event Poster Card */}
-                        <div className="lg:col-span-1 rounded-2xl overflow-hidden border-2 border-black bg-black shadow-[4px_4px_0px_0px_#000] flex items-center justify-center relative group self-stretch">
-                          <img
-                            src="/events/prarambh-2026-poster.jpg"
-                            alt="Prarambh 2026: Tech Quiz & Capture The Flag Official Poster"
-                            className="w-full h-full object-cover object-center rounded-xl transition-transform duration-300 group-hover:scale-[1.02]"
-                          />
-                        </div>
-                      </div>
-                    </article>
-                  ) : (
-                    <article
-                      key={event.id}
-                      className="glass-panel rounded-3xl p-6 sm:p-8 border border-border/80 hover:border-primary/40 shadow-subtle hover:shadow-premium-hover transition-all duration-300"
-                    >
-                      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                upcomingEvents.map((event) => (
+                  <article
+                    key={event.id}
+                    className="glass-panel rounded-3xl p-6 sm:p-8 border border-border/80 hover:border-primary/40 shadow-subtle hover:shadow-premium-hover transition-all duration-300"
+                  >
+                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                         {/* Main Left Details */}
                         <div className="lg:col-span-2">
                           {/* Domain badges */}
@@ -614,49 +486,180 @@ export default function EventsPage() {
 
           {/* Past Events Tab */}
           {activeTab === "past" && (
-            <div className="space-y-8">
-              <div className="text-center mb-8">
-                <p className="text-base text-muted-foreground">
-                  Check out the impact and highlights from our past flagship initiatives.
+            <div className="space-y-6">
+              <div className="text-center mb-4">
+                <p className="text-sm sm:text-base text-muted-foreground font-medium">
+                  Check out the impact, key milestones, and recap galleries from our past flagship initiatives.
                 </p>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {pastEvents.map((event) => (
-                  <Link key={event.id} href={event.link} className="block group h-full">
-                    <article className="glass-panel rounded-2xl p-6 border border-border/80 group-hover:border-primary/40 shadow-subtle group-hover:shadow-premium-hover transition-all duration-300 flex flex-col justify-between h-full">
+              {pastEvents.map((event) => (
+                <article
+                  key={event.id}
+                  className="glass-panel rounded-3xl p-6 sm:p-8 border border-border/80 hover:border-primary/40 shadow-subtle hover:shadow-premium-hover transition-all duration-300"
+                >
+                  <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    {/* Main Left Details */}
+                    <div className="lg:col-span-2 flex flex-col justify-between">
                       <div>
-                        <div className="flex items-start justify-between gap-3 mb-4">
-                          <div className="w-10 h-10 rounded-xl bg-[#70D6FF] border-2 border-black shadow-[2px_2px_0px_#000] flex items-center justify-center shrink-0">
-                            <TechIcon name={event.icon} className="w-5 h-5 text-black stroke-[2.3]" />
-                          </div>
-                          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-primary/10 text-primary text-[11px] font-semibold">
-                            <Users className="w-3 h-3" />
-                            {event.attendees} participants
-                          </span>
+                        {/* Domain badges */}
+                        <div className="flex flex-wrap gap-2 mb-3">
+                          {event.domains.map((domain, idx) => (
+                            <span
+                              key={`${domain}-${idx}`}
+                              className="px-2.5 py-0.5 rounded-md bg-primary/10 text-primary border border-primary/20 text-[11px] font-semibold"
+                            >
+                              {domain}
+                            </span>
+                          ))}
                         </div>
 
-                        <h3 className="text-lg font-bold font-poppins text-foreground group-hover:text-primary transition-colors mb-1">
-                          {event.title}
-                        </h3>
+                        {/* Title with icon */}
+                        <div className="flex items-center gap-3.5 mb-3">
+                          <div className="w-12 h-12 rounded-2xl bg-[#FFE600] border-2 border-black shadow-[2px_2px_0px_#000] flex items-center justify-center shrink-0">
+                            <TechIcon name={event.icon} className="w-6 h-6 text-black stroke-[2.3]" />
+                          </div>
+                          <h2 className="text-2xl sm:text-3xl font-poppins font-bold tracking-tight text-foreground">
+                            {event.title}
+                          </h2>
+                        </div>
 
-                        <p className="text-xs text-muted-foreground font-medium mb-3">
-                          {event.date}
+                        {/* Description */}
+                        <p className="text-sm sm:text-base text-muted-foreground leading-relaxed mb-6">
+                          {event.description}
                         </p>
 
-                        <p className="text-xs text-muted-foreground leading-relaxed line-clamp-3 mb-4">
-                          {event.highlight}
-                        </p>
+                        {/* Metadata Grid */}
+                        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
+                          <div className="p-3 rounded-xl bg-secondary/60 border border-border/60">
+                            <div className="flex items-center gap-1.5 text-primary text-xs font-semibold mb-0.5">
+                              <Clock className="w-3.5 h-3.5" />
+                              <span>Timeline</span>
+                            </div>
+                            <span className="text-xs text-foreground font-medium truncate block">
+                              {event.date}
+                            </span>
+                          </div>
+
+                          <div className="p-3 rounded-xl bg-secondary/60 border border-border/60">
+                            <div className="flex items-center gap-1.5 text-primary text-xs font-semibold mb-0.5">
+                              <MapPin className="w-3.5 h-3.5" />
+                              <span>Venue</span>
+                            </div>
+                            <span className="text-xs text-foreground font-medium truncate block">
+                              {event.location}
+                            </span>
+                          </div>
+
+                          <div className="p-3 rounded-xl bg-secondary/60 border border-border/60">
+                            <div className="flex items-center gap-1.5 text-primary text-xs font-semibold mb-0.5">
+                              <Users className="w-3.5 h-3.5" />
+                              <span>Turnout</span>
+                            </div>
+                            <span className="text-xs text-foreground font-medium truncate block">
+                              {event.attendees} Participants
+                            </span>
+                          </div>
+
+                          <div className="p-3 rounded-xl bg-secondary/60 border border-border/60">
+                            <div className="flex items-center gap-1.5 text-primary text-xs font-semibold mb-0.5">
+                              <Award className="w-3.5 h-3.5" />
+                              <span>Highlights</span>
+                            </div>
+                            <span className="text-xs text-foreground font-medium truncate block">
+                              {event.highlights.length} Achievements
+                            </span>
+                          </div>
+                        </div>
+
+                        {/* Highlights List */}
+                        <div className="mb-6">
+                          <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3">
+                            Event Highlights:
+                          </h3>
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs sm:text-sm text-muted-foreground">
+                            {event.highlights.map((highlight, idx) => (
+                              <div key={`${highlight}-${idx}`} className="flex items-start gap-2">
+                                <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
+                                <span>{highlight}</span>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
                       </div>
 
-                      <div className="pt-4 border-t border-border/50 flex items-center justify-between text-xs font-semibold text-primary">
-                        <span>Explore Event Recap</span>
-                        <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                      {/* Shifted Explore Event & Certificate Section to Left Column */}
+                      <div className="flex flex-wrap items-center gap-3 pt-5 border-t border-border/60 mt-4">
+                        <Link
+                          href={event.link}
+                          className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-[#FFE600] text-black font-bold text-xs sm:text-sm border-2 border-black shadow-[3px_3px_0px_#000] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[1px_1px_0px_#000] active:scale-95 transition-all duration-200"
+                        >
+                          <span>Explore Event Recap</span>
+                          <ArrowRight className="w-4 h-4" />
+                        </Link>
+
+                        <Link
+                          href={event.certificateLink}
+                          className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold text-foreground bg-secondary/80 hover:bg-secondary border-2 border-black shadow-[2px_2px_0px_#000] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[1px_1px_0px_#000] active:scale-95 transition-all duration-200"
+                        >
+                          <Award className="w-4 h-4 text-primary" />
+                          <span>Download Certificate</span>
+                        </Link>
+
+                        <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/25 text-emerald-600 dark:text-emerald-400 text-xs font-semibold sm:ml-auto">
+                          <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500" />
+                          <span>{event.statusBadge}</span>
+                        </span>
                       </div>
-                    </article>
-                  </Link>
-                ))}
-              </div>
+                    </div>
+
+                    {/* Right Event Poster Section */}
+                    <div className="lg:col-span-1 flex flex-col justify-center items-center">
+                      {event.poster ? (
+                        <div className="w-full relative group rounded-2xl overflow-hidden border-2 border-black bg-neutral-950 shadow-[4px_4px_0px_#000] transition-all duration-300 hover:-translate-y-1">
+                          <Link href={event.link} className="block relative aspect-[3/4] w-full max-h-[400px] overflow-hidden bg-neutral-900 cursor-pointer">
+                            <img
+                              src={event.poster}
+                              alt={`${event.title} Official Poster`}
+                              className="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
+                            />
+
+                            {/* Official Poster Badge */}
+                            <div className="absolute top-3 left-3 z-10">
+                              <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md bg-black/80 backdrop-blur-md text-[#FFE600] text-[10px] font-black uppercase tracking-wider border border-[#FFE600]/40 shadow-sm">
+                                Official Poster
+                              </span>
+                            </div>
+
+                            {/* Hover Overlay */}
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4">
+                              <span className="text-white text-xs font-bold flex items-center justify-center gap-1.5 py-2 px-3 rounded-xl bg-[#FFE600] text-black border border-black shadow-[2px_2px_0px_#000]">
+                                <span>Explore Event Recap</span>
+                                <ArrowRight className="w-3.5 h-3.5" />
+                              </span>
+                            </div>
+                          </Link>
+                        </div>
+                      ) : (
+                        <div className="w-full h-full min-h-[300px] rounded-2xl p-6 bg-secondary/50 border-2 border-dashed border-border/80 flex flex-col justify-center items-center text-center">
+                          <div className="w-14 h-14 rounded-2xl bg-primary/10 border border-primary/20 flex items-center justify-center text-primary mb-3">
+                            <TechIcon name={event.icon} className="w-7 h-7" />
+                          </div>
+                          <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-1">
+                            Event Archive
+                          </span>
+                          <h4 className="text-sm font-bold text-foreground mb-2">
+                            {event.title}
+                          </h4>
+                          <span className="inline-block px-2.5 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/25 text-emerald-600 dark:text-emerald-400 text-[11px] font-semibold">
+                            {event.statusBadge}
+                          </span>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </article>
+              ))}
             </div>
           )}
 
@@ -700,13 +703,6 @@ export default function EventsPage() {
           </section>
         </div>
       </div>
-
-      {/* Prarambh Registration Dialog */}
-      <PrarambhApplyDialog
-        open={applyDialogOpen}
-        onOpenChange={setApplyDialogOpen}
-        defaultYear={applyDefaultYear}
-      />
     </Layout>
   );
 }

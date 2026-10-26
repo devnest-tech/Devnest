@@ -10,12 +10,26 @@
       "imagePosition": "center 20%",
       "socials": {
         "github": "#",
-        "linkedin": "#",
+        "linkedin": "https://www.linkedin.com/in/wakeel-bhat-4a9357270/",
         "instagram": "#"
       }
     },
     {
       "id": 2,
+      "name": "Dr. Mankaranjit Singh",
+      "role": "Faculty Co-Coordinator",
+      "designation": "Faculty Co-Coordinator",
+      "bio": "Dedicated to advancing technical education, fostering innovation, and guiding students toward academic and professional excellence.",
+      "image": "/team/mankaranjit.png",
+      "imagePosition": "center 20%",
+      "socials": {
+        "github": "#",
+        "linkedin": "https://www.linkedin.com/in/dr-mankaranjit-singh-550060248/",
+        "instagram": "#"
+      }
+    },
+    {
+      "id": 3,
       "name": "Aaditya Kumar",
       "role": "President",
       "designation": "DevNest President",
@@ -28,7 +42,7 @@
       }
     },
     {
-      "id": 3,
+      "id": 4,
       "name": "Tabinda Naseem",
       "role": "Vice President",
       "designation": "DevNest Vice President",
@@ -42,7 +56,7 @@
       }
     },
     {
-      "id": 4,
+      "id": 5,
       "name": "Ayush Kumar Jha",
       "role": "Secretary",
       "designation": "DevNest Secretary",
@@ -55,7 +69,7 @@
       }
     },
     {
-      "id": 5,
+      "id": 6,
       "name": "Nandini Jaishree",
       "role": "CFO",
       "designation": "DevNest Chief Financial Officer",
@@ -68,7 +82,7 @@
       }
     },
     {
-      "id": 6,
+      "id": 7,
       "name": "Manish Yadav",
       "role": "Technical Head",
       "designation": "DevNest Technical Head",
@@ -90,12 +104,12 @@
       "imagePosition": "center 10%",
       "socials": {
         "github": "#",
-        "linkedin": "#",
+        "linkedin": "https://www.linkedin.com/in/shivam-singh-3bb3573b8/",
         "instagram": "#"
       }
     },
     {
-      "id": 11,
+      "id": 9,
       "name": "Anshuman",
       "role": "Developer",
       "designation": "DevNest Developer",
@@ -108,7 +122,7 @@
       }
     },
     {
-      "id": 9,
+      "id": 10,
       "name": "Vipul",
       "role": "Technical Coordinator",
       "designation": "DevNest Technical Coordinator",

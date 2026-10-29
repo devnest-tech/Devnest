@@ -19,6 +19,7 @@ import {
 } from "lucide-react";
 import { Layout } from "@/components/Layout";
 import { Button } from "@/components/ui/button";
+import { PrarambhWinnersShowcase } from "@/components/PrarambhWinnersShowcase";
 
 export default function PrarambhEventPage() {
   const stats = [
@@ -91,10 +92,6 @@ export default function PrarambhEventPage() {
                 <CheckCircle2 className="w-3.5 h-3.5" />
                 Event Concluded
               </span>
-              <span className="inline-flex items-center gap-1 text-xs text-muted-foreground font-semibold px-2 py-1">
-                <MapPin className="w-3.5 h-3.5 text-primary" />
-                Laptop Lab, LTSU Punjab
-              </span>
             </div>
 
             <h1 className="text-3xl sm:text-4xl md:text-5xl font-poppins font-black tracking-tight text-foreground">
@@ -138,95 +135,10 @@ export default function PrarambhEventPage() {
 
           {/* Main Content Grid: Left poster, Right highlights */}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-12">
-            {/* Left: Event Poster Card */}
-            <div className="lg:col-span-5">
-              <div className="rounded-3xl border-3 border-black overflow-hidden bg-black shadow-[6px_6px_0px_#000] sticky top-24">
-                <img
-                  src="/events/prarambh-2026-poster.jpg"
-                  alt="Prarambh 2026: Tech Quiz & Capture The Flag Official Poster"
-                  className="w-full h-auto object-cover"
-                />
-                <div className="p-4 bg-white border-t-2 border-black text-left">
-                  <p className="text-xs font-mono font-bold text-muted-foreground uppercase tracking-wider mb-1">
-                    Official Event Poster
-                  </p>
-                  <p className="text-sm font-bold text-black">
-                    Prarambh 2026 • Dual Competition Showcase
-                  </p>
-                </div>
-              </div>
-            </div>
+            <div className="lg:col-span-12 space-y-6">
 
-            {/* Right: Key Stats & Overview */}
-            <div className="lg:col-span-7 space-y-6">
-              {/* 4 Stats Cards */}
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
-                {stats.map((stat, idx) => {
-                  const Icon = stat.icon;
-                  return (
-                    <div
-                      key={idx}
-                      className="rounded-2xl p-4 bg-white border-2 border-black shadow-[3px_3px_0px_#000] text-left flex flex-col justify-between"
-                    >
-                      <div className={`w-8 h-8 rounded-lg ${stat.color} border border-black flex items-center justify-center text-black mb-2 shadow-[1px_1px_0px_#000]`}>
-                        <Icon className="w-4 h-4" />
-                      </div>
-                      <div>
-                        <span className="text-xs text-muted-foreground font-semibold block">
-                          {stat.label}
-                        </span>
-                        <span className="text-lg sm:text-xl font-black text-black">
-                          {stat.value}
-                        </span>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-
-              {/* Two Tracks Detailed Cards */}
-              <div className="space-y-4">
-                <h2 className="text-xl sm:text-2xl font-poppins font-bold text-foreground text-left">
-                  Competition Tracks Overview
-                </h2>
-
-                {highlights.map((track, idx) => {
-                  const TrackIcon = track.icon;
-                  return (
-                    <div
-                      key={idx}
-                      className="rounded-2xl p-5 sm:p-6 bg-white border-2 border-black shadow-[4px_4px_0px_#000] text-left space-y-3"
-                    >
-                      <div className="flex flex-wrap items-center justify-between gap-2">
-                        <div className="flex items-center gap-2.5">
-                          <div className="w-9 h-9 rounded-xl bg-[#FFE600] border border-black flex items-center justify-center text-black shadow-[1px_1px_0px_#000]">
-                            <TrackIcon className="w-5 h-5 stroke-[2.3]" />
-                          </div>
-                          <h3 className="text-base sm:text-lg font-bold text-black">
-                            {track.title}
-                          </h3>
-                        </div>
-                        <span className={`px-2.5 py-0.5 rounded-full text-[11px] font-bold border ${track.badgeColor}`}>
-                          {track.badge}
-                        </span>
-                      </div>
-
-                      <p className="text-xs sm:text-sm text-neutral-700 leading-relaxed font-medium">
-                        {track.description}
-                      </p>
-
-                      <div className="pt-2 border-t border-black/10 space-y-1.5">
-                        {track.highlights.map((h, hIdx) => (
-                          <div key={hIdx} className="flex items-center gap-2 text-xs text-neutral-800 font-medium">
-                            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-                            <span>{h}</span>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
+              {/* Winners Showcase Section */}
+              <PrarambhWinnersShowcase />
 
               {/* Schedule and Roadmap Link */}
               <div className="rounded-2xl p-5 border-2 border-black bg-secondary/50 shadow-[3px_3px_0px_#000] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-left">
